@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layers xmlns="http://www.springframework.org/schema/boot/layers"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/boot/layers https://www.springframework.org/schema/boot/layers/layers-3.5.xsd">
+    <!--
+        分层JAR配置 - 优化Docker镜像构建
+        
+        分层说明：
+        1. dependencies: 项目依赖的第三方库（变化频率低）
+        2. spring-boot-loader: Spring Boot加载器（变化频率低）
+        3. snapshot-dependencies: 快照版本依赖（变化频率中等）
+        4. application: 应用程序代码（变化频率高）
+        
+        Docker构建优化：
+        - 依赖层缓存可以重复使用，减少构建时间
+        - 只有application层变化时才需要重新构建
+    -->
+    
+    <application>
+        <into layer="spring-boot-loader">
+            <include>org/springframework/boot/loader/**</include>
+        </into>
+        <into layer="application" />
+    </application>
+    
+    <dependencies>
+        <into layer="snapshot-dependencies">
+            <include>*:*:*SNAPSHOT</include>
+        </into>
+        <into layer="dependencies" />
+    </dependencies>
+    
+    <layerOrder>
+        <layer>dependencies</layer>
+        <layer>spring-boot-loader</layer>
+        <layer>snapshot-dependencies</layer>
+        <layer>application</layer>
+    </layerOrder>
+</layers>

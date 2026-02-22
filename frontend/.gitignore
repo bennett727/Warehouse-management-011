@@ -1,0 +1,79 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules
+dist
+dist-ssr
+*.local
+
+# Build outputs
+build-stats.html
+.eslintrc-auto-import.json
+components.d.ts
+auto-imports.d.ts
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env.local
+.env.*.local
+
+# Test coverage
+coverage
+*.lcov
+
+# Temporary scripts and utilities
+test_output.txt
+
+# Cache
+.cache
+.temp
+
+# Vite cache
+.vite/
+
+# Editor swap files
+*.swp
+*~
+
+# Temporary files
+*.tmp
+*.bak
+
+# Test reports and lint output
+lint_output.txt
+test-report*.txt
+test-results.json
+
+# PowerShell scripts (temporary)
+*.ps1
+!scripts/**/*.ps1
+
+# Python scripts (temporary)
+*.py
+!scripts/**/*.py
+
+# SQL scripts (temporary)
+*.sql
+!src/main/resources/db/migrations/*.sql
+!scripts/sql/init_*.sql

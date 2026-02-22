@@ -1,0 +1,94 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+target/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Maven
+.mvn/
+
+# Testing
+coverage/
+*.lcov
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+.vite/
+
+# Editor swap files
+*.swp
+*~
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build artifacts
+*.class
+*.jar
+*.war
+*.ear
+
+# Backup files
+*.bak
+
+# Upload directories
+uploads/
+
+# Test output files
+test_output.txt
+test-results/
+
+# IDE specific files
+*.iml
+*.ipr
+*.iws
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# PowerShell scripts (temporary)
+*.ps1
+!scripts/**/*.ps1
+
+# Python scripts (temporary)
+*.py
+!scripts/**/*.py
+
+# SQL scripts (temporary)
+*.sql
+!src/main/resources/db/migrations/*.sql
+!scripts/sql/init_*.sql

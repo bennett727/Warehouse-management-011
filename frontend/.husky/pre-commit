@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 运行提交前检查..."
+
+# 运行 lint-staged
+npx lint-staged
+
+# 检查 API 常量导入导出一致性
+echo "📦 检查 API 常量导入导出..."
+node scripts/check-api-constants-exports.js
+
+echo "✅ 提交前检查完成"

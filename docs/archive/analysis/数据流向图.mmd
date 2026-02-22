@@ -1,0 +1,46 @@
+graph LR
+    subgraph 配置数据流["📥 配置数据流 (配置→业务)"]
+        direction TB
+        AD1[行政区划数据] --> WH1[仓库基础数据]
+        WH1 --> WZ1[功能区划分]
+        WZ1 --> BN1[货位规划]
+        BN1 --> DV1[设备存放]
+    end
+
+    subgraph 业务数据流["📤 业务数据流 (业务→统计)"]
+        direction TB
+        DV2[设备状态变更] --> ST2[库存数量更新]
+        ST2 --> WH2[仓库容量统计]
+        WH2 --> AD2[行政区划分布统计]
+        AD2 --> RP2[数据报表/仪表盘]
+    end
+
+    subgraph 跨模块操作流["🔄 跨模块操作流"]
+        direction TB
+        CR1[创建行政区划] -.->|断点1| CR2[创建仓库]
+        CR2 -.->|断点2| CR3[创建功能区]
+        CR3 -.->|断点3| CR4[创建货位]
+        CR4 -.->|断点4| CR5[设备入库]
+    end
+
+    subgraph 快捷操作链["✨ 快捷操作链 (已实施)"]
+        direction TB
+        QAC1[创建仓库成功] --> QAC2{快捷操作}
+        QAC2 -->|创建功能区| QAC3[自动传递warehouseId]
+        QAC2 -->|批量生成货位| QAC4[自动传递warehouseId]
+        QAC2 -->|在地图定位| QAC5[自动传递坐标]
+        QAC2 -->|继续创建仓库| QAC6[保持行政区划选择]
+    end
+
+    %% 样式定义
+    classDef config fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    classDef business fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    classDef operation fill:#fff3e0,stroke:#ef6c00,stroke-width:2px
+    classDef quick fill:#f3e5f5,stroke:#6a1b9a,stroke-width:2px
+    classDef breakpoint fill:#ffebee,stroke:#c62828,stroke-width:2px,stroke-dasharray: 5 5
+
+    class AD1,WH1,WZ1,BN1,DV1 config
+    class DV2,ST2,WH2,AD2,RP2 business
+    class CR1,CR2,CR3,CR4,CR5 operation
+    class QAC1,QAC2,QAC3,QAC4,QAC5,QAC6 quick
+    class CR2,CR3,CR4,CR5 breakpoint

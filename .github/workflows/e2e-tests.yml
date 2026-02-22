@@ -1,0 +1,224 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      test_suite:
+        description: '测试套件选择'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - login
+          - asset-management
+          - inventory-management
+          - dashboard
+          - boundary
+          - permission
+          - concurrent
+          - recovery
+      parallel:
+        description: '启用并行执行'
+        required: false
+        default: true
+        type: boolean
+      parallel_workers:
+        description: '并行工作线程数'
+        required: false
+        default: '4'
+        type: choice
+        options:
+          - '2'
+          - '4'
+          - '6'
+          - '8'
+
+env:
+  NODE_VERSION: '18.x'
+  JAVA_VERSION: '17'
+
+jobs:
+  e2e-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+    
+    - name: Setup Java
+      uses: actions/setup-java@v3
+      with:
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: 'temurin'
+        cache: 'maven'
+    
+    - name: Install frontend dependencies
+      run: |
+        cd frontend
+        npm ci
+    
+    - name: Run linter
+      run: |
+        cd frontend
+        npm run lint
+    
+    - name: Build backend
+      run: |
+        cd spring_boot
+        mvn clean package -DskipTests
+    
+    - name: Start backend server
+      run: |
+        cd spring_boot
+        nohup java -jar target/*.jar > backend.log 2>&1 &
+        echo $! > backend.pid
+        sleep 30
+    
+    - name: Wait for backend health check
+      run: |
+        timeout 120 bash -c 'until curl -sf http://localhost:8080/api/actuator/health; do sleep 3; done'
+    
+    - name: Run E2E tests
+      run: |
+        cd frontend
+        # 设置并行执行参数
+        if [ "${{ github.event.inputs.parallel }}" = "true" ] || [ -z "${{ github.event.inputs.parallel }}" ]; then
+          PARALLEL_FLAG="--parallel"
+          WORKERS="${{ github.event.inputs.parallel_workers || '4' }}"
+          echo "启用并行执行，工作线程数: $WORKERS"
+        else
+          PARALLEL_FLAG=""
+          WORKERS="1"
+          echo "使用串行执行"
+        fi
+        
+        # 设置环境变量
+        export CYPRESS_ENABLE_PARALLEL=true
+        export CYPRESS_PARALLEL_WORKERS=$WORKERS
+        
+        # 执行测试
+        if [ "${{ github.event.inputs.test_suite }}" = "all" ] || [ -z "${{ github.event.inputs.test_suite }}" ]; then
+          npx cypress run --config-file config/cypress.config.js --browser ${{ matrix.browser }} --headless $PARALLEL_FLAG --group e2e-tests
+        else
+          npx cypress run --config-file config/cypress.config.js --spec "tests/cypress/e2e/${{ github.event.inputs.test_suite }}.cy.js" --browser ${{ matrix.browser }} --headless $PARALLEL_FLAG --group ${{ github.event.inputs.test_suite }}-tests
+        fi
+    
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: cypress-results-${{ matrix.browser }}
+        path: frontend/cypress/results/*
+        retention-days: 30
+    
+    - name: Upload screenshots
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: cypress-screenshots-${{ matrix.browser }}
+        path: frontend/cypress/screenshots/*
+        retention-days: 30
+    
+    - name: Upload videos
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: cypress-videos-${{ matrix.browser }}
+        path: frontend/cypress/videos/*
+        retention-days: 30
+    
+    - name: Generate test report
+      if: always()
+      run: |
+        cd frontend
+        npm run test:report
+    
+    - name: Upload test report
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-report
+        path: frontend/tests/cypress/reports/*
+        retention-days: 90
+    
+    - name: Stop backend server
+      if: always()
+      run: |
+        if [ -f backend.pid ]; then
+          kill $(cat backend.pid)
+          rm backend.pid
+        fi
+    
+    - name: Comment PR with results
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const results = JSON.parse(fs.readFileSync('tests/cypress/reports/e2e-test-summary.json', 'utf8'));
+          const comment = `## E2E测试结果
+          
+          **总测试数**: ${results.summary.totalTests}
+          **通过**: ${results.summary.passedTests}
+          **失败**: ${results.summary.failedTests}
+          **通过率**: ${results.summary.passRate}
+          
+          ${results.suites.map(suite => `- ${suite.name}: ${suite.passed ? '✅' : '❌'}`).join('\n')}
+          `;
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  performance-tests:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'push'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+    
+    - name: Install dependencies
+      run: |
+        cd frontend
+        npm ci
+    
+    - name: Run performance tests
+      run: |
+        cd frontend
+        npm run test:performance
+    
+    - name: Upload performance results
+      uses: actions/upload-artifact@v3
+      with:
+        name: performance-results
+        path: frontend/tests/cypress/reports/performance/*
+        retention-days: 90

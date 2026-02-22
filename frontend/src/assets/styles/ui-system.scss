@@ -1,0 +1,2301 @@
+// ============================================
+// UI Design System - 统一视觉设计系统
+// 用于仓库管理系统前端UI优化
+// ============================================
+
+@use './variables.scss' as *;
+@use './mixins.scss' as *;
+
+// ============================================
+// 1. 卡片组件样式增强
+// ============================================
+
+// 基础卡片样式
+.ui-card {
+  background: var(--bg-color-light);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-base);
+  border: 1px solid var(--border-color);
+  transition: var(--transition-base);
+  overflow: hidden;
+
+  &:hover {
+    box-shadow: var(--box-shadow-md);
+  }
+
+  // 卡片头部
+  .ui-card-header {
+    padding: var(--spacing-5) var(--spacing-6);
+    background: linear-gradient(135deg, var(--slate-50) 0%, var(--slate-100) 100%);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+
+    .ui-card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--border-radius-md);
+      background: var(--primary-50);
+      border: 2px solid var(--primary-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-600);
+      font-size: var(--font-size-lg);
+      box-shadow: var(--box-shadow-sm);
+    }
+
+    .ui-card-title {
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .ui-card-subtitle {
+      font-size: var(--font-size-sm);
+      color: var(--text-tertiary);
+      margin-top: var(--spacing-1);
+    }
+  }
+
+  // 卡片内容
+  .ui-card-body {
+    padding: var(--spacing-6);
+  }
+
+  // 卡片底部
+  .ui-card-footer {
+    padding: var(--spacing-4) var(--spacing-6);
+    background: var(--slate-50);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-3);
+  }
+}
+
+// 玻璃态卡片
+.ui-card-glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+// 悬浮效果卡片
+.ui-card-hover {
+  transition: var(--transition-base);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--box-shadow-lg);
+  }
+}
+
+// 渐变边框卡片
+.ui-card-gradient {
+  position: relative;
+  background: var(--bg-color-light);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--primary-500);
+  }
+}
+
+// ============================================
+// 2. 按钮组件样式增强
+// ============================================
+
+// 基础按钮样式
+.ui-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  padding: var(--button-padding-md);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--button-border-radius);
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-base);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition:
+      width 0.4s ease,
+      height 0.4s ease;
+  }
+
+  &:active::before {
+    width: 200px;
+    height: 200px;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .ui-btn-icon {
+    font-size: 1.1em;
+  }
+}
+
+// 主要按钮
+.ui-btn-primary {
+  background: var(--primary-600);
+  color: white;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+
+  &:hover:not(:disabled) {
+    background: var(--primary-700);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+  }
+
+  &:active:not(:disabled) {
+    background: var(--primary-800);
+    transform: translateY(0);
+  }
+}
+
+// 次要按钮
+.ui-btn-secondary {
+  background: var(--slate-100);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+
+  &:hover:not(:disabled) {
+    background: var(--slate-200);
+    border-color: var(--border-color-dark);
+  }
+}
+
+// 成功按钮
+.ui-btn-success {
+  background: var(--success-600);
+  color: white;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);
+
+  &:hover:not(:disabled) {
+    background: var(--success-700);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+  }
+}
+
+// 警告按钮
+.ui-btn-warning {
+  background: var(--warning-600);
+  color: white;
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.3);
+
+  &:hover:not(:disabled) {
+    background: var(--warning-700);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(217, 119, 6, 0.4);
+  }
+}
+
+// 危险按钮
+.ui-btn-danger {
+  background: var(--error-600);
+  color: white;
+  box-shadow: 0 4px 14px rgba(225, 29, 72, 0.3);
+
+  &:hover:not(:disabled) {
+    background: var(--error-700);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(225, 29, 72, 0.4);
+  }
+}
+
+// 幽灵按钮
+.ui-btn-ghost {
+  background: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+
+  &:hover:not(:disabled) {
+    background: var(--primary-fade);
+  }
+}
+
+// 链接按钮
+.ui-btn-link {
+  background: transparent;
+  color: var(--primary-color);
+  padding: var(--spacing-1) var(--spacing-2);
+
+  &:hover:not(:disabled) {
+    color: var(--primary-dark);
+    text-decoration: underline;
+  }
+}
+
+// 按钮尺寸
+.ui-btn-sm {
+  padding: var(--button-padding-sm);
+  font-size: var(--font-size-sm);
+}
+
+.ui-btn-lg {
+  padding: var(--button-padding-lg);
+  font-size: var(--font-size-md);
+}
+
+.ui-btn-xl {
+  padding: var(--spacing-4) var(--spacing-7);
+  font-size: var(--font-size-lg);
+}
+
+// 图标按钮
+.ui-btn-icon {
+  padding: var(--spacing-3);
+  border-radius: var(--border-radius-md);
+
+  &.ui-btn-sm {
+    padding: var(--spacing-2);
+  }
+}
+
+// 加载状态
+.ui-btn-loading {
+  pointer-events: none;
+
+  &::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: ui-spin 0.8s linear infinite;
+    margin-left: var(--spacing-2);
+  }
+}
+
+@keyframes ui-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ============================================
+// 3. 表单组件样式增强
+// ============================================
+
+// 表单容器
+.ui-form {
+  .ui-form-item {
+    margin-bottom: var(--spacing-5);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .ui-form-label {
+    display: block;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-2);
+
+    &.required::after {
+      content: '*';
+      color: var(--error-color);
+      margin-left: var(--spacing-1);
+    }
+  }
+}
+
+// 输入框样式
+.ui-input {
+  width: 100%;
+  height: var(--input-height-md);
+  padding: 0 var(--spacing-4);
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  background: var(--bg-color-light);
+  border: 1px solid var(--border-color);
+  border-radius: var(--input-border-radius);
+  transition: var(--transition-fast);
+
+  &:hover {
+    border-color: var(--border-color-dark);
+  }
+
+  &:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--primary-fade);
+    outline: none;
+  }
+
+  &::placeholder {
+    color: var(--text-tertiary);
+  }
+
+  &:disabled {
+    background: var(--slate-100);
+    cursor: not-allowed;
+  }
+
+  &.error {
+    border-color: var(--error-color);
+
+    &:focus {
+      box-shadow: 0 0 0 3px var(--error-fade);
+    }
+  }
+}
+
+.ui-input-sm {
+  height: var(--input-height-sm);
+  font-size: var(--font-size-sm);
+}
+
+.ui-input-lg {
+  height: var(--input-height-lg);
+  font-size: var(--font-size-md);
+}
+
+// 文本域
+.ui-textarea {
+  @extend .ui-input;
+  height: auto;
+  min-height: 100px;
+  padding: var(--spacing-3) var(--spacing-4);
+  resize: vertical;
+}
+
+// 选择器
+.ui-select {
+  position: relative;
+
+  .ui-select-trigger {
+    @extend .ui-input;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+
+    .ui-select-arrow {
+      transition: transform 0.2s ease;
+    }
+
+    &.open .ui-select-arrow {
+      transform: rotate(180deg);
+    }
+  }
+
+  .ui-select-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: var(--spacing-2);
+    background: var(--bg-color-light);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow-lg);
+    z-index: var(--z-index-dropdown);
+    max-height: 250px;
+    overflow-y: auto;
+  }
+
+  .ui-select-option {
+    padding: var(--spacing-3) var(--spacing-4);
+    cursor: pointer;
+    transition: var(--transition-fast);
+
+    &:hover {
+      background: var(--bg-color-hover);
+    }
+
+    &.selected {
+      background: var(--primary-fade);
+      color: var(--primary-color);
+    }
+  }
+}
+
+// 开关
+.ui-switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+
+    &:checked + .ui-switch-slider {
+      background: var(--success-color);
+
+      &::before {
+        transform: translateX(24px);
+      }
+    }
+  }
+
+  .ui-switch-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--slate-300);
+    border-radius: var(--border-radius-full);
+    transition: var(--transition-base);
+
+    &::before {
+      content: '';
+      position: absolute;
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: var(--transition-base);
+      box-shadow: var(--box-shadow-sm);
+    }
+  }
+}
+
+// 单选框和复选框
+.ui-radio,
+.ui-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+
+  input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-color);
+    cursor: pointer;
+  }
+}
+
+// ============================================
+// 4. 表格组件样式增强
+// ============================================
+
+.ui-table-container {
+  background: var(--bg-color-light);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.ui-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: var(--spacing-4) var(--spacing-5);
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  th {
+    background: var(--slate-50);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  tbody {
+    tr {
+      transition: var(--transition-fast);
+
+      &:hover {
+        background: var(--bg-color-hover);
+      }
+
+      &:last-child td {
+        border-bottom: none;
+      }
+    }
+  }
+
+  td {
+    color: var(--text-primary);
+    font-size: var(--font-size-base);
+  }
+}
+
+// 表格行选中状态
+.ui-table-row-selected {
+  background: var(--primary-fade) !important;
+}
+
+// 空状态
+.ui-table-empty {
+  padding: var(--spacing-10);
+  text-align: center;
+  color: var(--text-tertiary);
+
+  .ui-empty-icon {
+    font-size: 48px;
+    margin-bottom: var(--spacing-4);
+    opacity: 0.5;
+  }
+}
+
+// ============================================
+// 5. 标签组件样式
+// ============================================
+
+.ui-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-1) var(--spacing-3);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--tag-border-radius);
+  transition: var(--transition-fast);
+
+  &.ui-tag-primary {
+    background: var(--primary-fade);
+    color: var(--primary-color);
+  }
+
+  &.ui-tag-success {
+    background: var(--success-fade);
+    color: var(--success-color);
+  }
+
+  &.ui-tag-warning {
+    background: var(--warning-fade);
+    color: var(--warning-color);
+  }
+
+  &.ui-tag-error {
+    background: var(--error-fade);
+    color: var(--error-color);
+  }
+
+  &.ui-tag-info {
+    background: var(--slate-100);
+    color: var(--text-secondary);
+  }
+}
+
+// ============================================
+// 6. 分页组件样式
+// ============================================
+
+.ui-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-2);
+  padding: var(--spacing-4) 0;
+
+  .ui-page-btn {
+    min-width: 32px;
+    height: 32px;
+    padding: 0 var(--spacing-3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+    background: var(--bg-color-light);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: var(--transition-fast);
+
+    &:hover:not(:disabled) {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+    }
+
+    &.active {
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+      color: white;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// ============================================
+// 7. 工具栏样式
+// ============================================
+
+.ui-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4) 0;
+  margin-bottom: var(--spacing-5);
+  flex-wrap: wrap;
+
+  .ui-toolbar-left,
+  .ui-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+  }
+
+  .ui-toolbar-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+  }
+}
+
+// ============================================
+// 8. 搜索框样式
+// ============================================
+
+.ui-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .ui-search-input {
+    @extend .ui-input;
+    padding-left: 40px;
+  }
+
+  .ui-search-icon {
+    position: absolute;
+    left: var(--spacing-4);
+    color: var(--text-tertiary);
+    font-size: var(--font-size-md);
+  }
+
+  .ui-search-clear {
+    position: absolute;
+    right: var(--spacing-3);
+    color: var(--text-tertiary);
+    cursor: pointer;
+    transition: var(--transition-fast);
+
+    &:hover {
+      color: var(--text-primary);
+    }
+  }
+}
+
+// ============================================
+// 9. 统计卡片样式
+// ============================================
+
+.ui-stat-card {
+  background: var(--bg-color-light);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-6);
+  box-shadow: var(--box-shadow-base);
+  border: 1px solid var(--border-color);
+  transition: var(--transition-base);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--box-shadow-md);
+  }
+
+  .ui-stat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-4);
+
+    .ui-stat-label {
+      font-size: var(--font-size-sm);
+      color: var(--text-tertiary);
+      font-weight: var(--font-weight-medium);
+    }
+
+    .ui-stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--border-radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--font-size-xl);
+
+      &.primary {
+        background: var(--primary-fade);
+        color: var(--primary-color);
+      }
+
+      &.success {
+        background: var(--success-fade);
+        color: var(--success-color);
+      }
+
+      &.warning {
+        background: var(--warning-fade);
+        color: var(--warning-color);
+      }
+
+      &.error {
+        background: var(--error-fade);
+        color: var(--error-color);
+      }
+    }
+  }
+
+  .ui-stat-value {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-2);
+  }
+
+  .ui-stat-change {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1);
+    font-size: var(--font-size-sm);
+
+    &.positive {
+      color: var(--success-color);
+    }
+
+    &.negative {
+      color: var(--error-color);
+    }
+  }
+}
+
+// ============================================
+// 10. 树形组件样式
+// ============================================
+
+.ui-tree {
+  .ui-tree-node {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-2) var(--spacing-3);
+    cursor: pointer;
+    border-radius: var(--border-radius-md);
+    transition: var(--transition-fast);
+
+    &:hover {
+      background: var(--bg-color-hover);
+    }
+
+    &.selected {
+      background: var(--primary-fade);
+      color: var(--primary-color);
+    }
+
+    .ui-tree-arrow {
+      margin-right: var(--spacing-2);
+      transition: transform 0.2s ease;
+
+      &.expanded {
+        transform: rotate(90deg);
+      }
+    }
+
+    .ui-tree-icon {
+      margin-right: var(--spacing-2);
+      color: var(--text-tertiary);
+    }
+
+    .ui-tree-label {
+      flex: 1;
+      font-size: var(--font-size-base);
+    }
+
+    .ui-tree-actions {
+      display: flex;
+      gap: var(--spacing-1);
+      opacity: 0;
+      transition: var(--transition-fast);
+    }
+
+    &:hover .ui-tree-actions {
+      opacity: 1;
+    }
+  }
+
+  .ui-tree-children {
+    padding-left: var(--spacing-6);
+  }
+}
+
+// ============================================
+// 11. 步骤条样式
+// ============================================
+
+.ui-steps {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--border-color);
+    z-index: 0;
+  }
+
+  .ui-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    flex: 1;
+
+    &:last-child {
+      flex: 0;
+    }
+
+    .ui-step-dot {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--bg-color-light);
+      border: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-tertiary);
+      transition: var(--transition-base);
+      margin-bottom: var(--spacing-2);
+    }
+
+    .ui-step-title {
+      font-size: var(--font-size-sm);
+      color: var(--text-tertiary);
+      font-weight: var(--font-weight-medium);
+    }
+
+    &.active {
+      .ui-step-dot {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+        box-shadow: var(--box-shadow-glow);
+      }
+
+      .ui-step-title {
+        color: var(--primary-color);
+      }
+    }
+
+    &.completed {
+      .ui-step-dot {
+        background: var(--success-color);
+        border-color: var(--success-color);
+        color: white;
+      }
+
+      .ui-step-title {
+        color: var(--success-color);
+      }
+    }
+  }
+}
+
+// ============================================
+// 12. 加载状态样式
+// ============================================
+
+.ui-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-10);
+
+  .ui-loading-spinner {
+    width: 48px;
+    height: 48px;
+    border: 3px solid var(--border-color);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: ui-spin 0.8s linear infinite;
+  }
+
+  .ui-loading-text {
+    margin-top: var(--spacing-4);
+    color: var(--text-tertiary);
+    font-size: var(--font-size-sm);
+  }
+}
+
+// 骨架屏
+.ui-skeleton {
+  background: linear-gradient(90deg, var(--slate-100) 25%, var(--slate-200) 50%, var(--slate-100) 75%);
+  background-size: 200% 100%;
+  animation: ui-skeleton-loading 1.5s infinite;
+  border-radius: var(--border-radius-md);
+
+  &.ui-skeleton-text {
+    height: 16px;
+    margin-bottom: var(--spacing-2);
+
+    &:last-child {
+      width: 60%;
+    }
+  }
+
+  &.ui-skeleton-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+  }
+
+  &.ui-skeleton-image {
+    width: 100%;
+    height: 200px;
+  }
+}
+
+@keyframes ui-skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// ============================================
+// 13. 徽章样式
+// ============================================
+
+.ui-badge {
+  position: relative;
+  display: inline-flex;
+
+  .ui-badge-content {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    background: var(--error-color);
+    color: white;
+    font-size: 11px;
+    font-weight: var(--font-weight-bold);
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(225, 29, 72, 0.3);
+
+    &.ui-badge-dot {
+      width: 8px;
+      height: 8px;
+      min-width: 8px;
+      padding: 0;
+      top: -4px;
+      right: -4px;
+    }
+  }
+}
+
+// ============================================
+// 14. 分割线样式
+// ============================================
+
+.ui-divider {
+  display: flex;
+  align-items: center;
+  margin: var(--spacing-6) 0;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-color);
+  }
+
+  .ui-divider-text {
+    padding: 0 var(--spacing-4);
+    font-size: var(--font-size-sm);
+    color: var(--text-tertiary);
+    font-weight: var(--font-weight-medium);
+  }
+}
+
+// ============================================
+// 15. 时间轴样式
+// ============================================
+
+.ui-timeline {
+  position: relative;
+  padding-left: var(--spacing-8);
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border-color);
+  }
+
+  .ui-timeline-item {
+    position: relative;
+    padding-bottom: var(--spacing-6);
+
+    &:last-child {
+      padding-bottom: 0;
+    }
+
+    .ui-timeline-dot {
+      position: absolute;
+      left: -26px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--primary-color);
+      border: 2px solid var(--bg-color-light);
+      box-shadow: 0 0 0 2px var(--primary-color);
+
+      &.success {
+        background: var(--success-color);
+        box-shadow: 0 0 0 2px var(--success-color);
+      }
+
+      &.warning {
+        background: var(--warning-color);
+        box-shadow: 0 0 0 2px var(--warning-color);
+      }
+
+      &.error {
+        background: var(--error-color);
+        box-shadow: 0 0 0 2px var(--error-color);
+      }
+    }
+
+    .ui-timeline-content {
+      background: var(--bg-color-light);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-md);
+      padding: var(--spacing-4);
+
+      .ui-timeline-title {
+        font-weight: var(--font-weight-semibold);
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-1);
+      }
+
+      .ui-timeline-time {
+        font-size: var(--font-size-xs);
+        color: var(--text-tertiary);
+        margin-bottom: var(--spacing-2);
+      }
+
+      .ui-timeline-desc {
+        font-size: var(--font-size-sm);
+        color: var(--text-secondary);
+      }
+    }
+  }
+}
+
+// ============================================
+// 16. 头像样式
+// ============================================
+
+.ui-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--primary-100);
+  color: var(--primary-600);
+  font-weight: var(--font-weight-medium);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &.ui-avatar-sm {
+    width: 32px;
+    height: 32px;
+    font-size: var(--font-size-sm);
+  }
+
+  &.ui-avatar-md {
+    width: 40px;
+    height: 40px;
+    font-size: var(--font-size-base);
+  }
+
+  &.ui-avatar-lg {
+    width: 56px;
+    height: 56px;
+    font-size: var(--font-size-lg);
+  }
+
+  &.ui-avatar-xl {
+    width: 80px;
+    height: 80px;
+    font-size: var(--font-size-xl);
+  }
+}
+
+// ============================================
+// 17. 面包屑样式
+// ============================================
+
+.ui-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: var(--font-size-sm);
+  color: var(--text-tertiary);
+
+  .ui-breadcrumb-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+
+    a {
+      color: var(--text-secondary);
+      transition: var(--transition-fast);
+
+      &:hover {
+        color: var(--primary-color);
+      }
+    }
+
+    &.active {
+      color: var(--text-primary);
+      font-weight: var(--font-weight-medium);
+    }
+  }
+
+  .ui-breadcrumb-separator {
+    color: var(--border-color-dark);
+  }
+}
+
+// ============================================
+// 18. 菜单样式
+// ============================================
+
+.ui-menu {
+  background: var(--bg-color-light);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+
+  .ui-menu-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    padding: var(--spacing-3) var(--spacing-4);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    border-left: 3px solid transparent;
+
+    &:hover {
+      background: var(--bg-color-hover);
+      color: var(--text-primary);
+    }
+
+    &.active {
+      background: var(--primary-fade);
+      color: var(--primary-color);
+      border-left-color: var(--primary-color);
+    }
+
+    .ui-menu-icon {
+      font-size: var(--font-size-lg);
+    }
+
+    .ui-menu-label {
+      flex: 1;
+      font-size: var(--font-size-base);
+    }
+
+    .ui-menu-arrow {
+      transition: transform 0.2s ease;
+
+      &.expanded {
+        transform: rotate(90deg);
+      }
+    }
+  }
+
+  .ui-submenu {
+    .ui-menu-children {
+      background: var(--slate-50);
+
+      .ui-menu-item {
+        padding-left: var(--spacing-10);
+      }
+    }
+  }
+}
+
+// ============================================
+// 19. 进度条样式
+// ============================================
+
+.ui-progress {
+  width: 100%;
+  height: 8px;
+  background: var(--slate-200);
+  border-radius: var(--border-radius-full);
+  overflow: hidden;
+
+  .ui-progress-bar {
+    height: 100%;
+    background: var(--primary-500);
+    border-radius: var(--border-radius-full);
+    transition: width 0.3s ease;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      animation: ui-progress-shine 2s infinite;
+    }
+  }
+
+  &.success .ui-progress-bar {
+    background: var(--success-500);
+  }
+
+  &.warning .ui-progress-bar {
+    background: var(--warning-500);
+  }
+
+  &.error .ui-progress-bar {
+    background: var(--error-500);
+  }
+}
+
+@keyframes ui-progress-shine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+// ============================================
+// 20. 滑块样式
+// ============================================
+
+.ui-slider {
+  position: relative;
+  height: 6px;
+  background: var(--slate-200);
+  border-radius: var(--border-radius-full);
+  cursor: pointer;
+
+  .ui-slider-track {
+    position: absolute;
+    height: 100%;
+    background: var(--primary-500);
+    border-radius: var(--border-radius-full);
+  }
+
+  .ui-slider-thumb {
+    position: absolute;
+    top: 50%;
+    width: 18px;
+    height: 18px;
+    background: white;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: grab;
+    box-shadow: var(--box-shadow-sm);
+    transition: var(--transition-fast);
+
+    &:hover {
+      transform: translate(-50%, -50%) scale(1.2);
+      box-shadow: var(--box-shadow-md);
+    }
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+}
+
+// ============================================
+// 21. 评分样式
+// ============================================
+
+.ui-rate {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+
+  .ui-rate-item {
+    font-size: var(--font-size-xl);
+    color: var(--slate-300);
+    cursor: pointer;
+    transition: var(--transition-fast);
+
+    &.active {
+      color: #fbbf24;
+    }
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+// ============================================
+// 22. 上传组件样式
+// ============================================
+
+.ui-upload {
+  border: 2px dashed var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-8);
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition-base);
+  background: var(--slate-50);
+
+  &:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-fade);
+  }
+
+  .ui-upload-icon {
+    font-size: 48px;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-3);
+  }
+
+  .ui-upload-text {
+    font-size: var(--font-size-base);
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-1);
+  }
+
+  .ui-upload-hint {
+    font-size: var(--font-size-sm);
+    color: var(--text-tertiary);
+  }
+}
+
+// ============================================
+// 23. 穿梭框样式
+// ============================================
+
+.ui-transfer {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+
+  .ui-transfer-panel {
+    flex: 1;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+
+    .ui-transfer-header {
+      padding: var(--spacing-3) var(--spacing-4);
+      background: var(--slate-50);
+      border-bottom: 1px solid var(--border-color);
+      font-weight: var(--font-weight-medium);
+    }
+
+    .ui-transfer-list {
+      max-height: 300px;
+      overflow-y: auto;
+
+      .ui-transfer-item {
+        padding: var(--spacing-3) var(--spacing-4);
+        cursor: pointer;
+        transition: var(--transition-fast);
+
+        &:hover {
+          background: var(--bg-color-hover);
+        }
+
+        &.selected {
+          background: var(--primary-fade);
+          color: var(--primary-color);
+        }
+      }
+    }
+  }
+
+  .ui-transfer-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+  }
+}
+
+// ============================================
+// 24. 颜色选择器样式
+// ============================================
+
+.ui-color-picker {
+  position: relative;
+  display: inline-block;
+
+  .ui-color-trigger {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--border-radius-md);
+    border: 2px solid var(--border-color);
+    cursor: pointer;
+    transition: var(--transition-fast);
+
+    &:hover {
+      border-color: var(--primary-color);
+      transform: scale(1.05);
+    }
+  }
+}
+
+// ============================================
+// 25. 日期选择器样式
+// ============================================
+
+.ui-date-picker {
+  position: relative;
+
+  .ui-date-input {
+    @extend .ui-input;
+    padding-right: 40px;
+  }
+
+  .ui-date-icon {
+    position: absolute;
+    right: var(--spacing-4);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-tertiary);
+    pointer-events: none;
+  }
+}
+
+// ============================================
+// 26. 标签页样式
+// ============================================
+
+.ui-tabs {
+  .ui-tabs-header {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: var(--spacing-5);
+
+    .ui-tab-item {
+      padding: var(--spacing-3) var(--spacing-5);
+      font-size: var(--font-size-base);
+      color: var(--text-secondary);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: var(--transition-fast);
+      margin-bottom: -1px;
+
+      &:hover {
+        color: var(--primary-color);
+      }
+
+      &.active {
+        color: var(--primary-color);
+        border-bottom-color: var(--primary-color);
+        font-weight: var(--font-weight-medium);
+      }
+    }
+  }
+
+  .ui-tabs-content {
+    padding: var(--spacing-2) 0;
+  }
+}
+
+// 卡片式标签页
+.ui-tabs-card {
+  .ui-tabs-header {
+    background: var(--slate-50);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
+    border-bottom: none;
+    margin-bottom: 0;
+    padding: var(--spacing-2);
+
+    .ui-tab-item {
+      border-radius: var(--border-radius-sm);
+      border-bottom: none;
+      margin-bottom: 0;
+
+      &.active {
+        background: var(--bg-color-light);
+        box-shadow: var(--box-shadow-sm);
+      }
+    }
+  }
+
+  .ui-tabs-content {
+    border: 1px solid var(--border-color);
+    border-top: none;
+    border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+    padding: var(--spacing-6);
+    background: var(--bg-color-light);
+  }
+}
+
+// ============================================
+// 27. 折叠面板样式
+// ============================================
+
+.ui-collapse {
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+
+  .ui-collapse-item {
+    border-bottom: 1px solid var(--border-color);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .ui-collapse-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-4) var(--spacing-5);
+      background: var(--slate-50);
+      cursor: pointer;
+      transition: var(--transition-fast);
+
+      &:hover {
+        background: var(--slate-100);
+      }
+
+      .ui-collapse-title {
+        font-weight: var(--font-weight-medium);
+        color: var(--text-primary);
+      }
+
+      .ui-collapse-arrow {
+        transition: transform 0.2s ease;
+
+        &.expanded {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    .ui-collapse-content {
+      padding: var(--spacing-4) var(--spacing-5);
+      background: var(--bg-color-light);
+    }
+  }
+}
+
+// ============================================
+// 28. 走马灯样式
+// ============================================
+
+.ui-carousel {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--border-radius-lg);
+
+  .ui-carousel-container {
+    display: flex;
+    transition: transform 0.5s ease;
+  }
+
+  .ui-carousel-item {
+    flex-shrink: 0;
+    width: 100%;
+  }
+
+  .ui-carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    box-shadow: var(--box-shadow-md);
+
+    &:hover {
+      background: white;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    &.prev {
+      left: var(--spacing-4);
+    }
+
+    &.next {
+      right: var(--spacing-4);
+    }
+  }
+
+  .ui-carousel-dots {
+    position: absolute;
+    bottom: var(--spacing-4);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: var(--spacing-2);
+
+    .ui-carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: var(--transition-fast);
+
+      &.active {
+        background: white;
+        width: 24px;
+        border-radius: var(--border-radius-full);
+      }
+    }
+  }
+}
+
+// ============================================
+// 29. 抽屉样式
+// ============================================
+
+.ui-drawer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 400px;
+  max-width: 90vw;
+  background: var(--bg-color-light);
+  box-shadow: var(--box-shadow-2xl);
+  z-index: var(--z-index-modal);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+
+  &.left {
+    left: 0;
+    transform: translateX(-100%);
+
+    &.open {
+      transform: translateX(0);
+    }
+  }
+
+  &.right {
+    right: 0;
+    transform: translateX(100%);
+
+    &.open {
+      transform: translateX(0);
+    }
+  }
+
+  .ui-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-5) var(--spacing-6);
+    border-bottom: 1px solid var(--border-color);
+
+    .ui-drawer-title {
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    .ui-drawer-close {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--border-radius-md);
+      cursor: pointer;
+      transition: var(--transition-fast);
+
+      &:hover {
+        background: var(--slate-100);
+      }
+    }
+  }
+
+  .ui-drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--spacing-5) var(--spacing-6);
+  }
+
+  .ui-drawer-footer {
+    padding: var(--spacing-4) var(--spacing-6);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-3);
+  }
+}
+
+// 遮罩层
+.ui-drawer-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: calc(var(--z-index-modal) - 1);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+// ============================================
+// 30. 弹出确认框样式
+// ============================================
+
+.ui-popconfirm {
+  background: var(--bg-color-light);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-lg);
+  padding: var(--spacing-5);
+  max-width: 300px;
+
+  .ui-popconfirm-title {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    margin-bottom: var(--spacing-4);
+
+    .ui-popconfirm-icon {
+      font-size: var(--font-size-xl);
+      color: var(--warning-color);
+    }
+
+    span {
+      font-weight: var(--font-weight-medium);
+    }
+  }
+
+  .ui-popconfirm-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-2);
+  }
+}
+
+// ============================================
+// 31. 工具提示样式
+// ============================================
+
+.ui-tooltip {
+  position: absolute;
+  background: var(--slate-800);
+  color: white;
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+  z-index: var(--z-index-tooltip);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    border: 6px solid transparent;
+  }
+
+  &.top::after {
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top-color: var(--slate-800);
+  }
+
+  &.bottom::after {
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-bottom-color: var(--slate-800);
+  }
+
+  &.left::after {
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-left-color: var(--slate-800);
+  }
+
+  &.right::after {
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-right-color: var(--slate-800);
+  }
+}
+
+// ============================================
+// 32. 全局动画
+// ============================================
+
+// 淡入
+@keyframes ui-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// 淡入上移
+@keyframes ui-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// 淡入下移
+@keyframes ui-fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// 缩放入场
+@keyframes ui-zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// 弹跳
+@keyframes ui-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+// 脉冲
+@keyframes ui-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+// 摇晃
+@keyframes ui-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+// 应用动画类
+.ui-animate-fade-in {
+  animation: ui-fade-in 0.3s ease;
+}
+
+.ui-animate-fade-in-up {
+  animation: ui-fade-in-up 0.4s ease;
+}
+
+.ui-animate-fade-in-down {
+  animation: ui-fade-in-down 0.4s ease;
+}
+
+.ui-animate-zoom-in {
+  animation: ui-zoom-in 0.3s ease;
+}
+
+.ui-animate-bounce {
+  animation: ui-bounce 0.6s ease infinite;
+}
+
+.ui-animate-pulse {
+  animation: ui-pulse 2s ease infinite;
+}
+
+.ui-animate-shake {
+  animation: ui-shake 0.5s ease;
+}
+
+// ============================================
+// 33. 响应式工具类
+// ============================================
+
+// 隐藏类
+.ui-hidden {
+  display: none !important;
+}
+
+.ui-hidden-xs {
+  @media (max-width: $breakpoint-xs) {
+    display: none !important;
+  }
+}
+
+.ui-hidden-sm {
+  @media (max-width: $breakpoint-sm) {
+    display: none !important;
+  }
+}
+
+.ui-hidden-md {
+  @media (max-width: $breakpoint-md) {
+    display: none !important;
+  }
+}
+
+// 显示类
+.ui-visible-xs {
+  @media (min-width: calc(#{$breakpoint-xs} + 1px)) {
+    display: none !important;
+  }
+}
+
+.ui-visible-sm {
+  @media (min-width: calc(#{$breakpoint-sm} + 1px)) {
+    display: none !important;
+  }
+}
+
+.ui-visible-md {
+  @media (min-width: calc(#{$breakpoint-md} + 1px)) {
+    display: none !important;
+  }
+}
+
+// ============================================
+// 34. 工具类
+// ============================================
+
+// 文本对齐
+.ui-text-left {
+  text-align: left;
+}
+
+.ui-text-center {
+  text-align: center;
+}
+
+.ui-text-right {
+  text-align: right;
+}
+
+// 文本截断
+.ui-text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Flex布局
+.ui-flex {
+  display: flex;
+}
+
+.ui-flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ui-flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ui-flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+// 间距
+@for $i from 0 through 12 {
+  .ui-m-#{$i} {
+    margin: calc(var(--spacing-1) * #{$i});
+  }
+  .ui-mt-#{$i} {
+    margin-top: calc(var(--spacing-1) * #{$i});
+  }
+  .ui-mb-#{$i} {
+    margin-bottom: calc(var(--spacing-1) * #{$i});
+  }
+  .ui-ml-#{$i} {
+    margin-left: calc(var(--spacing-1) * #{$i});
+  }
+  .ui-mr-#{$i} {
+    margin-right: calc(var(--spacing-1) * #{$i});
+  }
+  .ui-p-#{$i} {
+    padding: calc(var(--spacing-1) * #{$i});
+  }
+  .ui-pt-#{$i} {
+    padding-top: calc(var(--spacing-1) * #{$i});
+  }
+  .ui-pb-#{$i} {
+    padding-bottom: calc(var(--spacing-1) * #{$i});
+  }
+  .ui-pl-#{$i} {
+    padding-left: calc(var(--spacing-1) * #{$i});
+  }
+  .ui-pr-#{$i} {
+    padding-right: calc(var(--spacing-1) * #{$i});
+  }
+}
+
+// 圆角
+.ui-rounded-none {
+  border-radius: 0;
+}
+
+.ui-rounded-sm {
+  border-radius: var(--border-radius-sm);
+}
+
+.ui-rounded-md {
+  border-radius: var(--border-radius-md);
+}
+
+.ui-rounded-lg {
+  border-radius: var(--border-radius-lg);
+}
+
+.ui-rounded-xl {
+  border-radius: var(--border-radius-xl);
+}
+
+.ui-rounded-full {
+  border-radius: var(--border-radius-full);
+}
+
+// 阴影
+.ui-shadow-none {
+  box-shadow: none;
+}
+
+.ui-shadow-sm {
+  box-shadow: var(--box-shadow-sm);
+}
+
+.ui-shadow-base {
+  box-shadow: var(--box-shadow-base);
+}
+
+.ui-shadow-md {
+  box-shadow: var(--box-shadow-md);
+}
+
+.ui-shadow-lg {
+  box-shadow: var(--box-shadow-lg);
+}
+
+// 光标
+.ui-cursor-pointer {
+  cursor: pointer;
+}
+
+.ui-cursor-not-allowed {
+  cursor: not-allowed;
+}
+
+// 用户选择
+.ui-select-none {
+  user-select: none;
+}
+
+// ============================================
+// 35. 深色模式适配
+// ============================================
+
+@media (prefers-color-scheme: dark) {
+  .ui-card {
+    background: var(--dark-bg-secondary);
+    border-color: var(--dark-border-color);
+
+    .ui-card-header {
+      background: linear-gradient(135deg, var(--dark-bg-tertiary) 0%, var(--dark-bg-secondary) 100%);
+      border-color: var(--dark-border-color);
+    }
+  }
+
+  .ui-input,
+  .ui-textarea {
+    background: var(--dark-bg-tertiary);
+    border-color: var(--dark-border-color);
+    color: var(--dark-text-primary);
+
+    &::placeholder {
+      color: var(--dark-text-tertiary);
+    }
+  }
+
+  .ui-table {
+    th {
+      background: var(--dark-bg-tertiary);
+    }
+
+    tbody tr:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  .ui-menu {
+    background: var(--dark-bg-secondary);
+    border-color: var(--dark-border-color);
+
+    .ui-menu-item {
+      &:hover {
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      &.active {
+        background: rgba(37, 99, 235, 0.2);
+      }
+    }
+  }
+
+  .ui-drawer {
+    background: var(--dark-bg-secondary);
+  }
+
+  .ui-tabs-card {
+    .ui-tabs-header {
+      background: var(--dark-bg-tertiary);
+    }
+
+    .ui-tabs-content {
+      background: var(--dark-bg-secondary);
+    }
+  }
+
+  .ui-collapse {
+    .ui-collapse-item {
+      .ui-collapse-header {
+        background: var(--dark-bg-tertiary);
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.05);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,85 @@
+# Git attributes for consistent line endings and file handling
+
+# Auto detect text files and normalize line endings to LF
+* text=auto
+
+# Source code files
+*.java text eol=lf
+*.js text eol=lf
+*.vue text eol=lf
+*.ts text eol=lf
+*.json text eol=lf
+*.xml text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.properties text eol=lf
+*.md text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+
+# Shell scripts
+*.sh text eol=lf
+*.bash text eol=lf
+
+# Windows scripts
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Binary files (do not modify)
+*.jar binary
+*.war binary
+*.ear binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.rar binary
+*.7z binary
+
+# Image files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg text
+
+# Font files
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+*.eot binary
+
+# Document files
+*.pdf binary
+*.doc binary
+*.docx binary
+*.xls binary
+*.xlsx binary
+*.ppt binary
+*.pptx binary
+
+# Database files
+*.db binary
+*.sqlite binary
+*.sqlite3 binary
+
+# Log files
+*.log text
+
+# Configuration files
+.editorconfig text eol=lf
+.eslintrc text eol=lf
+.prettierrc text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+
+# Maven wrapper
+mvnw text eol=lf
+mvnw.cmd text eol=crlf
+
+# Gradle wrapper
+gradlew text eol=lf
+gradlew.bat text eol=crlf

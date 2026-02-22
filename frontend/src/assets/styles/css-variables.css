@@ -1,0 +1,403 @@
+/*
+ * @file: css-variables.css
+ * @description: CSS变量定义文件，用于统一管理全局样式变量 - 优化版本
+ * @author: 开发团队
+ * @createTime: 2025-12-21
+ * @version: 2.0.0
+ * @modifyRecords:
+ *     2025-12-21: 初始版本创建
+ *     2026-02-05: 全面优化视觉设计系统，增强色彩层次和交互体验
+ */
+
+:root {
+  /* ==================== 设计系统基础 ==================== */
+  --design-unit: 4px;
+  --design-scale: 1.25;
+
+  /* ==================== 间距变量 - 8px网格系统 ==================== */
+  --spacing-0: 0;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-7: 32px;
+  --spacing-8: 40px;
+  --spacing-9: 48px;
+  --spacing-10: 64px;
+  --spacing-11: 80px;
+  --spacing-12: 96px;
+
+  /* 语义化间距 */
+  --spacing-xs: var(--spacing-1);
+  --spacing-sm: var(--spacing-2);
+  --spacing-md: var(--spacing-3);
+  --spacing-lg: var(--spacing-4);
+  --spacing-xl: var(--spacing-5);
+  --spacing-xxl: var(--spacing-6);
+  --spacing-xxxl: var(--spacing-7);
+  --spacing-section: var(--spacing-9);
+  --spacing-container: var(--spacing-10);
+
+  /* ==================== 字体系统 - 现代字体栈 ==================== */
+  --font-family-base:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'SF Mono', Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --font-family-heading:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  /* 字体大小 - 黄金比例 */
+  --font-size-xs: 12px;
+  --font-size-sm: 13px;
+  --font-size-base: 14px;
+  --font-size-md: 15px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 24px;
+  --font-size-4xl: 28px;
+  --font-size-5xl: 32px;
+  --font-size-6xl: 40px;
+  --font-size-7xl: 48px;
+
+  /* 标题字体 */
+  --font-h1: var(--font-size-7xl);
+  --font-h2: var(--font-size-6xl);
+  --font-h3: var(--font-size-5xl);
+  --font-h4: var(--font-size-4xl);
+  --font-h5: var(--font-size-3xl);
+  --font-h6: var(--font-size-xl);
+
+  /* 字体权重 */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-black: 800;
+
+  /* 行高 */
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+
+  /* ==================== 颜色系统 - 主色调（现代蓝色系） ==================== */
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --primary-300: #93c5fd;
+  --primary-400: #60a5fa;
+  --primary-500: #3b82f6;
+  --primary-600: #2563eb;
+  --primary-700: #1d4ed8;
+  --primary-800: #1e40af;
+  --primary-900: #1e3a8a;
+  --primary-950: #172554;
+
+  --primary-color: var(--primary-600);
+  --primary-light: var(--primary-400);
+  --primary-lighter: var(--primary-200);
+  --primary-dark: var(--primary-700);
+  --primary-darker: var(--primary-800);
+  --primary-fade: rgba(37, 99, 235, 0.1);
+
+  /* ==================== 颜色系统 - 辅助色（紫罗兰色系） ==================== */
+  --secondary-50: #f5f3ff;
+  --secondary-100: #ede9fe;
+  --secondary-200: #ddd6fe;
+  --secondary-300: #c4b5fd;
+  --secondary-400: #a78bfa;
+  --secondary-500: #8b5cf6;
+  --secondary-600: #7c3aed;
+  --secondary-700: #6d28d9;
+  --secondary-800: #5b21b6;
+  --secondary-900: #4c1d95;
+
+  --secondary-color: var(--secondary-600);
+  --secondary-light: var(--secondary-400);
+  --secondary-dark: var(--secondary-700);
+
+  /* ==================== 颜色系统 - 成功色（翡翠绿系） ==================== */
+  --success-50: #ecfdf5;
+  --success-100: #d1fae5;
+  --success-200: #a7f3d0;
+  --success-300: #6ee7b7;
+  --success-400: #34d399;
+  --success-500: #10b981;
+  --success-600: #059669;
+  --success-700: #047857;
+  --success-800: #065f46;
+  --success-900: #064e3b;
+
+  --success-color: var(--success-600);
+  --success-light: var(--success-400);
+  --success-dark: var(--success-700);
+  --success-fade: rgba(5, 150, 105, 0.1);
+
+  /* ==================== 颜色系统 - 警告色（琥珀色系） ==================== */
+  --warning-50: #fffbeb;
+  --warning-100: #fef3c7;
+  --warning-200: #fde68a;
+  --warning-300: #fcd34d;
+  --warning-400: #fbbf24;
+  --warning-500: #f59e0b;
+  --warning-600: #d97706;
+  --warning-700: #b45309;
+  --warning-800: #92400e;
+  --warning-900: #78350f;
+
+  --warning-color: var(--warning-600);
+  --warning-light: var(--warning-400);
+  --warning-dark: var(--warning-700);
+  --warning-fade: rgba(217, 119, 6, 0.1);
+
+  /* ==================== 颜色系统 - 错误色（玫瑰红系） ==================== */
+  --error-50: #fff1f2;
+  --error-100: #ffe4e6;
+  --error-200: #fecdd3;
+  --error-300: #fda4af;
+  --error-400: #fb7185;
+  --error-500: #f43f5e;
+  --error-600: #e11d48;
+  --error-700: #be123c;
+  --error-800: #9f1239;
+  --error-900: #881337;
+
+  --error-color: var(--error-600);
+  --error-light: var(--error-400);
+  --error-dark: var(--error-700);
+  --error-fade: rgba(225, 29, 72, 0.1);
+
+  /* ==================== 颜色系统 - 信息色（青色系） ==================== */
+  --info-50: #ecfeff;
+  --info-100: #cffafe;
+  --info-200: #a5f3fc;
+  --info-300: #67e8f9;
+  --info-400: #22d3ee;
+  --info-500: #06b6d4;
+  --info-600: #0891b2;
+  --info-700: #0e7490;
+  --info-800: #155e75;
+  --info-900: #164e63;
+
+  --info-color: var(--info-600);
+  --info-light: var(--info-400);
+  --info-dark: var(--info-700);
+
+  /* ==================== 颜色系统 - 中性色（ slate 灰系） ==================== */
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1e293b;
+  --slate-900: #0f172a;
+  --slate-950: #020617;
+
+  /* ==================== 颜色系统 - 文字颜色 ==================== */
+  --text-primary: var(--slate-900);
+  --text-secondary: var(--slate-600);
+  --text-tertiary: var(--slate-500);
+  --text-quaternary: var(--slate-400);
+  --text-disabled: var(--slate-400);
+  --text-inverse: #ffffff;
+  --text-link: var(--primary-600);
+  --text-link-hover: var(--primary-700);
+
+  /* ==================== 颜色系统 - 背景颜色 ==================== */
+  --bg-color: var(--slate-50);
+  --bg-color-light: #ffffff;
+  --bg-color-dark: var(--slate-100);
+  --bg-color-hover: var(--slate-100);
+  --bg-color-active: var(--primary-50);
+  --bg-color-surface: #ffffff;
+  --bg-color-elevated: #ffffff;
+  --bg-color-overlay: rgba(15, 23, 42, 0.5);
+
+  /* ==================== 渐变色变量 ==================== */
+  --gradient-primary: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-700) 100%);
+  --gradient-primary-soft: linear-gradient(135deg, var(--primary-400) 0%, var(--primary-600) 100%);
+  --gradient-secondary: linear-gradient(135deg, var(--secondary-500) 0%, var(--secondary-700) 100%);
+  --gradient-success: linear-gradient(135deg, var(--success-500) 0%, var(--success-700) 100%);
+  --gradient-warning: linear-gradient(135deg, var(--warning-500) 0%, var(--warning-700) 100%);
+  --gradient-error: linear-gradient(135deg, var(--error-500) 0%, var(--error-700) 100%);
+  --gradient-info: linear-gradient(135deg, var(--info-500) 0%, var(--info-700) 100%);
+  --gradient-mesh: linear-gradient(135deg, var(--primary-500) 0%, var(--secondary-500) 50%, var(--info-500) 100%);
+  --gradient-sunset: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  --gradient-ocean: linear-gradient(135deg, var(--info-400) 0%, var(--primary-400) 100%);
+  --gradient-dark: linear-gradient(135deg, var(--slate-800) 0%, var(--slate-900) 100%);
+
+  /* ==================== 玻璃态效果变量 ==================== */
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-bg-dark: rgba(15, 23, 42, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-border-dark: rgba(255, 255, 255, 0.1);
+  --glass-blur: 20px;
+  --glass-shadow: 0 8px 32px rgba(15, 23, 42, 0.1);
+
+  /* ==================== 边框变量 ==================== */
+  --border-color: var(--slate-200);
+  --border-color-light: var(--slate-100);
+  --border-color-dark: var(--slate-300);
+  --border-color-focus: var(--primary-400);
+
+  --border-radius-none: 0;
+  --border-radius-xs: 2px;
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
+  --border-radius-2xl: 20px;
+  --border-radius-3xl: 24px;
+  --border-radius-full: 9999px;
+
+  /* ==================== 阴影变量 - 多层次阴影系统 ==================== */
+  --shadow-color: 220 3% 15%;
+  --shadow-strength: 1%;
+
+  --box-shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --box-shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.1), 0 1px 2px rgba(15, 23, 42, 0.06);
+  --box-shadow-base: 0 4px 6px -1px rgba(15, 23, 42, 0.1), 0 2px 4px -2px rgba(15, 23, 42, 0.1);
+  --box-shadow-md: 0 10px 15px -3px rgba(15, 23, 42, 0.1), 0 4px 6px -4px rgba(15, 23, 42, 0.1);
+  --box-shadow-lg: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.1);
+  --box-shadow-xl: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+  --box-shadow-2xl: 0 35px 60px -15px rgba(15, 23, 42, 0.3);
+  --box-shadow-inner: inset 0 2px 4px rgba(15, 23, 42, 0.05);
+  --box-shadow-glow: 0 0 20px rgba(37, 99, 235, 0.3);
+  --box-shadow-glow-success: 0 0 20px rgba(5, 150, 105, 0.3);
+  --box-shadow-glow-warning: 0 0 20px rgba(217, 119, 6, 0.3);
+  --box-shadow-glow-error: 0 0 20px rgba(225, 29, 72, 0.3);
+
+  /* ==================== 模糊效果变量 ==================== */
+  --blur-sm: 4px;
+  --blur-md: 8px;
+  --blur-lg: 16px;
+  --blur-xl: 24px;
+  --blur-2xl: 40px;
+
+  /* ==================== 过渡变量 - 平滑缓动函数 ==================== */
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-elastic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  --transition-fast: all 0.15s var(--ease-out);
+  --transition-base: all 0.2s var(--ease-in-out);
+  --transition-slow: all 0.3s var(--ease-in-out);
+  --transition-slower: all 0.5s var(--ease-in-out);
+  --transition-bounce: all 0.5s var(--ease-bounce);
+
+  /* ==================== 动画时长变量 ==================== */
+  --duration-instant: 0ms;
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --duration-slow: 300ms;
+  --duration-slower: 500ms;
+  --duration-slowest: 1000ms;
+
+  /* ==================== Z-index层级变量 ==================== */
+  --z-index-dropdown: 1000;
+  --z-index-sticky: 1020;
+  --z-index-fixed: 1030;
+  --z-index-modal-backdrop: 1040;
+  --z-index-modal: 1050;
+  --z-index-popover: 1060;
+  --z-index-tooltip: 1070;
+  --z-index-notification: 1080;
+  --z-index-toast: 1090;
+
+  /* ==================== 响应式断点变量 ==================== */
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-2xl: 1400px;
+  --breakpoint-3xl: 1600px;
+
+  /* ==================== 容器宽度变量 ==================== */
+  --container-sm: 540px;
+  --container-md: 720px;
+  --container-lg: 960px;
+  --container-xl: 1140px;
+  --container-2xl: 1320px;
+  --container-3xl: 1520px;
+
+  /* ==================== 组件特定变量 ==================== */
+  --card-bg: var(--bg-color-light);
+  --card-border-radius: var(--border-radius-lg);
+  --card-shadow: var(--box-shadow-base);
+  --card-shadow-hover: var(--box-shadow-md);
+  --card-padding: var(--spacing-6);
+
+  --button-border-radius: var(--border-radius-md);
+  --button-padding-sm: var(--spacing-2) var(--spacing-3);
+  --button-padding-md: var(--spacing-2) var(--spacing-4);
+  --button-padding-lg: var(--spacing-3) var(--spacing-5);
+
+  --input-border-radius: var(--border-radius-md);
+  --input-height-sm: 32px;
+  --input-height-md: 40px;
+  --input-height-lg: 48px;
+
+  --table-header-bg: var(--slate-50);
+  --table-row-hover-bg: var(--primary-50);
+  --table-border-color: var(--slate-200);
+
+  --dialog-border-radius: var(--border-radius-xl);
+  --dialog-shadow: var(--box-shadow-xl);
+
+  --tag-border-radius: var(--border-radius-full);
+
+  --tooltip-bg: var(--slate-800);
+  --tooltip-color: var(--text-inverse);
+
+  /* ==================== 深色模式变量 ==================== */
+  --dark-bg-primary: #0f172a;
+  --dark-bg-secondary: #1e293b;
+  --dark-bg-tertiary: #334155;
+  --dark-bg-elevated: #1e293b;
+  --dark-text-primary: #f8fafc;
+  --dark-text-secondary: #cbd5e1;
+  --dark-text-tertiary: #94a3b8;
+  --dark-border-color: #334155;
+}
+
+/* ==================== 深色模式支持 ==================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: var(--dark-bg-primary);
+    --bg-color-light: var(--dark-bg-secondary);
+    --bg-color-dark: var(--dark-bg-tertiary);
+    --bg-color-hover: var(--dark-bg-tertiary);
+    --bg-color-active: rgba(37, 99, 235, 0.2);
+    --bg-color-surface: var(--dark-bg-secondary);
+    --bg-color-elevated: var(--dark-bg-tertiary);
+
+    --text-primary: var(--dark-text-primary);
+    --text-secondary: var(--dark-text-secondary);
+    --text-tertiary: var(--dark-text-tertiary);
+    --text-disabled: var(--slate-600);
+
+    --border-color: var(--dark-border-color);
+    --border-color-light: var(--dark-bg-tertiary);
+    --border-color-dark: var(--slate-600);
+
+    --glass-bg: rgba(30, 41, 59, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.1);
+
+    --card-bg: var(--dark-bg-secondary);
+    --table-header-bg: var(--dark-bg-tertiary);
+    --table-row-hover-bg: rgba(37, 99, 235, 0.15);
+    --table-border-color: var(--dark-border-color);
+  }
+}

@@ -1,0 +1,1 @@
+System.register(["./device-module-legacy-CkQYA17u.js"],function(e,t){"use strict";var r,s;return{setters:[e=>{r=e.s,s=e.S}],execute:function(){e("g",(e={})=>r({url:s.INVENTORY_AREA_LIST||"/inventory/areas",method:"get",params:e}))}}});

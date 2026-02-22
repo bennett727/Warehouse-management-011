@@ -1,0 +1,634 @@
+// ============================================
+// 统一视觉设计系统 - Design System
+// 用于解决视觉一致性和可访问性问题
+// ============================================
+
+@use './variables.scss' as *;
+
+// ============================================
+// 1. 页面头部样式规范
+// ============================================
+
+// 统一的页面头部容器
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-6);
+  padding: var(--spacing-5) var(--spacing-6);
+  background: var(--bg-color-light);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--box-shadow-sm);
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+  }
+}
+
+// 统一的标题图标样式 - 使用浅色背景确保对比度
+.header-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary-50);
+  color: var(--primary-600);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-xl);
+  border: 2px solid var(--primary-100);
+  transition: var(--transition-base);
+
+  &:hover {
+    background: var(--primary-100);
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow-md);
+  }
+}
+
+// 标题图标变体 - 成功
+.header-icon-success {
+  background: var(--success-50);
+  color: var(--success-600);
+  border-color: var(--success-100);
+
+  &:hover {
+    background: var(--success-100);
+  }
+}
+
+// 标题图标变体 - 警告
+.header-icon-warning {
+  background: var(--warning-50);
+  color: var(--warning-600);
+  border-color: var(--warning-100);
+
+  &:hover {
+    background: var(--warning-100);
+  }
+}
+
+// 标题图标变体 - 错误
+.header-icon-error {
+  background: var(--error-50);
+  color: var(--error-600);
+  border-color: var(--error-100);
+
+  &:hover {
+    background: var(--error-100);
+  }
+}
+
+// 标题图标变体 - 信息
+.header-icon-info {
+  background: var(--info-50);
+  color: var(--info-600);
+  border-color: var(--info-100);
+
+  &:hover {
+    background: var(--info-100);
+  }
+}
+
+// 页面标题文字
+.page-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+// 页面副标题
+.page-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: var(--spacing-1) 0 0 0;
+}
+
+// ============================================
+// 2. 操作按钮样式规范
+// ============================================
+
+// 主要操作按钮 - 使用纯色背景确保对比度
+.action-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-4);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: white;
+  background: var(--primary-600);
+  border: none;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: var(--transition-base);
+
+  &:hover:not(:disabled) {
+    background: var(--primary-700);
+    transform: translateY(-1px);
+    box-shadow: var(--box-shadow-md);
+  }
+
+  &:active:not(:disabled) {
+    background: var(--primary-800);
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// 次要操作按钮
+.action-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-4);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+  background: var(--bg-color-light);
+  border: 1px solid var(--border-color-dark);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: var(--transition-base);
+
+  &:hover:not(:disabled) {
+    background: var(--bg-color-hover);
+    border-color: var(--primary-400);
+    color: var(--primary-600);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// 成功操作按钮
+.action-btn-success {
+  @extend .action-btn-primary;
+  background: var(--success-600);
+
+  &:hover:not(:disabled) {
+    background: var(--success-700);
+  }
+
+  &:active:not(:disabled) {
+    background: var(--success-800);
+  }
+}
+
+// 警告操作按钮
+.action-btn-warning {
+  @extend .action-btn-primary;
+  background: var(--warning-600);
+
+  &:hover:not(:disabled) {
+    background: var(--warning-700);
+  }
+
+  &:active:not(:disabled) {
+    background: var(--warning-800);
+  }
+}
+
+// 危险操作按钮
+.action-btn-danger {
+  @extend .action-btn-primary;
+  background: var(--error-600);
+
+  &:hover:not(:disabled) {
+    background: var(--error-700);
+  }
+
+  &:active:not(:disabled) {
+    background: var(--error-800);
+  }
+}
+
+// 查看按钮 - 使用链接样式确保对比度
+.view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-1) var(--spacing-3);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--primary-600);
+  background: var(--primary-50);
+  border: 1px solid var(--primary-200);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: var(--transition-base);
+
+  &:hover {
+    background: var(--primary-100);
+    border-color: var(--primary-400);
+    color: var(--primary-700);
+  }
+}
+
+// 编辑按钮
+.edit-btn {
+  @extend .view-btn;
+  color: var(--warning-600);
+  background: var(--warning-50);
+  border-color: var(--warning-200);
+
+  &:hover {
+    background: var(--warning-100);
+    border-color: var(--warning-400);
+    color: var(--warning-700);
+  }
+}
+
+// 删除按钮
+.delete-btn {
+  @extend .view-btn;
+  color: var(--error-600);
+  background: var(--error-50);
+  border-color: var(--error-200);
+
+  &:hover {
+    background: var(--error-100);
+    border-color: var(--error-400);
+    color: var(--error-700);
+  }
+}
+
+// ============================================
+// 3. 卡片头部样式规范
+// ============================================
+
+// 统一的卡片头部
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-4) var(--spacing-5);
+  background: var(--slate-50);
+  border-bottom: 1px solid var(--border-color);
+
+  .header-title-section {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+  }
+
+  .card-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+  }
+}
+
+// ============================================
+// 4. 统计卡片样式规范
+// ============================================
+
+// 统计项容器
+.stats-container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  flex-wrap: wrap;
+}
+
+// 单个统计项
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
+  background: var(--bg-color-light);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  transition: var(--transition-base);
+
+  &:hover {
+    border-color: var(--primary-300);
+    box-shadow: var(--box-shadow-sm);
+  }
+
+  .stat-label {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+  }
+
+  .stat-value {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+  }
+
+  // 统计项状态变体
+  &.success {
+    background: var(--success-50);
+    border-color: var(--success-200);
+
+    .stat-value {
+      color: var(--success-700);
+    }
+  }
+
+  &.warning {
+    background: var(--warning-50);
+    border-color: var(--warning-200);
+
+    .stat-value {
+      color: var(--warning-700);
+    }
+  }
+
+  &.danger {
+    background: var(--error-50);
+    border-color: var(--error-200);
+
+    .stat-value {
+      color: var(--error-700);
+    }
+  }
+}
+
+// ============================================
+// 5. 分页样式规范
+// ============================================
+
+// 分页容器
+.pagination-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-4) 0;
+  background: var(--bg-color-light);
+  border-radius: var(--border-radius-md);
+  margin-top: var(--spacing-4);
+
+  :deep(.el-pagination) {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+
+    button {
+      border-radius: var(--border-radius-md);
+      font-weight: var(--font-weight-medium);
+      transition: var(--transition-base);
+
+      &:hover:not(:disabled) {
+        background: var(--primary-50);
+        color: var(--primary-600);
+      }
+    }
+
+    .el-pager li {
+      border-radius: var(--border-radius-md);
+      font-weight: var(--font-weight-medium);
+      transition: var(--transition-base);
+
+      &:hover {
+        background: var(--primary-50);
+        color: var(--primary-600);
+      }
+
+      &.is-active {
+        background: var(--primary-600);
+        color: white;
+
+        &:hover {
+          background: var(--primary-700);
+        }
+      }
+    }
+  }
+}
+
+// ============================================
+// 6. 表格样式规范
+// ============================================
+
+// 表格容器
+.table-container {
+  background: var(--bg-color-light);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+
+  :deep(.el-table) {
+    --el-table-header-bg-color: var(--slate-50);
+    --el-table-row-hover-bg-color: var(--primary-50);
+
+    th.el-table__cell {
+      background: var(--slate-50);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+      font-size: var(--font-size-sm);
+      padding: var(--spacing-3) var(--spacing-4);
+    }
+
+    td.el-table__cell {
+      color: var(--text-secondary);
+      font-size: var(--font-size-base);
+      padding: var(--spacing-3) var(--spacing-4);
+    }
+
+    .cell {
+      line-height: 1.5;
+    }
+  }
+}
+
+// ============================================
+// 7. 表单样式规范
+// ============================================
+
+// 表单容器
+.form-container {
+  background: var(--bg-color-light);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-6);
+  border: 1px solid var(--border-color);
+
+  :deep(.el-form-item__label) {
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+  }
+
+  :deep(.el-input__wrapper) {
+    box-shadow: 0 0 0 1px var(--border-color) inset;
+
+    &:hover {
+      box-shadow: 0 0 0 1px var(--primary-400) inset;
+    }
+
+    &.is-focus {
+      box-shadow: 0 0 0 1px var(--primary-500) inset;
+    }
+  }
+}
+
+// ============================================
+// 8. 标签样式规范
+// ============================================
+
+// 状态标签基础样式
+.status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-1) var(--spacing-2);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--border-radius-full);
+
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+}
+
+// 状态标签变体
+.status-tag-success {
+  @extend .status-tag;
+  background: var(--success-100);
+  color: var(--success-700);
+
+  &::before {
+    background: var(--success-500);
+  }
+}
+
+.status-tag-warning {
+  @extend .status-tag;
+  background: var(--warning-100);
+  color: var(--warning-700);
+
+  &::before {
+    background: var(--warning-500);
+  }
+}
+
+.status-tag-error {
+  @extend .status-tag;
+  background: var(--error-100);
+  color: var(--error-700);
+
+  &::before {
+    background: var(--error-500);
+  }
+}
+
+.status-tag-info {
+  @extend .status-tag;
+  background: var(--info-100);
+  color: var(--info-700);
+
+  &::before {
+    background: var(--info-500);
+  }
+}
+
+.status-tag-default {
+  @extend .status-tag;
+  background: var(--slate-100);
+  color: var(--slate-700);
+
+  &::before {
+    background: var(--slate-500);
+  }
+}
+
+// ============================================
+// 9. 可访问性增强样式
+// ============================================
+
+// 焦点样式 - 确保键盘导航可见
+.focus-visible {
+  &:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
+    border-radius: var(--border-radius-sm);
+  }
+}
+
+// 高对比度文本
+.text-high-contrast {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+// 辅助文本
+.text-assistive {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+// 禁用状态
+.disabled-state {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+// ============================================
+// 10. 响应式布局规范
+// ============================================
+
+// 移动端适配
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-4);
+
+    .header-right {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+
+  .stats-container {
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
+  }
+
+  .stat-item {
+    padding: var(--spacing-1) var(--spacing-2);
+
+    .stat-value {
+      font-size: var(--font-size-base);
+    }
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-3);
+
+    .header-actions {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+}

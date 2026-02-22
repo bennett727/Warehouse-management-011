@@ -1,0 +1,591 @@
+// ============================================
+// 统一组件样式系统
+// 整合所有通用组件的标准样式
+// ============================================
+
+@use './variables.scss' as *;
+@use './mixins.scss' as *;
+
+// ==================== 1. 按钮组件 ====================
+
+// 基础按钮
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2, 8px);
+  padding: var(--spacing-2, 8px) var(--spacing-4, 16px);
+  font-size: var(--font-size-base, 14px);
+  font-weight: var(--font-weight-medium, 500);
+  line-height: var(--line-height-tight, 1.25);
+  border-radius: var(--border-radius-md, 6px);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  user-select: none;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  // 按钮尺寸
+  &--sm {
+    padding: var(--spacing-1, 4px) var(--spacing-3, 12px);
+    font-size: var(--font-size-sm, 13px);
+  }
+
+  &--lg {
+    padding: var(--spacing-3, 12px) var(--spacing-6, 24px);
+    font-size: var(--font-size-md, 15px);
+  }
+
+  // 主要按钮
+  &--primary {
+    background: var(--primary-600, #2563eb);
+    color: white;
+    border-color: var(--primary-600, #2563eb);
+
+    &:hover:not(:disabled) {
+      background: var(--primary-700, #1d4ed8);
+      border-color: var(--primary-700, #1d4ed8);
+    }
+
+    &:active:not(:disabled) {
+      background: var(--primary-800, #1e40af);
+      border-color: var(--primary-800, #1e40af);
+    }
+  }
+
+  // 次要按钮
+  &--secondary {
+    background: var(--slate-100, #f1f5f9);
+    color: var(--text-primary, #1a202c);
+    border-color: var(--slate-200, #e2e8f0);
+
+    &:hover:not(:disabled) {
+      background: var(--slate-200, #e2e8f0);
+      border-color: var(--slate-300, #cbd5e1);
+    }
+  }
+
+  // 成功按钮
+  &--success {
+    background: var(--success-600, #059669);
+    color: white;
+    border-color: var(--success-600, #059669);
+
+    &:hover:not(:disabled) {
+      background: var(--success-700, #047857);
+      border-color: var(--success-700, #047857);
+    }
+  }
+
+  // 警告按钮
+  &--warning {
+    background: var(--warning-600, #d97706);
+    color: white;
+    border-color: var(--warning-600, #d97706);
+
+    &:hover:not(:disabled) {
+      background: var(--warning-700, #b45309);
+      border-color: var(--warning-700, #b45309);
+    }
+  }
+
+  // 危险按钮
+  &--danger {
+    background: var(--error-600, #dc2626);
+    color: white;
+    border-color: var(--error-600, #dc2626);
+
+    &:hover:not(:disabled) {
+      background: var(--error-700, #b91c1c);
+      border-color: var(--error-700, #b91c1c);
+    }
+  }
+
+  // 幽灵按钮
+  &--ghost {
+    background: transparent;
+    color: var(--primary-600, #2563eb);
+    border-color: var(--primary-200, #bfdbfe);
+
+    &:hover:not(:disabled) {
+      background: var(--primary-50, #eff6ff);
+      border-color: var(--primary-300, #93c5fd);
+    }
+  }
+
+  // 文字按钮
+  &--text {
+    background: transparent;
+    color: var(--primary-600, #2563eb);
+    border-color: transparent;
+    padding-left: var(--spacing-2, 8px);
+    padding-right: var(--spacing-2, 8px);
+
+    &:hover:not(:disabled) {
+      background: var(--primary-50, #eff6ff);
+    }
+  }
+}
+
+// ==================== 2. 卡片组件 ====================
+
+.card {
+  background: var(--bg-color-light, #ffffff);
+  border-radius: var(--border-radius-lg, 8px);
+  border: 1px solid var(--border-color, #e2e8f0);
+  box-shadow: var(--box-shadow-sm, 0 1px 2px 0 rgba(0, 0, 0, 0.05));
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: var(--box-shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
+  }
+
+  // 卡片头部
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-4, 16px) var(--spacing-5, 20px);
+    border-bottom: 1px solid var(--border-color, #e2e8f0);
+    background: var(--bg-color, #f7fafc);
+  }
+
+  &__title {
+    font-size: var(--font-size-lg, 16px);
+    font-weight: var(--font-weight-semibold, 600);
+    color: var(--text-primary, #1a202c);
+    margin: 0;
+  }
+
+  &__subtitle {
+    font-size: var(--font-size-sm, 13px);
+    color: var(--text-secondary, #4a5568);
+    margin-top: var(--spacing-1, 4px);
+  }
+
+  // 卡片内容
+  &__body {
+    padding: var(--spacing-5, 20px);
+  }
+
+  // 卡片底部
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--spacing-3, 12px);
+    padding: var(--spacing-4, 16px) var(--spacing-5, 20px);
+    border-top: 1px solid var(--border-color, #e2e8f0);
+    background: var(--bg-color, #f7fafc);
+  }
+
+  // 卡片变体
+  &--flat {
+    box-shadow: none;
+    border: 1px solid var(--border-color, #e2e8f0);
+  }
+
+  &--elevated {
+    box-shadow: var(--box-shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1));
+  }
+
+  &--bordered {
+    border: 2px solid var(--border-color-dark, #cbd5e1);
+  }
+}
+
+// ==================== 3. 标签组件 ====================
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1, 4px);
+  padding: var(--spacing-1, 4px) var(--spacing-2, 8px);
+  font-size: var(--font-size-xs, 12px);
+  font-weight: var(--font-weight-medium, 500);
+  line-height: var(--line-height-tight, 1.25);
+  border-radius: var(--border-radius-md, 6px);
+  white-space: nowrap;
+
+  // 标签尺寸
+  &--sm {
+    padding: 2px 6px;
+    font-size: 11px;
+  }
+
+  &--lg {
+    padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+    font-size: var(--font-size-sm, 13px);
+  }
+
+  // 标签类型
+  &--default {
+    background: var(--slate-100, #f1f5f9);
+    color: var(--slate-700, #334155);
+  }
+
+  &--primary {
+    background: var(--primary-100, #dbeafe);
+    color: var(--primary-700, #1d4ed8);
+  }
+
+  &--success {
+    background: var(--success-100, #d1fae5);
+    color: var(--success-700, #047857);
+  }
+
+  &--warning {
+    background: var(--warning-100, #fef3c7);
+    color: var(--warning-700, #b45309);
+  }
+
+  &--error {
+    background: var(--error-100, #fee2e2);
+    color: var(--error-700, #b91c1c);
+  }
+
+  &--info {
+    background: var(--info-100, #e0e7ff);
+    color: var(--info-700, #4338ca);
+  }
+}
+
+// ==================== 4. 统计卡片组件 ====================
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4, 16px);
+  padding: var(--spacing-5, 20px);
+  background: var(--bg-color-light, #ffffff);
+  border-radius: var(--border-radius-lg, 8px);
+  border: 1px solid var(--border-color, #e2e8f0);
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: var(--box-shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--border-radius-lg, 8px);
+    background: var(--primary-50, #eff6ff);
+    color: var(--primary-600, #2563eb);
+    font-size: var(--font-size-xl, 20px);
+  }
+
+  &__content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__label {
+    font-size: var(--font-size-sm, 13px);
+    color: var(--text-secondary, #4a5568);
+    margin-bottom: var(--spacing-1, 4px);
+  }
+
+  &__value {
+    font-size: var(--font-size-2xl, 24px);
+    font-weight: var(--font-weight-bold, 700);
+    color: var(--text-primary, #1a202c);
+    line-height: var(--line-height-tight, 1.25);
+  }
+
+  &__change {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-size: var(--font-size-xs, 12px);
+    font-weight: var(--font-weight-medium, 500);
+    margin-top: var(--spacing-1, 4px);
+
+    &--up {
+      color: var(--success-600, #059669);
+    }
+
+    &--down {
+      color: var(--error-600, #dc2626);
+    }
+  }
+}
+
+// ==================== 5. 表单组件 ====================
+
+.form-group {
+  margin-bottom: var(--spacing-4, 16px);
+
+  &__label {
+    display: block;
+    font-size: var(--font-size-sm, 13px);
+    font-weight: var(--font-weight-medium, 500);
+    color: var(--text-primary, #1a202c);
+    margin-bottom: var(--spacing-2, 8px);
+
+    &--required::after {
+      content: '*';
+      color: var(--error-600, #dc2626);
+      margin-left: 2px;
+    }
+  }
+
+  &__help {
+    font-size: var(--font-size-xs, 12px);
+    color: var(--text-tertiary, #718096);
+    margin-top: var(--spacing-1, 4px);
+  }
+
+  &__error {
+    font-size: var(--font-size-xs, 12px);
+    color: var(--error-600, #dc2626);
+    margin-top: var(--spacing-1, 4px);
+  }
+}
+
+// ==================== 6. 搜索栏组件 ====================
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3, 12px);
+  padding: var(--spacing-4, 16px);
+  background: var(--bg-color, #f7fafc);
+  border-radius: var(--border-radius-lg, 8px);
+  border: 1px solid var(--border-color, #e2e8f0);
+
+  .el-input,
+  .el-select {
+    width: auto;
+    min-width: 200px;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2, 8px);
+    margin-left: auto;
+  }
+}
+
+// ==================== 7. 工具栏组件 ====================
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-4, 16px);
+  padding: var(--spacing-4, 16px) var(--spacing-5, 20px);
+  background: var(--bg-color-light, #ffffff);
+  border-radius: var(--border-radius-lg, 8px);
+  border: 1px solid var(--border-color, #e2e8f0);
+  margin-bottom: var(--spacing-4, 16px);
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3, 12px);
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3, 12px);
+    margin-left: auto;
+  }
+}
+
+// ==================== 8. 分页组件 ====================
+
+.pagination-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-4, 16px);
+  padding: var(--spacing-4, 16px);
+  background: var(--bg-color-light, #ffffff);
+  border-top: 1px solid var(--border-color, #e2e8f0);
+
+  .el-pagination {
+    .el-pager li {
+      border-radius: var(--border-radius-md, 6px);
+      font-weight: var(--font-weight-medium, 500);
+
+      &.is-active {
+        background: var(--primary-600, #2563eb);
+        color: white;
+      }
+
+      &:hover:not(.is-active) {
+        color: var(--primary-600, #2563eb);
+        background: var(--primary-50, #eff6ff);
+      }
+    }
+  }
+}
+
+// ==================== 9. 状态标识组件 ====================
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1, 4px);
+  padding: var(--spacing-1, 4px) var(--spacing-2, 8px);
+  font-size: var(--font-size-xs, 12px);
+  font-weight: var(--font-weight-medium, 500);
+  border-radius: var(--border-radius-full, 9999px);
+
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  &--success {
+    background: var(--success-50, #ecfdf5);
+    color: var(--success-700, #047857);
+
+    &::before {
+      background: var(--success-500, #10b981);
+    }
+  }
+
+  &--warning {
+    background: var(--warning-50, #fffbeb);
+    color: var(--warning-700, #b45309);
+
+    &::before {
+      background: var(--warning-500, #f59e0b);
+    }
+  }
+
+  &--error {
+    background: var(--error-50, #fef2f2);
+    color: var(--error-700, #b91c1c);
+
+    &::before {
+      background: var(--error-500, #ef4444);
+    }
+  }
+
+  &--info {
+    background: var(--primary-50, #eff6ff);
+    color: var(--primary-700, #1d4ed8);
+
+    &::before {
+      background: var(--primary-500, #3b82f6);
+    }
+  }
+
+  &--default {
+    background: var(--slate-100, #f1f5f9);
+    color: var(--slate-700, #334155);
+
+    &::before {
+      background: var(--slate-500, #64748b);
+    }
+  }
+}
+
+// ==================== 10. 页面标题组件 ====================
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-4, 16px);
+  margin-bottom: var(--spacing-6, 24px);
+  padding-bottom: var(--spacing-4, 16px);
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3, 12px);
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--border-radius-lg, 8px);
+    background: var(--primary-50, #eff6ff);
+    border: 2px solid var(--primary-100, #dbeafe);
+    color: var(--primary-600, #2563eb);
+    font-size: var(--font-size-xl, 20px);
+  }
+
+  &__title {
+    font-size: var(--font-size-2xl, 24px);
+    font-weight: var(--font-weight-bold, 700);
+    color: var(--text-primary, #1a202c);
+    margin: 0;
+  }
+
+  &__subtitle {
+    font-size: var(--font-size-sm, 13px);
+    color: var(--text-secondary, #4a5568);
+    margin-top: var(--spacing-1, 4px);
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3, 12px);
+    margin-left: auto;
+  }
+}
+
+// ==================== 11. 空状态组件 ====================
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-10, 64px) var(--spacing-5, 20px);
+  text-align: center;
+
+  &__icon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius-xl, 12px);
+    background: var(--slate-100, #f1f5f9);
+    color: var(--slate-400, #94a3b8);
+    font-size: 40px;
+    margin-bottom: var(--spacing-4, 16px);
+  }
+
+  &__title {
+    font-size: var(--font-size-lg, 16px);
+    font-weight: var(--font-weight-semibold, 600);
+    color: var(--text-primary, #1a202c);
+    margin-bottom: var(--spacing-2, 8px);
+  }
+
+  &__description {
+    font-size: var(--font-size-sm, 13px);
+    color: var(--text-secondary, #4a5568);
+    max-width: 400px;
+    margin-bottom: var(--spacing-4, 16px);
+  }
+
+  &__action {
+    margin-top: var(--spacing-2, 8px);
+  }
+}

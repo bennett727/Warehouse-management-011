@@ -1,0 +1,298 @@
+name: 仓库管理系统 CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  NODE_VERSION: '18.x'
+  JAVA_VERSION: '17'
+
+jobs:
+  frontend-lint:
+    name: 前端代码检查
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v3
+
+      - name: 设置Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 运行ESLint检查
+        run: npm run lint
+
+      - name: 运行Prettier检查
+        run: npm run format:check
+
+  frontend-test:
+    name: 前端单元测试
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v3
+
+      - name: 设置Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 运行单元测试
+        run: npm run test:coverage
+
+      - name: 上传覆盖率报告
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./frontend/coverage/lcov.info
+          flags: frontend
+          name: frontend-coverage
+
+  frontend-e2e:
+    name: 前端端到端测试
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: warehouse_management
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v3
+
+      - name: 设置Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: 设置Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: 安装前端依赖
+        run: npm ci
+
+      - name: 构建后端
+        working-directory: ./spring_boot
+        run: mvn clean package -DskipTests
+
+      - name: 启动后端服务
+        working-directory: ./spring_boot
+        run: |
+          nohup java -jar target/*.jar > /dev/null 2>&1 &
+          echo "等待后端服务启动..."
+          sleep 60
+          curl -f http://localhost:8080/api/actuator/health || exit 1
+
+      - name: 运行E2E测试
+        run: npm run test:e2e
+
+      - name: 上传测试报告
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: cypress-report
+          path: frontend/reports/
+          retention-days: 7
+
+      - name: 上传测试截图
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: frontend/cypress/screenshots/
+          retention-days: 7
+
+      - name: 上传测试视频
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-videos
+          path: frontend/cypress/videos/
+          retention-days: 7
+
+  backend-test:
+    name: 后端单元测试
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./spring_boot
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: warehouse_management_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v3
+
+      - name: 设置Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: 运行单元测试
+        run: mvn test
+
+      - name: 上传测试报告
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: backend-test-report
+          path: spring_boot/target/surefire-reports/
+          retention-days: 7
+
+  build-frontend:
+    name: 构建前端
+    needs: [frontend-lint, frontend-test]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v3
+
+      - name: 设置Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 构建前端
+        run: npm run build
+
+      - name: 上传构建产物
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-dist
+          path: frontend/dist/
+          retention-days: 7
+
+  build-backend:
+    name: 构建后端
+    needs: [backend-test]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./spring_boot
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v3
+
+      - name: 设置Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: 构建后端
+        run: mvn clean package -DskipTests
+
+      - name: 上传构建产物
+        uses: actions/upload-artifact@v3
+        with:
+          name: backend-jar
+          path: spring_boot/target/*.jar
+          retention-days: 7
+
+  deploy:
+    name: 部署到生产环境
+    needs: [build-frontend, build-backend, frontend-e2e]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v3
+
+      - name: 下载前端构建产物
+        uses: actions/download-artifact@v3
+        with:
+          name: frontend-dist
+          path: ./dist
+
+      - name: 下载后端构建产物
+        uses: actions/download-artifact@v3
+        with:
+          name: backend-jar
+          path: ./jar
+
+      - name: 部署到服务器
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            cd /opt/warehouse-management
+            ./deploy.sh
+
+      - name: 通知部署结果
+        if: always()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          text: |
+            部署到生产环境 ${{ job.status }}
+            分支: ${{ github.ref }}
+            提交: ${{ github.sha }}
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}

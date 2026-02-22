@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 引入Spring属性 -->
+    <springProperty scope="context" name="APP_NAME" source="spring.application.name"
+        defaultValue="warehouse-management-system" />
+    <springProperty scope="context" name="SERVER_PORT" source="server.port" defaultValue="8080" />
+    <springProperty scope="context" name="ACTIVE_PROFILE" source="spring.profiles.active"
+        defaultValue="dev" />
+
+    <!-- 
+        日志路径配置说明：
+        - 开发环境(dev)：使用相对路径 ./logs/
+        - 生产环境(prod)：使用绝对路径 D:/logs/wms/（可通过环境变量 LOG_PATH 覆盖）
+    -->
+    <property name="LOG_HOME" value="${LOG_PATH:-logs}" />
+    <property name="ALERT_LOG_PATH" value="${LOG_HOME}/alerts" />
+
+    <!-- 日志格式定义 -->
+    <property name="LOG_PATTERN"
+        value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
+    <property name="LOG_PATTERN_DETAIL"
+        value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36}:%line [%X{traceId}] - %msg%n" />
+    <property name="LOG_PATTERN_FULL"
+        value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36}:%line [%X{traceId}] [%X{userId}] - %msg%n%ex{full}" />
+
+    <!-- ==================== 通用Appender配置 ==================== -->
+
+    <!-- 控制台输出 - 简洁格式（用于生产环境） -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 控制台输出 - 带颜色格式（仅开发环境使用） -->
+    <appender name="CONSOLE_COLOR" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) [%thread] %cyan(%logger{36}) -
+                %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 主日志文件 - 文本格式 -->
+    <appender name="FILE_MAIN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${APP_NAME}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/archive/${APP_NAME}.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>3GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="com.backend.config.DesensitizationLayout">
+                <pattern>${LOG_PATTERN_DETAIL}</pattern>
+                <desensitizationEnabled>true</desensitizationEnabled>
+            </layout>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 主日志文件 - JSON格式（便于ELK收集分析） -->
+    <appender name="FILE_MAIN_JSON" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${APP_NAME}.json.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/archive/${APP_NAME}.%d{yyyy-MM-dd}.json.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>3GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <includeContext>true</includeContext>
+            <includeMdc>true</includeMdc>
+            <customFields>{"app_name":"${APP_NAME}","env":"${ACTIVE_PROFILE}"}</customFields>
+        </encoder>
+    </appender>
+
+    <!-- 错误日志文件 -->
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${APP_NAME}-error.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/archive/${APP_NAME}-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN_FULL}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 告警日志 - 单独文件便于监控（仅生产环境） -->
+    <appender name="FILE_ALERT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${ALERT_LOG_PATH}/alert.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${ALERT_LOG_PATH}/alert.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>90</maxHistory>
+            <totalSizeCap>500MB</totalSizeCap>
+        </rollingPolicy>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"log_type":"alert","severity":"high"}</customFields>
+        </encoder>
+    </appender>
+
+    <!-- 业务操作日志 - 文本格式（开发环境） -->
+    <appender name="FILE_BUSINESS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${APP_NAME}-business.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/archive/${APP_NAME}-business.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>90</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN_FULL}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 业务操作日志 - JSON格式（生产环境） -->
+    <appender name="FILE_BUSINESS_JSON" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${APP_NAME}-business.json.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/archive/${APP_NAME}-business.%d{yyyy-MM-dd}.json.log</fileNamePattern>
+            <maxHistory>90</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"log_type":"business"}</customFields>
+        </encoder>
+    </appender>
+
+    <!-- SQL执行日志配置 -->
+    <appender name="FILE_SQL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${APP_NAME}-sql.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/archive/${APP_NAME}-sql.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- API请求日志配置 -->
+    <appender name="FILE_API" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${APP_NAME}-api.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/archive/${APP_NAME}-api.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN_DETAIL}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- Tomcat访问日志配置 -->
+    <appender name="FILE_TOMCAT_ACCESS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/tomcat/access.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/tomcat/archive/access.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- Tomcat错误日志配置 -->
+    <appender name="FILE_TOMCAT_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/tomcat/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/tomcat/archive/error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>500MB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN_FULL}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 性能日志 - JSON格式（生产环境） -->
+    <appender name="FILE_PERFORMANCE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${APP_NAME}-performance.json.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/archive/${APP_NAME}-performance.%d{yyyy-MM-dd}.json.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"log_type":"performance"}</customFields>
+        </encoder>
+    </appender>
+
+    <!-- 告警日志Appender（仅生产环境） -->
+    <appender name="ALERT_APPENDER" class="com.backend.config.AlertLogAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 异步日志配置 -->
+    <appender name="ASYNC_FILE_MAIN" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE_MAIN" />
+        <queueSize>512</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <neverBlock>true</neverBlock>
+    </appender>
+
+    <appender name="ASYNC_FILE_ERROR" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE_ERROR" />
+        <queueSize>256</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+    </appender>
+
+    <!-- ==================== 默认配置（无profile时） ==================== -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE_MAIN" />
+        <appender-ref ref="FILE_ERROR" />
+    </root>
+
+    <logger name="com.backend" level="INFO">
+        <appender-ref ref="FILE_BUSINESS" />
+        <appender-ref ref="FILE_API" />
+    </logger>
+
+    <!-- ==================== 开发环境配置 ==================== -->
+    <springProfile name="dev">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE_COLOR" />
+            <appender-ref ref="ASYNC_FILE_MAIN" />
+            <appender-ref ref="ASYNC_FILE_ERROR" />
+        </root>
+
+        <logger name="com.backend" level="DEBUG" additivity="false">
+            <appender-ref ref="CONSOLE_COLOR" />
+            <appender-ref ref="FILE_BUSINESS" />
+            <appender-ref ref="FILE_API" />
+        </logger>
+
+        <logger name="com.backend.config.initialization" level="DEBUG">
+            <appender-ref ref="CONSOLE_COLOR" />
+            <appender-ref ref="FILE_BUSINESS" />
+        </logger>
+
+        <logger name="org.hibernate.SQL" level="DEBUG">
+            <appender-ref ref="FILE_SQL" />
+        </logger>
+
+        <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE">
+            <appender-ref ref="FILE_SQL" />
+        </logger>
+
+        <logger name="org.springframework" level="INFO">
+            <appender-ref ref="CONSOLE" />
+        </logger>
+
+        <logger name="org.springframework.security" level="DEBUG">
+            <appender-ref ref="CONSOLE" />
+        </logger>
+
+        <logger name="org.apache.catalina" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="FILE_TOMCAT_ACCESS" />
+        </logger>
+
+        <logger name="org.apache.catalina.core.ContainerBase" level="WARN" additivity="false">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="FILE_TOMCAT_ERROR" />
+        </logger>
+
+        <logger name="org.apache.coyote" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="FILE_TOMCAT_ACCESS" />
+        </logger>
+
+        <logger name="org.hibernate" level="INFO">
+            <appender-ref ref="CONSOLE" />
+        </logger>
+    </springProfile>
+
+    <!-- ==================== 测试环境配置 ==================== -->
+    <springProfile name="test">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="ASYNC_FILE_MAIN" />
+            <appender-ref ref="ASYNC_FILE_ERROR" />
+        </root>
+
+        <logger name="com.backend" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="FILE_BUSINESS" />
+            <appender-ref ref="FILE_API" />
+        </logger>
+
+        <logger name="org.hibernate.SQL" level="DEBUG">
+            <appender-ref ref="FILE_SQL" />
+        </logger>
+
+        <logger name="org.apache.catalina" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="FILE_TOMCAT_ACCESS" />
+        </logger>
+
+        <logger name="org.apache.coyote" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="FILE_TOMCAT_ACCESS" />
+        </logger>
+    </springProfile>
+
+    <!-- ==================== 生产环境配置 ==================== -->
+    <springProfile name="prod">
+        <!-- 
+            生产环境使用绝对路径，通过以下方式之一配置：
+            1. 环境变量：export LOG_PATH=/var/log/wms
+            2. JVM参数：-DLOG_PATH=/var/log/wms
+            3. 默认路径：D:/logs/wms (Windows) 或 /var/log/wms (Linux)
+        -->
+        <property name="LOG_HOME" value="${LOG_PATH:-D:/logs/wms}" />
+
+        <root level="WARN">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="ASYNC_FILE_MAIN" />
+            <appender-ref ref="ASYNC_FILE_ERROR" />
+            <appender-ref ref="ALERT_APPENDER" />
+        </root>
+
+        <!-- 应用日志 - 同时输出文本和JSON格式 -->
+        <logger name="com.backend" level="INFO" additivity="false">
+            <appender-ref ref="ASYNC_FILE_MAIN" />
+            <appender-ref ref="ASYNC_FILE_ERROR" />
+            <appender-ref ref="FILE_BUSINESS_JSON" />
+            <appender-ref ref="FILE_API" />
+            <appender-ref ref="FILE_ALERT" />
+        </logger>
+
+        <!-- 性能监控日志 -->
+        <logger name="com.backend.aspect.PerformanceMonitorAspect" level="INFO" additivity="false">
+            <appender-ref ref="FILE_PERFORMANCE" />
+        </logger>
+
+        <!-- 初始化日志 -->
+        <logger name="com.backend.config.initialization" level="INFO">
+            <appender-ref ref="FILE_BUSINESS_JSON" />
+        </logger>
+
+        <!-- SQL日志（生产环境关闭详细日志） -->
+        <logger name="org.hibernate.SQL" level="WARN" />
+        <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="WARN" />
+
+        <!-- Spring框架日志 -->
+        <logger name="org.springframework" level="WARN" />
+        <logger name="org.springframework.security" level="WARN" />
+
+        <!-- Tomcat日志（生产环境） -->
+        <logger name="org.apache.catalina" level="INFO" additivity="false">
+            <appender-ref ref="FILE_TOMCAT_ACCESS" />
+        </logger>
+        <logger name="org.apache.catalina.core.ContainerBase" level="WARN" additivity="false">
+            <appender-ref ref="FILE_TOMCAT_ERROR" />
+        </logger>
+        <logger name="org.apache.coyote" level="INFO" additivity="false">
+            <appender-ref ref="FILE_TOMCAT_ACCESS" />
+        </logger>
+    </springProfile>
+
+    <!-- ==================== 默认配置（无profile时） ==================== -->
+    <springProfile name="default">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="FILE_MAIN" />
+            <appender-ref ref="FILE_ERROR" />
+        </root>
+
+        <logger name="com.backend" level="DEBUG" additivity="false">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="FILE_MAIN" />
+            <appender-ref ref="FILE_BUSINESS" />
+        </logger>
+    </springProfile>
+</configuration>

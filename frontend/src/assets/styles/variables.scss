@@ -1,0 +1,543 @@
+// 间距变量
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 12px;
+$spacing-lg: 16px;
+$spacing-xl: 20px;
+$spacing-xxl: 24px;
+$spacing-xxxl: 32px;
+$spacing-section: 48px;
+$spacing-container: 64px;
+
+// 数字间距变量（兼容现有代码）
+$spacing-1: 4px;
+$spacing-2: 8px;
+$spacing-3: 12px;
+$spacing-4: 16px;
+$spacing-5: 20px;
+$spacing-6: 24px;
+$spacing-7: 32px;
+$spacing-8: 48px;
+
+// 字体大小变量
+$font-size-base: 14px;
+$font-size-xs: 12px;
+$font-size-sm: 14px;
+$font-size-md: 16px;
+$font-size-lg: 18px;
+$font-size-xl: 20px;
+$font-size-xxl: 24px;
+$font-size-xxxl: 32px;
+$font-size-display: 48px;
+
+// 字体权重变量
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-black: 900;
+
+// 行高变量
+$line-height-tight: 1.2;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.75;
+$line-height-loose: 2;
+
+// 字体族变量
+$font-family-base:
+  -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+$font-family-mono: 'SF Mono', Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+$font-family-heading: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+// 颜色变量 - 文字颜色
+$text-primary: #1a202c;
+$text-secondary: #4a5568;
+$text-tertiary: #718096;
+$text-disabled: #a0aec0;
+$text-inverse: #ffffff;
+
+// 颜色变量 - 背景颜色
+$bg-color: #f7fafc;
+$bg-color-light: #ffffff;
+$bg-color-dark: #e2e8f0;
+$bg-color-hover: #f8fafc;
+$bg-color-active: #e8f4f8;
+$bg-color-surface: #ffffff;
+$bg-color-elevated: #ffffff;
+
+// 颜色变量 - 主色调（蓝色系）
+$primary-color: #3b82f6;
+$primary-light: #60a5fa;
+$primary-lighter: #93c5fd;
+$primary-dark: #2563eb;
+$primary-darker: #1d4ed8;
+$primary-fade: rgba(59, 130, 246, 0.1);
+
+// 颜色变量 - 辅助色（紫色系）
+$secondary-color: #8b5cf6;
+$secondary-light: #a78bfa;
+$secondary-dark: #7c3aed;
+
+// 颜色变量 - 成功色（绿色系）
+$success-color: #10b981;
+$success-light: #34d399;
+$success-dark: #059669;
+$success-fade: rgba(16, 185, 129, 0.1);
+
+// 颜色变量 - 警告色（橙色系）
+$warning-color: #f59e0b;
+$warning-light: #fbbf24;
+$warning-dark: #d97706;
+$warning-fade: rgba(245, 158, 11, 0.1);
+
+// 颜色变量 - 错误色（红色系）
+$error-color: #ef4444;
+$error-light: #f87171;
+$error-dark: #dc2626;
+$error-fade: rgba(239, 68, 68, 0.1);
+
+// 颜色变量 - 信息色（灰色系）
+$info-color: #6b7280;
+$info-light: #9ca3af;
+$info-dark: #4b5563;
+
+// 渐变色变量
+$gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+$gradient-blue: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+$gradient-green: linear-gradient(135deg, #10b981 0%, #059669 100%);
+$gradient-orange: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+$gradient-red: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+$gradient-purple: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+$gradient-cyan: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+$gradient-mesh: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+$gradient-sunset: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+$gradient-ocean: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+
+// 玻璃态效果变量
+$glass-bg: rgba(255, 255, 255, 0.7);
+$glass-bg-dark: rgba(0, 0, 0, 0.5);
+$glass-border: rgba(255, 255, 255, 0.2);
+$glass-blur: 20px;
+$glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+// 边框变量
+$border-color: #e5e7eb;
+$border-color-light: #f3f4f6;
+$border-color-dark: #d1d5db;
+$border-radius-xs: 2px;
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+$border-radius-xl: 16px;
+$border-radius-xxl: 24px;
+$border-radius-full: 9999px;
+
+// 阴影变量
+$box-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+$box-shadow-sm:
+  0 1px 3px rgba(0, 0, 0, 0.1),
+  0 1px 2px rgba(0, 0, 0, 0.06);
+$box-shadow-base:
+  0 4px 6px rgba(0, 0, 0, 0.07),
+  0 2px 4px rgba(0, 0, 0, 0.06);
+$box-shadow-md:
+  0 10px 15px rgba(0, 0, 0, 0.1),
+  0 4px 6px rgba(0, 0, 0, 0.05);
+$box-shadow-lg:
+  0 20px 25px rgba(0, 0, 0, 0.1),
+  0 10px 10px rgba(0, 0, 0, 0.04);
+$box-shadow-xl: 0 25px 50px rgba(0, 0, 0, 0.15);
+$box-shadow-2xl: 0 35px 60px rgba(0, 0, 0, 0.2);
+$box-shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+$box-shadow-glow: 0 0 20px rgba(59, 130, 246, 0.3);
+$box-shadow-hover: 0 8px 16px rgba(0, 0, 0, 0.12);
+
+// 模糊效果变量
+$blur-sm: 4px;
+$blur-md: 8px;
+$blur-lg: 16px;
+$blur-xl: 24px;
+
+// 过渡变量
+$transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+$transition-smooth: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+// Z-index层级变量
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070;
+$z-index-notification: 1080;
+
+// 响应式断点变量
+$breakpoint-xs: 480px;
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+$breakpoint-xxl: 1400px;
+$breakpoint-xxxl: 1600px;
+
+// 容器宽度变量
+$container-sm: 540px;
+$container-md: 720px;
+$container-lg: 960px;
+$container-xl: 1140px;
+$container-xxl: 1320px;
+
+// 深色模式变量
+$dark-mode: false;
+$dark-bg-primary: #0f172a;
+$dark-bg-secondary: #1e293b;
+$dark-bg-tertiary: #334155;
+$dark-text-primary: #f8fafc;
+$dark-text-secondary: #cbd5e1;
+$dark-text-tertiary: #94a3b8;
+$dark-border-color: #334155;
+$dark-glass-bg: rgba(30, 41, 59, 0.8);
+
+// 语义化颜色
+$color-brand: $primary-color;
+$color-accent: $secondary-color;
+$color-positive: $success-color;
+$color-negative: $error-color;
+$color-caution: $warning-color;
+$color-neutral: $info-color;
+
+// 覆盖层变量
+$overlay-bg: rgba(0, 0, 0, 0.5);
+$overlay-blur: 4px;
+
+// 间距比例（基于8px网格系统）
+$spacing-scale: 8px;
+$spacing-0: 0;
+$spacing-1: 8px;
+$spacing-2: 16px;
+$spacing-3: 24px;
+$spacing-4: 32px;
+$spacing-5: 40px;
+$spacing-6: 48px;
+$spacing-7: 56px;
+$spacing-8: 64px;
+$spacing-9: 72px;
+$spacing-10: 80px;
+$spacing-12: 96px;
+$spacing-16: 128px;
+$spacing-20: 160px;
+$spacing-24: 192px;
+
+// 字体比例
+$font-scale: 1.2;
+$font-h1: 48px;
+$font-h2: 40px;
+$font-h3: 32px;
+$font-h4: 24px;
+$font-h5: 20px;
+$font-h6: 16px;
+
+// 动画时长变量
+$animation-duration-fast: 0.15s;
+$animation-duration-base: 0.3s;
+$animation-duration-slow: 0.5s;
+$animation-duration-slower: 0.8s;
+$animation-duration-slowest: 1.2s;
+
+// 动画缓动函数
+$ease-in: cubic-bezier(0.4, 0, 1, 1);
+$ease-out: cubic-bezier(0, 0, 0.2, 1);
+$ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+$ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+$ease-elastic: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+
+// 卡片样式变量
+$card-padding-sm: 16px;
+$card-padding-md: 24px;
+$card-padding-lg: 32px;
+$card-gap: 20px;
+$card-border-radius: 16px;
+$card-hover-lift: 4px;
+
+// 按钮样式变量
+$button-padding-xs: 6px 12px;
+$button-padding-sm: 8px 16px;
+$button-padding-md: 12px 24px;
+$button-padding-lg: 16px 32px;
+$button-border-radius: 8px;
+$button-font-weight: 600;
+$button-letter-spacing: 0.5px;
+
+// 表单样式变量
+$form-input-padding: 12px 16px;
+$form-input-border-radius: 12px;
+$form-label-color: #374151;
+$form-label-font-weight: 600;
+$form-placeholder-color: #9ca3af;
+
+// 统计卡片变量
+$stat-card-padding: 24px;
+$stat-card-border-radius: 16px;
+$stat-card-icon-size: 48px;
+$stat-card-number-font-size: 32px;
+$stat-card-label-font-size: 14px;
+
+// 图表容器变量
+$chart-container-height: 300px;
+$chart-container-padding: 20px;
+$chart-border-radius: 12px;
+
+// 表格样式变量
+$table-header-bg: #f9fafb;
+$table-row-hover-bg: #f3f4f6;
+$table-border-color: #e5e7eb;
+$table-padding: 12px 16px;
+
+// 徽章样式变量
+$badge-padding: 4px 10px;
+$badge-font-size: 12px;
+$badge-font-weight: 600;
+$badge-border-radius: 12px;
+
+// 进度条变量
+$progress-height: 8px;
+$progress-border-radius: 4px;
+$progress-bar-transition: all 0.3s ease;
+
+// 分隔线变量
+$divider-color: #e5e7eb;
+$divider-margin: 16px 0;
+
+// 头像变量
+$avatar-size-xs: 24px;
+$avatar-size-sm: 32px;
+$avatar-size-md: 40px;
+$avatar-size-lg: 48px;
+$avatar-size-xl: 64px;
+$avatar-border-radius: 50%;
+
+// 标签变量
+$tag-padding: 4px 12px;
+$tag-font-size: 13px;
+$tag-border-radius: 6px;
+
+// 警告框变量
+$alert-padding: 16px 20px;
+$alert-border-radius: 12px;
+$alert-border-width: 1px;
+
+// 模态框变量
+$modal-padding: 32px;
+$modal-border-radius: 20px;
+$modal-backdrop-blur: 8px;
+
+// 抽屉变量
+$drawer-padding: 24px;
+$drawer-border-radius: 0;
+
+// 工具提示变量
+$tooltip-padding: 8px 12px;
+$tooltip-font-size: 13px;
+$tooltip-border-radius: 6px;
+$tooltip-max-width: 200px;
+
+// 下拉菜单变量
+$dropdown-padding: 8px;
+$dropdown-item-padding: 10px 16px;
+$dropdown-border-radius: 8px;
+
+// 面包屑变量
+$breadcrumb-font-size: 14px;
+$breadcrumb-item-padding: 0 8px;
+$breadcrumb-separator-color: #9ca3af;
+
+// 步骤条变量
+$step-icon-size: 32px;
+$step-title-font-size: 14px;
+$step-description-font-size: 12px;
+
+// 时间轴变量
+$timeline-line-width: 2px;
+$timeline-dot-size: 12px;
+$timeline-item-padding: 0 0 24px 24px;
+
+// 树形控件变量
+$tree-node-padding: 8px 12px;
+$tree-node-hover-bg: #f3f4f6;
+
+// 标签页变量
+$tab-padding: 16px 24px;
+$tab-font-size: 14px;
+$tab-active-color: $primary-color;
+
+// 滑块变量
+$slider-height: 6px;
+$slider-thumb-size: 20px;
+$slider-thumb-border-radius: 50%;
+
+// 开关变量
+$switch-width: 44px;
+$switch-height: 24px;
+$switch-thumb-size: 20px;
+
+// 单选框变量
+$radio-size: 16px;
+$radio-border-width: 2px;
+
+// 复选框变量
+$checkbox-size: 16px;
+$checkbox-border-width: 2px;
+
+// 输入框变量
+$input-height-sm: 32px;
+$input-height-md: 40px;
+$input-height-lg: 48px;
+
+// 选择器变量
+$select-height: 40px;
+$select-dropdown-max-height: 274px;
+
+// 日期选择器变量
+$datepicker-cell-width: 36px;
+$datepicker-cell-height: 30px;
+
+// 上传变量
+$upload-item-size: 104px;
+$upload-border-radius: 8px;
+
+// 评分变量
+$star-size: 20px;
+$star-color: #f59e0b;
+
+// 穿梭框变量
+$transfer-panel-width: 250px;
+$transfer-panel-height: 246px;
+
+// 级联选择器变量
+$cascader-menu-width: 180px;
+$cascader-option-height: 36px;
+
+// 颜色选择器变量
+$color-picker-swatch-size: 24px;
+$color-picker-panel-width: 220px;
+
+// 滑动条变量
+$scrollbar-width: 10px;
+$scrollbar-height: 10px;
+$scrollbar-track-bg: #f3f4f6;
+$scrollbar-thumb-bg: #d1d5db;
+$scrollbar-thumb-hover-bg: #9ca3af;
+
+// 骨架屏变量
+$skeleton-base-color: #e5e7eb;
+$skeleton-highlight-color: #f3f4f6;
+$skeleton-animation-duration: 1.5s;
+
+// 加载变量
+$loading-spinner-size: 40px;
+$loading-dot-size: 8px;
+$loading-bar-height: 3px;
+
+// 结果页面变量
+$result-icon-size: 72px;
+$result-title-font-size: 24px;
+$result-subtitle-font-size: 16px;
+
+// 描述列表变量
+$descriptions-label-width: 120px;
+$descriptions-item-padding: 16px 24px;
+
+// 折叠面板变量
+$collapse-header-padding: 12px 16px;
+$collapse-content-padding: 16px;
+
+// 菜单变量
+$menu-item-padding: 12px 20px;
+$menu-item-height: 48px;
+$menu-submenu-indent: 20px;
+
+// 分页变量
+$pagination-item-size: 32px;
+$pagination-item-padding: 0 8px;
+
+// 回到顶部变量
+$backtop-size: 40px;
+$backtop-border-radius: 50%;
+$backtop-right: 40px;
+$backtop-bottom: 40px;
+
+// 页脚变量
+$footer-height: 60px;
+$footer-padding: 0 24px;
+
+// 头部变量
+$header-height: 60px;
+$header-padding: 0 20px;
+
+// 侧边栏变量
+$sidebar-width: 240px;
+$sidebar-collapsed-width: 64px;
+$sidebar-header-height: 80px;
+
+// 主内容区变量
+$main-padding: 20px;
+$main-max-width: 1400px;
+
+// 响应式间距
+$responsive-padding-xs: 8px;
+$responsive-padding-sm: 12px;
+$responsive-padding-md: 16px;
+$responsive-padding-lg: 20px;
+$responsive-padding-xl: 24px;
+
+// 玻璃态卡片变量
+$glass-card-bg: rgba(255, 255, 255, 0.7);
+$glass-card-border: rgba(255, 255, 255, 0.3);
+$glass-card-blur: 20px;
+$glass-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+// 悬浮效果变量
+$hover-lift: translateY(-4px);
+$hover-scale: scale(1.02);
+$hover-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+
+// 焦点效果变量
+$focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.3);
+$focus-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+
+// 激活效果变量
+$active-scale: scale(0.98);
+$active-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+// 禁用效果变量
+$disabled-opacity: 0.5;
+$disabled-cursor: not-allowed;
+$disabled-filter: grayscale(100%);
+
+// 加载状态变量
+$loading-overlay-bg: rgba(255, 255, 255, 0.9);
+$loading-spinner-color: $primary-color;
+
+// 错误状态变量
+$error-border-color: $error-color;
+$error-bg-color: rgba(239, 68, 68, 0.05);
+$error-text-color: $error-color;
+
+// 成功状态变量
+$success-border-color: $success-color;
+$success-bg-color: rgba(16, 185, 129, 0.05);
+$success-text-color: $success-color;
+
+// 警告状态变量
+$warning-border-color: $warning-color;
+$warning-bg-color: rgba(245, 158, 11, 0.05);
+$warning-text-color: $warning-color;
+
+// 信息状态变量
+$info-border-color: $info-color;
+$info-bg-color: rgba(107, 114, 128, 0.05);
+$info-text-color: $info-color;
