@@ -111,15 +111,20 @@ public class WeChatAlertService {
         return body;
     }
 
+    /**
+     * 企业微信响应类型引用
+     */
+    private static class WeChatResponseTypeReference extends TypeReference<Map<String, Object>> {
+        private static final long serialVersionUID = 1L;
+    }
+
     private boolean parseResponse(String response) {
         if (response == null) {
             return false;
         }
 
         try {
-            Map<String, Object> responseMap = objectMapper.readValue(response, new TypeReference<Map<String, Object>>() {
-                private static final long serialVersionUID = 1L;
-            });
+            Map<String, Object> responseMap = objectMapper.readValue(response, new WeChatResponseTypeReference());
             Object errcode = responseMap.get("errcode");
             return errcode != null && WECHAT_SUCCESS_CODE == ((Number) errcode).intValue();
         } catch (Exception e) {

@@ -466,6 +466,8 @@
                     <htmlOutput>true</htmlOutput>
                     <!-- 包含安全漏洞过滤器 -->
                     <includeFilterFile>config/spotbugs-security-include.xml</includeFilterFile>
+                    <!-- 排除不需要修复的警告 -->
+                    <excludeFilterFile>config/spotbugs-exclude.xml</excludeFilterFile>
                 </configuration>
                 <executions>
                     <!-- 在verify阶段执行SpotBugs检查 -->

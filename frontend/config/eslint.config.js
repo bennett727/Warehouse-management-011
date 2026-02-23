@@ -3,7 +3,6 @@ import prettier from 'eslint-plugin-prettier/recommended'
 import vue from 'eslint-plugin-vue'
 import globals from 'globals'
 import * as vueParser from 'vue-eslint-parser'
-import importPlugin from 'eslint-plugin-import'
 
 export default [
   js.configs.recommended,
@@ -15,7 +14,7 @@ export default [
   },
   {
     files: ['**/*.vue', '**/*.js'],
-    plugins: { vue, import: importPlugin },
+    plugins: { vue },
     languageOptions: {
       parser: vueParser,
       parserOptions: {

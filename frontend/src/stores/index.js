@@ -3,9 +3,6 @@
 // 区域管理状态
 export * from './area';
 
-// 通用状态
-export * from './common';
-
 // 设备管理状态
 export * from './device';
 
@@ -23,9 +20,6 @@ export * from './layout';
 
 // 用户管理状态
 export * from './user';
-
-// 批次管理状态
-export * from './batch';
 
 // 仓库管理状态
 export * from './warehouse';

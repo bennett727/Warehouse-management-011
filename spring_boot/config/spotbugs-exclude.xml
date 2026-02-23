@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SpotBugs 排除配置文件
+  用于排除不需要修复的警告
+-->
+<FindBugsFilter>
+    <!--
+        排除 NM_CONFUSING 警告
+        原因：LoginRequest.username 和 ErrorLog.userName 是不同实体类的字段
+        这是正常的业务命名差异，不是代码问题
+    -->
+    <Match>
+        <Class name="com.backend.dto.request.LoginRequest"/>
+        <Bug pattern="NM_CONFUSING"/>
+    </Match>
+</FindBugsFilter>

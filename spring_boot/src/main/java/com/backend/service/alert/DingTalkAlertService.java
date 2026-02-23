@@ -151,15 +151,20 @@ public class DingTalkAlertService {
         return body;
     }
 
+    /**
+     * 钉钉响应类型引用
+     */
+    private static class DingTalkResponseTypeReference extends TypeReference<Map<String, Object>> {
+        private static final long serialVersionUID = 1L;
+    }
+
     private boolean parseResponse(String response) {
         if (response == null) {
             return false;
         }
 
         try {
-            Map<String, Object> responseMap = objectMapper.readValue(response, new TypeReference<Map<String, Object>>() {
-                private static final long serialVersionUID = 1L;
-            });
+            Map<String, Object> responseMap = objectMapper.readValue(response, new DingTalkResponseTypeReference());
             Object errcode = responseMap.get("errcode");
             return errcode != null && DINGTALK_SUCCESS_CODE.equals(errcode.toString());
         } catch (Exception e) {

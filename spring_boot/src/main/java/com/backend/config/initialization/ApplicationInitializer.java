@@ -123,7 +123,7 @@ public class ApplicationInitializer {
     @Order(-100)
     public CommandLineRunner initializeApplication() {
         return args -> {
-            startTime = LocalDateTime.now();
+            LocalDateTime startTime = LocalDateTime.now();
             log.info("╔════════════════════════════════════════════════════════════╗");
             log.info("║          应用程序初始化流程启动                            ║");
             log.info("╚════════════════════════════════════════════════════════════╝");
@@ -135,7 +135,7 @@ public class ApplicationInitializer {
                 log.info("╚════════════════════════════════════════════════════════════╝");
 
             } catch (Exception e) {
-                endTime = LocalDateTime.now();
+                LocalDateTime endTime = LocalDateTime.now();
                 log.error("应用程序初始化失败", e);
             }
         };
