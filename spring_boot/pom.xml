@@ -455,7 +455,7 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <skip>true</skip>
+                    <skip>false</skip>
                     <!-- 分析力度：最大 -->
                     <effort>Max</effort>
                     <!-- 报告阈值：低（报告所有问题） -->
