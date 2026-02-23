@@ -62,7 +62,8 @@ public class AlertLogAppender extends AppenderBase<ILoggingEvent> {
             return;
         }
 
-        executorService.submit(() -> processAlert(event));
+        @SuppressWarnings("java:S2144")
+        var future = executorService.submit(() -> processAlert(event));
     }
 
     private boolean shouldSendAlert(String alertKey) {

@@ -41,6 +41,9 @@ public class DataFixConfig {
             // 3. 添加入出库信息字段
             migrateInventoryFields();
 
+            // 4. 验证数据修复结果
+            verifyDataFix();
+
             log.info("数据修复完成");
 
         } catch (Exception e) {

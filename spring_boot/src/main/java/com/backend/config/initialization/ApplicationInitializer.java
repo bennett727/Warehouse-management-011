@@ -110,8 +110,6 @@ public class ApplicationInitializer {
 
     private final Map<String, InitStep> initSteps = new ConcurrentHashMap<>();
     private final List<InitResult> initResults = new ArrayList<>();
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
 
     /**
      * 系统初始化入口

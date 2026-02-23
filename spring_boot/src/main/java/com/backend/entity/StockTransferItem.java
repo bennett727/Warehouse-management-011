@@ -25,7 +25,7 @@ public class StockTransferItem extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "transfer_id", insertable = false, updatable = false)
     @JsonIgnore
-    private StockTransfer transfer;
+    private transient StockTransfer transfer;
 
     @Column(name = "device_id", nullable = false)
     private Long deviceId;

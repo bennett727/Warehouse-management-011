@@ -37,8 +37,6 @@ public class RateLimitConfig {
      */
     public static final String RATE_LIMITER_PREFIX = "wms:";
 
-    private RateLimiterRegistry rateLimiterRegistry;
-    
     // 限流器缓存
     private final Map<String, RateLimiter> rateLimiterMap = new ConcurrentHashMap<>();
 
@@ -56,7 +54,7 @@ public class RateLimitConfig {
                 .timeoutDuration(Duration.ofMillis(100))    // 等待时间100ms
                 .build();
         
-        this.rateLimiterRegistry = RateLimiterRegistry.of(defaultConfig);
+        RateLimiterRegistry registry = RateLimiterRegistry.of(defaultConfig);
         
         // 预创建常用限流器
         createRateLimiter("global", 100, 1);

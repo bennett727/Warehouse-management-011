@@ -47,6 +47,42 @@ public class ThreadPoolManager {
     private ExecutorService asyncThreadPool;
 
     /**
+     * 通用线程工厂
+     */
+    private static class GeneralThreadFactory implements ThreadFactory {
+        private int count = 0;
+
+        @Override
+        public Thread newThread(Runnable r) {
+            return new Thread(r, "general-pool-" + (++count));
+        }
+    }
+
+    /**
+     * 定时任务线程工厂
+     */
+    private static class ScheduledThreadFactory implements ThreadFactory {
+        private int count = 0;
+
+        @Override
+        public Thread newThread(Runnable r) {
+            return new Thread(r, "scheduled-pool-" + (++count));
+        }
+    }
+
+    /**
+     * 异步任务线程工厂
+     */
+    private static class AsyncThreadFactory implements ThreadFactory {
+        private int count = 0;
+
+        @Override
+        public Thread newThread(Runnable r) {
+            return new Thread(r, "async-pool-" + (++count));
+        }
+    }
+
+    /**
      * 初始化线程池
      *
      * 创建和配置系统所需的各种线程池
@@ -76,27 +112,13 @@ public class ThreadPoolManager {
                     keepAliveSeconds,
                     TimeUnit.SECONDS,
                     new LinkedBlockingQueue<>(queueCapacity),
-                    new ThreadFactory() {
-                        private int count = 0;
-                        @Override
-                        public Thread newThread(Runnable r) {
-                            return new Thread(r, "general-pool-" + (++count));
-                        }
-                    },
-                    new ThreadPoolExecutor.CallerRunsPolicy()
-            );
+                    new GeneralThreadFactory(),
+                    new ThreadPoolExecutor.CallerRunsPolicy());
 
             // 创建定时任务线程池
             scheduledThreadPool = Executors.newScheduledThreadPool(
                     Math.max(2, coreSize / 2),
-                    new ThreadFactory() {
-                        private int count = 0;
-                        @Override
-                        public Thread newThread(Runnable r) {
-                            return new Thread(r, "scheduled-pool-" + (++count));
-                        }
-                    }
-            );
+                    new ScheduledThreadFactory());
 
             // 创建异步任务线程池
             asyncThreadPool = new ThreadPoolExecutor(
@@ -105,15 +127,8 @@ public class ThreadPoolManager {
                     keepAliveSeconds,
                     TimeUnit.SECONDS,
                     new LinkedBlockingQueue<>(queueCapacity * 2),
-                    new ThreadFactory() {
-                        private int count = 0;
-                        @Override
-                        public Thread newThread(Runnable r) {
-                            return new Thread(r, "async-pool-" + (++count));
-                        }
-                    },
-                    new ThreadPoolExecutor.AbortPolicy()
-            );
+                    new AsyncThreadFactory(),
+                    new ThreadPoolExecutor.AbortPolicy());
 
             // 验证线程池
             validateThreadPools();
@@ -215,7 +230,7 @@ public class ThreadPoolManager {
         log.info("线程池关闭完成");
     }
 
-    /**
+/**
      * 获取核心线程数
      */
     public int getCorePoolSize() {

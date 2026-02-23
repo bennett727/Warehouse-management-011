@@ -26,7 +26,7 @@ public class StockCountItem extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stock_count_id", insertable = false, updatable = false)
     @JsonIgnore
-    private StockCount stockCount;
+    private transient StockCount stockCount;
 
     @Column(name = "device_id", nullable = false)
     private Long deviceId;
