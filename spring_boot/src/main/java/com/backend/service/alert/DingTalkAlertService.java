@@ -157,7 +157,9 @@ public class DingTalkAlertService {
         }
 
         try {
-            Map<String, Object> responseMap = objectMapper.readValue(response, new TypeReference<Map<String, Object>>() {});
+            Map<String, Object> responseMap = objectMapper.readValue(response, new TypeReference<Map<String, Object>>() {
+                private static final long serialVersionUID = 1L;
+            });
             Object errcode = responseMap.get("errcode");
             return errcode != null && DINGTALK_SUCCESS_CODE.equals(errcode.toString());
         } catch (Exception e) {

@@ -1,20 +1,22 @@
 package com.backend.util;
 
-import com.backend.entity.Warehouse;
-import com.backend.entity.WarehouseZone;
-import com.backend.entity.ZoneType;
-import com.backend.entity.AdministrativeDivision;
-import com.backend.repository.WarehouseRepository;
-import com.backend.repository.WarehouseZoneRepository;
-import com.backend.repository.ZoneTypeRepository;
-import com.backend.repository.AdministrativeDivisionRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import com.backend.entity.AdministrativeDivision;
+import com.backend.entity.Warehouse;
+import com.backend.entity.WarehouseZone;
+import com.backend.entity.ZoneType;
+import com.backend.repository.AdministrativeDivisionRepository;
+import com.backend.repository.WarehouseRepository;
+import com.backend.repository.WarehouseZoneRepository;
+import com.backend.repository.ZoneTypeRepository;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 数据迁移工具类
@@ -32,6 +34,7 @@ public class DataMigrationUtil {
 
     /**
      * 验证仓库地址数据完整性
+     * 
      * @return 验证报告
      */
     public String validateWarehouseAddressData() {
@@ -47,19 +50,27 @@ public class DataMigrationUtil {
         int withAddress = 0;
 
         for (Warehouse w : warehouses) {
-            if (w.getProvinceId() != null) withProvince++;
-            if (w.getCityId() != null) withCity++;
-            if (w.getDistrictId() != null) withDistrict++;
-            if (w.getLongitude() != null && w.getLatitude() != null) withLocation++;
-            if (w.getAddress() != null && !w.getAddress().isEmpty()) withAddress++;
+            if (w.getProvinceId() != null)
+                withProvince++;
+            if (w.getCityId() != null)
+                withCity++;
+            if (w.getDistrictId() != null)
+                withDistrict++;
+            if (w.getLongitude() != null && w.getLatitude() != null)
+                withLocation++;
+            if (w.getAddress() != null && !w.getAddress().isEmpty())
+                withAddress++;
         }
 
-        report.append(String.format("仓库总数: %d\n", total));
-        report.append(String.format("有省份信息: %d (%.1f%%)\n", withProvince, total > 0 ? 100.0 * withProvince / total : 0));
-        report.append(String.format("有城市信息: %d (%.1f%%)\n", withCity, total > 0 ? 100.0 * withCity / total : 0));
-        report.append(String.format("有区县信息: %d (%.1f%%)\n", withDistrict, total > 0 ? 100.0 * withDistrict / total : 0));
-        report.append(String.format("有坐标信息: %d (%.1f%%)\n", withLocation, total > 0 ? 100.0 * withLocation / total : 0));
-        report.append(String.format("有详细地址: %d (%.1f%%)\n", withAddress, total > 0 ? 100.0 * withAddress / total : 0));
+        report.append(String.format("仓库总数: %d%n", total));
+        report.append(
+                String.format("有省份信息: %d (%.1f%%)%n", withProvince, total > 0 ? 100.0 * withProvince / total : 0));
+        report.append(String.format("有城市信息: %d (%.1f%%)%n", withCity, total > 0 ? 100.0 * withCity / total : 0));
+        report.append(
+                String.format("有区县信息: %d (%.1f%%)%n", withDistrict, total > 0 ? 100.0 * withDistrict / total : 0));
+        report.append(
+                String.format("有坐标信息: %d (%.1f%%)%n", withLocation, total > 0 ? 100.0 * withLocation / total : 0));
+        report.append(String.format("有详细地址: %d (%.1f%%)%n", withAddress, total > 0 ? 100.0 * withAddress / total : 0));
 
         // 检查行政区划关联是否有效
         int invalidProvince = 0;
@@ -68,33 +79,36 @@ public class DataMigrationUtil {
 
         for (Warehouse w : warehouses) {
             if (w.getProvinceId() != null) {
-                Optional<AdministrativeDivision> province = administrativeDivisionRepository.findById(w.getProvinceId());
+                Optional<AdministrativeDivision> province = administrativeDivisionRepository
+                        .findById(w.getProvinceId());
                 if (province.isEmpty() || province.get().getLevel() != 1) {
                     invalidProvince++;
-                    report.append(String.format("\n警告: 仓库 '%s' 的省份ID %d 无效\n", w.getWarehouseName(), w.getProvinceId()));
+                    report.append(
+                            String.format("%n警告: 仓库 '%s' 的省份ID %d 无效%n", w.getWarehouseName(), w.getProvinceId()));
                 }
             }
             if (w.getCityId() != null) {
                 Optional<AdministrativeDivision> city = administrativeDivisionRepository.findById(w.getCityId());
                 if (city.isEmpty() || city.get().getLevel() != 2) {
                     invalidCity++;
-                    report.append(String.format("警告: 仓库 '%s' 的城市ID %d 无效\n", w.getWarehouseName(), w.getCityId()));
+                    report.append(String.format("警告: 仓库 '%s' 的城市ID %d 无效%n", w.getWarehouseName(), w.getCityId()));
                 }
             }
             if (w.getDistrictId() != null) {
-                Optional<AdministrativeDivision> district = administrativeDivisionRepository.findById(w.getDistrictId());
+                Optional<AdministrativeDivision> district = administrativeDivisionRepository
+                        .findById(w.getDistrictId());
                 if (district.isEmpty() || district.get().getLevel() != 3) {
                     invalidDistrict++;
-                    report.append(String.format("警告: 仓库 '%s' 的区县ID %d 无效\n", w.getWarehouseName(), w.getDistrictId()));
+                    report.append(String.format("警告: 仓库 '%s' 的区县ID %d 无效%n", w.getWarehouseName(), w.getDistrictId()));
                 }
             }
         }
 
         if (invalidProvince > 0 || invalidCity > 0 || invalidDistrict > 0) {
-            report.append(String.format("\n发现 %d 个无效省份关联, %d 个无效城市关联, %d 个无效区县关联\n",
+            report.append(String.format("%n发现 %d 个无效省份关联, %d 个无效城市关联, %d 个无效区县关联%n",
                     invalidProvince, invalidCity, invalidDistrict));
         } else {
-            report.append("\n所有行政区划关联验证通过\n");
+            report.append("%n所有行政区划关联验证通过%n");
         }
 
         return report.toString();
@@ -102,23 +116,25 @@ public class DataMigrationUtil {
 
     /**
      * 验证功能区类型数据
+     * 
      * @return 验证报告
      */
     public String validateZoneTypeData() {
         StringBuilder report = new StringBuilder();
-        report.append("=== 功能区类型数据验证报告 ===\n\n");
+        report.append("=== 功能区类型数据验证报告 ===%n%n");
 
         // 检查系统预设类型
         List<ZoneType> systemTypes = zoneTypeRepository.findByIsSystemTrue();
-        report.append(String.format("系统预设类型数量: %d\n", systemTypes.size()));
+        report.append(String.format("系统预设类型数量: %d%n", systemTypes.size()));
 
-        String[] expectedCodes = {"RECEIVING", "STORAGE", "PICKING", "SHIPPING", "RETURN", "QC", "REPAIR", "TEMPORARY"};
+        String[] expectedCodes = { "RECEIVING", "STORAGE", "PICKING", "SHIPPING", "RETURN", "QC", "REPAIR",
+                "TEMPORARY" };
         for (String code : expectedCodes) {
             Optional<ZoneType> type = zoneTypeRepository.findByCode(code);
             if (type.isPresent()) {
-                report.append(String.format("✓ 系统类型 '%s' (%s) 存在\n", type.get().getName(), code));
+                report.append(String.format("✓ 系统类型 '%s' (%s) 存在%n", type.get().getName(), code));
             } else {
-                report.append(String.format("✗ 系统类型 '%s' 缺失\n", code));
+                report.append(String.format("✗ 系统类型 '%s' 缺失%n", code));
             }
         }
 
@@ -135,9 +151,11 @@ public class DataMigrationUtil {
             }
         }
 
-        report.append(String.format("\n功能区总数: %d\n", zones.size()));
-        report.append(String.format("已关联类型: %d (%.1f%%)\n", withType, zones.size() > 0 ? 100.0 * withType / zones.size() : 0));
-        report.append(String.format("未关联类型: %d (%.1f%%)\n", withoutType, zones.size() > 0 ? 100.0 * withoutType / zones.size() : 0));
+        report.append(String.format("%n功能区总数: %d%n", zones.size()));
+        report.append(String.format("已关联类型: %d (%.1f%%)%n", withType,
+                zones.size() > 0 ? 100.0 * withType / zones.size() : 0));
+        report.append(String.format("未关联类型: %d (%.1f%%)%n", withoutType,
+                zones.size() > 0 ? 100.0 * withoutType / zones.size() : 0));
 
         return report.toString();
     }
@@ -145,6 +163,7 @@ public class DataMigrationUtil {
     /**
      * 修复仓库坐标数据
      * 清除无效坐标
+     * 
      * @return 修复数量
      */
     @Transactional
@@ -181,6 +200,7 @@ public class DataMigrationUtil {
 
     /**
      * 为未设置类型的功能区设置默认类型
+     * 
      * @return 修复数量
      */
     @Transactional
@@ -208,8 +228,9 @@ public class DataMigrationUtil {
 
     /**
      * 验证坐标范围
+     * 
      * @param longitude 经度
-     * @param latitude 纬度
+     * @param latitude  纬度
      * @return 是否有效
      */
     public static boolean isValidCoordinate(Double longitude, Double latitude) {
@@ -221,41 +242,42 @@ public class DataMigrationUtil {
 
     /**
      * 获取数据迁移状态摘要
+     * 
      * @return 状态摘要
      */
     public String getMigrationStatus() {
         StringBuilder status = new StringBuilder();
-        status.append("=== 数据迁移状态摘要 ===\n\n");
+        status.append("=== 数据迁移状态摘要 ===%n%n");
 
         // 行政区划
         long provinceCount = administrativeDivisionRepository.countByLevel(1);
         long cityCount = administrativeDivisionRepository.countByLevel(2);
         long districtCount = administrativeDivisionRepository.countByLevel(3);
-        status.append(String.format("行政区划数据:\n"));
-        status.append(String.format("  - 省份: %d\n", provinceCount));
-        status.append(String.format("  - 城市: %d\n", cityCount));
-        status.append(String.format("  - 区县: %d\n", districtCount));
+        status.append(String.format("行政区划数据:%n"));
+        status.append(String.format("  - 省份: %d%n", provinceCount));
+        status.append(String.format("  - 城市: %d%n", cityCount));
+        status.append(String.format("  - 区县: %d%n", districtCount));
 
         // 仓库
         long warehouseCount = warehouseRepository.count();
         long warehouseWithLocation = warehouseRepository.countByLongitudeIsNotNullAndLatitudeIsNotNull();
-        status.append(String.format("\n仓库数据:\n"));
-        status.append(String.format("  - 总数: %d\n", warehouseCount));
-        status.append(String.format("  - 有坐标: %d\n", warehouseWithLocation));
+        status.append(String.format("%n仓库数据:%n"));
+        status.append(String.format("  - 总数: %d%n", warehouseCount));
+        status.append(String.format("  - 有坐标: %d%n", warehouseWithLocation));
 
         // 功能区类型
         long zoneTypeCount = zoneTypeRepository.count();
         long systemZoneTypeCount = zoneTypeRepository.countByIsSystemTrue();
-        status.append(String.format("\n功能区类型:\n"));
-        status.append(String.format("  - 总数: %d\n", zoneTypeCount));
-        status.append(String.format("  - 系统预设: %d\n", systemZoneTypeCount));
+        status.append(String.format("%n功能区类型:%n"));
+        status.append(String.format("  - 总数: %d%n", zoneTypeCount));
+        status.append(String.format("  - 系统预设: %d%n", systemZoneTypeCount));
 
         // 功能区
         long zoneCount = warehouseZoneRepository.count();
         long zoneWithType = warehouseZoneRepository.countByZoneTypeIdIsNotNull();
-        status.append(String.format("\n功能区:\n"));
-        status.append(String.format("  - 总数: %d\n", zoneCount));
-        status.append(String.format("  - 已关联类型: %d\n", zoneWithType));
+        status.append(String.format("%n功能区:%n"));
+        status.append(String.format("  - 总数: %d%n", zoneCount));
+        status.append(String.format("  - 已关联类型: %d%n", zoneWithType));
 
         return status.toString();
     }

@@ -11,6 +11,8 @@ import lombok.Setter;
 @Table(name = "alert_threshold")
 public class AlertThreshold extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "device_id")
     @JsonIgnore

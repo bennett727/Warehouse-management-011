@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Random;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -43,6 +45,7 @@ import com.backend.service.stock.StockOrderService;
  * - 入库单草稿/待审核 → 设备待入库(-1)
  * - 入库单已完成 → 设备在库(0)
  */
+@Slf4j
 @Service
 public class StockOrderServiceImpl implements StockOrderService {
 
@@ -51,6 +54,7 @@ public class StockOrderServiceImpl implements StockOrderService {
     private final DeviceRepository deviceRepository;
     private final InventoryRepository inventoryRepository;
     private final BusinessRecordLinkageService businessRecordLinkageService;
+    private final Random random = new Random();
 
     public StockOrderServiceImpl(StockOrderRepository stockOrderRepository,
             StockOrderItemRepository stockOrderItemRepository,
@@ -414,9 +418,10 @@ public class StockOrderServiceImpl implements StockOrderService {
                 item.setUpdateTime(LocalDateTime.now());
                 stockOrderItemRepository.save(item);
             } catch (Exception e) {
+                log.error("执行调拨订单明细失败: itemId={}, error={}", item.getId(), e.getMessage());
             }
         }
-        
+
         order.setStatus(3);
         order.setExecuteTime(LocalDateTime.now());
     }
@@ -650,8 +655,8 @@ public class StockOrderServiceImpl implements StockOrderService {
             default -> "ORD";
         };
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        String random = String.format("%04d", (int) (Math.random() * 10000));
-        return prefix + timestamp + random;
+        String randomStr = String.format("%04d", random.nextInt(10000));
+        return prefix + timestamp + randomStr;
     }
 
     /**
@@ -659,8 +664,8 @@ public class StockOrderServiceImpl implements StockOrderService {
      */
     private String generateDeviceCode() {
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        String random = String.format("%06d", (int) (Math.random() * 1000000));
-        return "DEV" + timestamp + random;
+        String randomStr = String.format("%06d", random.nextInt(1000000));
+        return "DEV" + timestamp + randomStr;
     }
 
     @Override

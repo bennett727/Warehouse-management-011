@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Service
@@ -206,7 +207,7 @@ public class DeviceStatusApprovalServiceImpl implements DeviceStatusApprovalServ
             Long count = ((Number) stat[1]).longValue();
 
             ApprovalStatus approvalStatus = ApprovalStatus.fromCode(status);
-            stats.put(approvalStatus.name().toLowerCase() + "Count", count);
+            stats.put(approvalStatus.name().toLowerCase(Locale.ROOT) + "Count", count);
         }
 
         stats.put("totalCount", approvalRepository.count());

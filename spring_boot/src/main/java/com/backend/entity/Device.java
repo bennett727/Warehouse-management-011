@@ -21,6 +21,8 @@ import java.time.LocalDateTime;
 })
 public class Device extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Column(name = "device_code", nullable = false, unique = true, length = 50)
     private String deviceCode;
 

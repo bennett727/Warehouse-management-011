@@ -13,6 +13,8 @@ import lombok.Setter;
 })
 public class OperationLog extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Column(name = "user_id")
     private Long userId;
 

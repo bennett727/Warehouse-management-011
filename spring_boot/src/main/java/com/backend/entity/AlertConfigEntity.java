@@ -10,6 +10,8 @@ import lombok.Setter;
 @Table(name = "alert_config")
 public class AlertConfigEntity extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 

@@ -29,6 +29,8 @@ import lombok.Setter;
        })
 public class WarehouseZone extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Column(name = "code", nullable = false, unique = true, length = 50)
     private String code;
 

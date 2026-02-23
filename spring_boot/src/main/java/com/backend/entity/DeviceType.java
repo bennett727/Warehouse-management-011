@@ -14,6 +14,8 @@ import java.util.List;
 @Table(name = "device_type")
 public class DeviceType extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Column(name = "type_code", nullable = false, unique = true, length = 50)
     private String typeCode;
 

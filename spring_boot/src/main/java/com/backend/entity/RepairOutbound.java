@@ -19,6 +19,8 @@ import java.time.LocalDateTime;
 @Table(name = "repair_outbound")
 public class RepairOutbound extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * 修复出库单号
      */

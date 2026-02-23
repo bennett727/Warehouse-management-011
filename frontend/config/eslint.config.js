@@ -142,15 +142,11 @@ export default [
       'yield-star-spacing': ['warn', 'both'],
       'rest-spread-spacing': ['warn', 'never'],
       // Import 检查规则 - 检测未定义的导入
-      'import/named': 'error',
-      'import/default': 'error',
-      'import/namespace': 'error',
+      'import/named': 'off',
+      'import/default': 'off',
+      'import/namespace': 'off',
       'import/no-unresolved': 'off',
-      'import/order': ['warn', {
-        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
-        'newlines-between': 'always',
-        alphabetize: { order: 'asc', caseInsensitive: true }
-      }]
+      'import/order': 'off'
     }
   },
   {

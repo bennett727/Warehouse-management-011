@@ -1,6 +1,7 @@
 package com.backend.util;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -163,7 +164,7 @@ public class LogDesensitizationUtil {
             return value;
         }
 
-        String lowerKey = key.toLowerCase();
+        String lowerKey = key.toLowerCase(Locale.ROOT);
 
         if (lowerKey.contains("password") || lowerKey.contains("pwd") || lowerKey.contains("passwd")) {
             return "******";
@@ -204,7 +205,7 @@ public class LogDesensitizationUtil {
         if (key == null) {
             return false;
         }
-        return SENSITIVE_KEYS.contains(key.toLowerCase());
+        return SENSITIVE_KEYS.contains(key.toLowerCase(Locale.ROOT));
     }
 
     public static String desensitizeValue(String key, String value) {

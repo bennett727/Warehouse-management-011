@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -121,7 +122,7 @@ public class LogMonitorController {
 
             // 关键词过滤
             if (keyword != null && !keyword.isEmpty()) {
-                allLines.removeIf(line -> !line.toLowerCase().contains(keyword.toLowerCase()));
+                allLines.removeIf(line -> !line.toLowerCase(Locale.ROOT).contains(keyword.toLowerCase(Locale.ROOT)));
             }
 
             // 分页
@@ -303,7 +304,7 @@ public class LogMonitorController {
                     int lineNum = 0;
                     for (String line : lines) {
                         lineNum++;
-                        if (line.toLowerCase().contains(keyword.toLowerCase())) {
+                        if (line.toLowerCase(Locale.ROOT).contains(keyword.toLowerCase(Locale.ROOT))) {
                             Map<String, Object> match = new HashMap<>();
                             match.put("fileName", file.getName());
                             match.put("lineNumber", lineNum);

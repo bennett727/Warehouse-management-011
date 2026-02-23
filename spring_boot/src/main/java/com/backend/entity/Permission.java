@@ -12,6 +12,8 @@ import lombok.Setter;
 @Table(name = "sys_permission")
 public class Permission extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Column(name = "parent_id")
     private Long parentId = 0L;
 

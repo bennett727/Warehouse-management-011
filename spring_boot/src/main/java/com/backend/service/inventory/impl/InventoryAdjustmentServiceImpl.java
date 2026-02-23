@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 @Service
@@ -129,7 +130,7 @@ public class InventoryAdjustmentServiceImpl implements InventoryAdjustmentServic
 
     private String generateAdjustmentNo() {
         String datePrefix = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        String uuid = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        String uuid = UUID.randomUUID().toString().substring(0, 8).toUpperCase(Locale.ROOT);
         return "ADJ" + datePrefix + uuid;
     }
 }

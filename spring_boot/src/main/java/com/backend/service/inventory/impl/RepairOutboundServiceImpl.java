@@ -41,6 +41,7 @@ public class RepairOutboundServiceImpl implements RepairOutboundService {
     private final InventoryRepository inventoryRepository;
     private final BusinessRecordLinkageService businessRecordLinkageService;
     private final ObjectMapper objectMapper;
+    private final Random random = new Random();
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -354,7 +355,7 @@ public class RepairOutboundServiceImpl implements RepairOutboundService {
     public String generateRepairNo() {
         String prefix = "REP";
         String dateStr = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        String randomStr = String.format("%04d", new Random().nextInt(10000));
+        String randomStr = String.format("%04d", random.nextInt(10000));
         return prefix + dateStr + randomStr;
     }
 }

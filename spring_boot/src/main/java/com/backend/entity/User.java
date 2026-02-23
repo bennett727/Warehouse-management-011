@@ -15,6 +15,8 @@ import java.util.Set;
 @Table(name = "sys_user")
 public class User extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Column(name = "username", nullable = false, unique = true, length = 50)
     private String username;
 

@@ -25,6 +25,8 @@ import lombok.Setter;
 })
 public class ApprovalRecord extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Column(name = "business_id", nullable = false)
     private Long businessId;
 

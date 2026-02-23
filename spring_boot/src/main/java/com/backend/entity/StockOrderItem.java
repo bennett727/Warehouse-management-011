@@ -36,6 +36,8 @@ import lombok.Setter;
 })
 public class StockOrderItem extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stock_order_id", nullable = false)
     @JsonIgnore

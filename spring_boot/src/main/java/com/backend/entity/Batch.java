@@ -28,6 +28,8 @@ import lombok.Setter;
        })
 public class Batch extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Column(name = "batch_no", nullable = false, unique = true, length = 50)
     private String batchNo;
 

@@ -47,7 +47,7 @@ public class BusinessLogger {
      * 私有构造方法，防止实例化
      */
     private BusinessLogger() {
-        throw new UnsupportedOperationException("工具类不能实例化");
+        // 工具类不能实例化
     }
 
     /**

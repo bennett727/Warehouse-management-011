@@ -25,6 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -154,7 +155,7 @@ public class SecurityUtils {
     public static boolean hasAnyRole(String... roles) {
         Set<String> userRoles = getCurrentUserRoles();
         for (String role : roles) {
-            if (userRoles.contains(role.toUpperCase())) {
+            if (userRoles.contains(role.toUpperCase(Locale.ROOT))) {
                 return true;
             }
         }
@@ -170,7 +171,7 @@ public class SecurityUtils {
     public static boolean hasAllRoles(String... roles) {
         Set<String> userRoles = getCurrentUserRoles();
         for (String role : roles) {
-            if (!userRoles.contains(role.toUpperCase())) {
+            if (!userRoles.contains(role.toUpperCase(Locale.ROOT))) {
                 return false;
             }
         }
@@ -296,6 +297,6 @@ public class SecurityUtils {
      * 私有构造方法，防止实例化
      */
     private SecurityUtils() {
-        throw new UnsupportedOperationException("工具类不能实例化");
+        // 工具类不能实例化
     }
 }

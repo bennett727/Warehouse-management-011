@@ -25,6 +25,8 @@ import lombok.Setter;
 })
 public class StockReservation extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Column(name = "device_id", nullable = false)
     private Long deviceId;
 

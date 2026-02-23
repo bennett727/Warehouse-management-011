@@ -12,6 +12,8 @@ import lombok.Setter;
 @Table(name = "system_config")
 public class SystemConfig extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Column(name = "config_key", nullable = false, unique = true, length = 100)
     private String configKey;
 

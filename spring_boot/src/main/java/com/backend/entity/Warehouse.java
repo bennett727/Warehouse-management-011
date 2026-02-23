@@ -16,6 +16,8 @@ import lombok.Setter;
 @Table(name = "warehouse")
 public class Warehouse extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Column(name = "warehouse_code", nullable = false, unique = true, length = 50)
     private String warehouseCode;
 

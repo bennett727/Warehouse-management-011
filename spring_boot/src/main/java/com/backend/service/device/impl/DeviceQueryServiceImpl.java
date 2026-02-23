@@ -139,33 +139,13 @@ public class DeviceQueryServiceImpl extends AbstractCrudService<Device, Long> im
         params.keyword = (keyword != null && !keyword.trim().isEmpty()) ? keyword.trim() : null;
         params.deviceCode = (deviceCode != null && !deviceCode.trim().isEmpty()) ? deviceCode.trim() : null;
         params.deviceName = (deviceName != null && !deviceName.trim().isEmpty()) ? deviceName.trim() : null;
-        params.manufacturer = (manufacturer != null && !manufacturer.trim().isEmpty()) ? manufacturer.trim() : null;
-        params.model = (model != null && !model.trim().isEmpty()) ? model.trim() : null;
         return params;
-    }
-
-    private DateRange parseDateRange(String startDateStr, String endDateStr) {
-        DateRange range = new DateRange();
-        if (startDateStr != null && !startDateStr.trim().isEmpty()) {
-            range.startDate = LocalDate.parse(startDateStr, DATE_FORMATTER).atStartOfDay();
-        }
-        if (endDateStr != null && !endDateStr.trim().isEmpty()) {
-            range.endDate = LocalDate.parse(endDateStr, DATE_FORMATTER).atTime(23, 59, 59);
-        }
-        return range;
     }
 
     private static class SearchParams {
         String keyword;
         String deviceCode;
         String deviceName;
-        String manufacturer;
-        String model;
-    }
-
-    private static class DateRange {
-        LocalDateTime startDate;
-        LocalDateTime endDate;
     }
 
     @Cacheable(value = "deviceStatistics", key = "#areaId")

@@ -23,6 +23,8 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = false)
 public class InventoryAdjustment extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

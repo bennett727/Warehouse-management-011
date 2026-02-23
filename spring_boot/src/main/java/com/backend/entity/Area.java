@@ -20,6 +20,8 @@ import lombok.Setter;
 })
 public class Area extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Column(name = "area_type_id")
     private Long areaTypeId;
 

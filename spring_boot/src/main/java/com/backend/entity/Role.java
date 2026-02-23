@@ -19,6 +19,8 @@ import lombok.Setter;
 @Table(name = "sys_role")
 public class Role extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Column(name = "role_name", nullable = false, unique = true, length = 50)
     private String roleName;
 

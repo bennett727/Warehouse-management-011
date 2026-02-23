@@ -195,7 +195,11 @@ public class AlertRuleEngine {
 
         public synchronized int getCount() {
             return count;
-}
+        }
+
+        public synchronized long getFirstOccurrence() {
+            return firstOccurrence;
+        }
 
 public synchronized void reset() {
             count = 0;

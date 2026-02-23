@@ -30,6 +30,8 @@ import lombok.Setter;
 })
 public class StockOrder extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Column(name = "order_no", nullable = false, unique = true, length = 50)
     private String orderNo;
 

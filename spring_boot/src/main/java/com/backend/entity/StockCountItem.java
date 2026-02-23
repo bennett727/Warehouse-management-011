@@ -18,6 +18,8 @@ import java.time.LocalDateTime;
        })
 public class StockCountItem extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Column(name = "stock_count_id", nullable = false)
     private Long stockCountId;
 

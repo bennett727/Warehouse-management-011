@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,7 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 true,
                 true,
                 user.getRoles().stream()
-                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRoleCode().toUpperCase()))
+                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRoleCode().toUpperCase(Locale.ROOT)))
                         .collect(Collectors.toList())
         );
     }

@@ -181,10 +181,10 @@ public class LogMonitor {
         // 统计各日志文件
         File[] logFiles = logDir.listFiles((dir, name) -> name.endsWith(".log"));
         if (logFiles != null && logFiles.length > 0) {
-            report.append("\n日志文件统计:\n");
+            report.append("%n日志文件统计:%n");
             for (File file : logFiles) {
                 String size = formatFileSize(file.length());
-                report.append(String.format("  - %s: %s\n", file.getName(), size));
+                report.append(String.format("  - %s: %s%n", file.getName(), size));
             }
         }
 
@@ -193,11 +193,11 @@ public class LogMonitor {
         if (archiveDir.exists()) {
             File[] archiveFiles = archiveDir.listFiles((dir, name) -> name.endsWith(".log"));
             if (archiveFiles != null) {
-                report.append(String.format("\n归档文件数量: %d\n", archiveFiles.length));
+                report.append(String.format("%n归档文件数量: %d%n", archiveFiles.length));
             }
         }
 
-        report.append("================================\n");
+        report.append("================================%n");
         logger.info(report.toString());
     }
 

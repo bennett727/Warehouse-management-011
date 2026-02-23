@@ -117,7 +117,9 @@ public class WeChatAlertService {
         }
 
         try {
-            Map<String, Object> responseMap = objectMapper.readValue(response, new TypeReference<Map<String, Object>>() {});
+            Map<String, Object> responseMap = objectMapper.readValue(response, new TypeReference<Map<String, Object>>() {
+                private static final long serialVersionUID = 1L;
+            });
             Object errcode = responseMap.get("errcode");
             return errcode != null && WECHAT_SUCCESS_CODE == ((Number) errcode).intValue();
         } catch (Exception e) {

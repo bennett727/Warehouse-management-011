@@ -445,14 +445,6 @@ public class DeviceLifecycleServiceImpl implements DeviceLifecycleService {
                 .orElse(null);
     }
 
-    private Integer parseStatus(String status) {
-        try {
-            return status != null ? Integer.parseInt(status) : null;
-        } catch (NumberFormatException e) {
-            return null;
-        }
-    }
-
     private String getStatusText(Integer status) {
         if (status == null)
             return "未知";

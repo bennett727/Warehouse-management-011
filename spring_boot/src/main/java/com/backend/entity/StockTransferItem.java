@@ -17,6 +17,8 @@ import lombok.Setter;
        })
 public class StockTransferItem extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Column(name = "transfer_id", nullable = false)
     private Long transferId;
 

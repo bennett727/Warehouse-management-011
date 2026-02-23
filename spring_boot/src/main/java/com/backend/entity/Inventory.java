@@ -21,6 +21,8 @@ import java.math.BigDecimal;
        })
 public class Inventory extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @NotNull(message = "设备不能为空")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "device_id", nullable = false)

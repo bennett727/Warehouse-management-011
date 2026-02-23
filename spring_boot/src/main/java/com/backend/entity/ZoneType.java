@@ -36,6 +36,8 @@ import java.util.Set;
        })
 public class ZoneType extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @NotBlank(message = "类型名称不能为空")
     @Size(max = 100, message = "类型名称长度不能超过100个字符")
     @Column(name = "name", nullable = false, length = 100, unique = true)

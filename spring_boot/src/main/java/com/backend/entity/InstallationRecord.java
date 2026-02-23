@@ -36,6 +36,8 @@ import lombok.Setter;
 })
 public class InstallationRecord extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "device_id", nullable = false)
     @JsonIgnore

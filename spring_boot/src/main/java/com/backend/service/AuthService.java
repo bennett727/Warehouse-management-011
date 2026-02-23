@@ -2,6 +2,7 @@ package com.backend.service;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -67,7 +68,7 @@ public class AuthService {
             userInfo.put("phone", user.getPhone());
             userInfo.put("avatar", user.getAvatar());
             userInfo.put("roles", user.getRoles().stream()
-                    .map(r -> r.getRoleCode().toUpperCase())
+                    .map(r -> r.getRoleCode().toUpperCase(Locale.ROOT))
                     .collect(Collectors.toList()));
 
             result.put("userInfo", userInfo);
@@ -121,7 +122,7 @@ public class AuthService {
         userInfo.put("phone", user.getPhone());
         userInfo.put("avatar", user.getAvatar());
         userInfo.put("roles", user.getRoles().stream()
-                .map(r -> r.getRoleCode().toUpperCase())
+                .map(r -> r.getRoleCode().toUpperCase(Locale.ROOT))
                 .collect(Collectors.toList()));
         userInfo.put("permissions", user.getRoles().stream()
                 .flatMap(r -> r.getPermissions().stream())

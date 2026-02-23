@@ -21,6 +21,8 @@ import lombok.Setter;
 @Table(name = "administrative_division")
 public class AdministrativeDivision extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @Column(name = "code", nullable = false, unique = true, length = 20)
     private String code;
 

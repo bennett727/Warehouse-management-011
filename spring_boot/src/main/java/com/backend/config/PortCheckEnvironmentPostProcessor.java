@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.nio.charset.Charset;
+import java.util.Locale;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
@@ -127,7 +128,7 @@ public class PortCheckEnvironmentPostProcessor implements EnvironmentPostProcess
                         if (parts.length >= 5) {
                             String pid = parts[parts.length - 1];
                             String processName = getProcessNameByPid(pid);
-                            if (processName != null && processName.toLowerCase().contains("java")) {
+                            if (processName != null && processName.toLowerCase(Locale.ROOT).contains("java")) {
                                 return String.format("PID: %s, 进程: %s", pid, processName);
                             }
                         }
@@ -206,7 +207,7 @@ public class PortCheckEnvironmentPostProcessor implements EnvironmentPostProcess
                             String currentPid = parts[parts.length - 1];
                             String processName = getProcessNameByPid(currentPid);
                             // 只终止Java进程
-                            if (processName != null && processName.toLowerCase().contains("java")) {
+                            if (processName != null && processName.toLowerCase(Locale.ROOT).contains("java")) {
                                 pid = currentPid;
                                 break;
                             }

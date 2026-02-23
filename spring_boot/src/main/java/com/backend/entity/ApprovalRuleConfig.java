@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
 @Table(name = "approval_rule_config")
 public class ApprovalRuleConfig extends BaseEntity {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * 规则名称
      */

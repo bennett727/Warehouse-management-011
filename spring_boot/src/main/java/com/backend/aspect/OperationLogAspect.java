@@ -1,6 +1,7 @@
 package com.backend.aspect;
 
 import java.lang.reflect.Method;
+import java.util.Locale;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -187,7 +188,7 @@ public class OperationLogAspect {
      * @return 操作描述
      */
     private String getOperationDescription(String methodName) {
-        String lowerMethodName = methodName.toLowerCase();
+        String lowerMethodName = methodName.toLowerCase(Locale.ROOT);
         if (lowerMethodName.contains("create") || lowerMethodName.contains("add") || lowerMethodName.contains("save")) {
             return "创建操作";
         } else if (lowerMethodName.contains("update") || lowerMethodName.contains("modify")

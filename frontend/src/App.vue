@@ -30,7 +30,7 @@
 import { ref, provide, onMounted, onUnmounted } from 'vue';
 
 import GlobalErrorHandler from '@/components/base/GlobalErrorHandler.vue';
-import ErrorBoundary from '@/components/common/ErrorBoundary.vue';
+import ErrorBoundary from '@/components/base/ErrorBoundary.vue';
 import { useGlobalStore } from '@/stores/global.js';
 import { createLogger } from '@/utils/logger';
 
