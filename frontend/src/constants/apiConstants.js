@@ -541,7 +541,7 @@ export const HEALTH_API = {
 // ==================== 区域相关路径（在SYSTEM_API之前定义） ====================
 export const AREA_API = {
   BASE: `${API_BASE}/areas`,
-  LIST: `${API_BASE}/areas`,
+  LIST: `${API_BASE}/areas/all`,
   TREE: `${API_BASE}/areas/tree`,
   DETAIL: (id) => `${API_BASE}/areas/${id}`,
   CREATE: `${API_BASE}/areas`,
@@ -720,6 +720,18 @@ export const BUSINESS_API = {
   APPROVAL_BATCH_REJECT: `${API_BASE}/business/approval/batch-reject`,
 };
 
+// ==================== Excel导出相关路径 ====================
+/**
+ * Excel导出API路径
+ * 与后端ExcelExportController保持一致
+ */
+export const EXCEL_API = {
+  BASE: `${API_BASE}/excel`,
+  DEVICE_EXPORT: `${API_BASE}/excel/devices/export`,
+  INVENTORY_EXPORT: `${API_BASE}/excel/inventory/export`,
+  COMPREHENSIVE_EXPORT: `${API_BASE}/excel/comprehensive/export`,
+};
+
 // ==================== 导出所有API常量 ====================
 export default {
   API_BASE,
@@ -767,4 +779,5 @@ export default {
   WAREHOUSE_API,
   ZONE_API,
   BUSINESS_API,
+  EXCEL_API,
 };

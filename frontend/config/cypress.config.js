@@ -40,13 +40,11 @@ module.exports = defineConfig({
     chromeWebSecurity: false,
     trashAssetsBeforeRuns: true,
     testIsolation: true,
-    // 启用并行执行配置
-    experimentalStudio: true,
-    // 环境变量配置 - 使用exposeInEnvironment替代不安全的allowCypressEnv
+    // 环境变量配置
     env: {
       apiUrl: 'http://localhost:8080/api',
       testUser: 'admin',
-      testPassword: 'Admin@123456',
+      testPassword: '123456',
       testDataPrefix: 'TEST_DATA_',
       // 并行执行配置
       ENABLE_PARALLEL: true,

@@ -1,0 +1,108 @@
+name: Security Audit
+
+on:
+  # 每周一凌晨2点执行
+  schedule:
+    - cron: '0 2 * * 1'
+  # 允许手动触发
+  workflow_dispatch:
+  # PR时触发
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  frontend-audit:
+    name: Frontend Security Audit
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+      
+      - name: Run security audit
+        working-directory: ./frontend
+        run: node scripts/security-audit.cjs
+        continue-on-error: true
+      
+      - name: Upload audit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-security-report
+          path: frontend/docs/security/audit-report.md
+          retention-days: 30
+      
+      - name: Check for critical vulnerabilities
+        working-directory: ./frontend
+        run: |
+          if npm audit --audit-level=high; then
+            echo "✅ No high severity vulnerabilities found"
+          else
+            echo "⚠️ High severity vulnerabilities detected"
+            echo "Please review the audit report and fix the issues"
+            exit 1
+          fi
+        continue-on-error: true
+
+  backend-audit:
+    name: Backend Security Audit
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+      
+      - name: Run dependency check
+        working-directory: ./spring_boot
+        run: mvn dependency:analyze
+      
+      - name: Run SpotBugs check
+        working-directory: ./spring_boot
+        run: mvn spotbugs:check
+        continue-on-error: true
+      
+      - name: Upload SpotBugs report
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-spotbugs-report
+          path: spring_boot/target/spotbugs*.xml
+          retention-days: 30
+
+  notify:
+    name: Notify Security Team
+    needs: [frontend-audit, backend-audit]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: Check audit results
+        run: |
+          if [ "${{ needs.frontend-audit.result }}" == "failure" ] || [ "${{ needs.backend-audit.result }}" == "failure" ]; then
+            echo "🚨 Security audit failed"
+            echo "Please check the audit reports in the artifacts"
+          else
+            echo "✅ Security audit passed"
+          fi
+      
+      # 可选：发送通知到钉钉/企业微信/Slack
+      # - name: Send notification
+      #   uses: some-action/notification@v1
+      #   with:
+      #     message: "Security audit completed"

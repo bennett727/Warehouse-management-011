@@ -1,0 +1,1 @@
+System.register(["./device-module-legacy-8GYr0jEq.js"],function(e,t){"use strict";var r,s;return{setters:[e=>{r=e.s,s=e.am}],execute:function(){e("g",(e={})=>r({url:s.LIST,method:"get",params:e}))}}});

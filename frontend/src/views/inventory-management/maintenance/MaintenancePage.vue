@@ -11,7 +11,7 @@
 <template>
   <PageLayout title="保养记录查询" description="查看设备保养记录（由出库流程自动生成）">
     <template #headerActions>
-      <el-button type="success" :icon="Download" @click="handleExport" :loading="exportLoading">导出数据</el-button>
+      <el-button type="success" :icon="Download" @click="handleExport" :loading="exportLoading" data-cy="maintenance-export-btn">导出数据</el-button>
     </template>
 
     <el-alert title="业务流程说明" type="info" :closable="false" show-icon style="margin-bottom: 16px">
@@ -87,33 +87,33 @@
         :page-size="pageSize"
         @page-change="handlePageChange"
       >
-        <el-table-column type="index" label="序号" width="60" />
-        <el-table-column prop="maintenanceNo" label="保养单号" width="150" />
-        <el-table-column prop="deviceCode" label="设备编号" width="150" />
-        <el-table-column prop="deviceName" label="设备名称" min-width="180" />
-        <el-table-column prop="maintenanceType" label="保养类型" width="120">
+        <el-table-column type="index" label="序号" width="60" data-cy="maintenance-index-column" />
+        <el-table-column prop="maintenanceNo" label="保养单号" width="150" data-cy="maintenance-no-column" />
+        <el-table-column prop="deviceCode" label="设备编号" width="150" data-cy="maintenance-device-code-column" />
+        <el-table-column prop="deviceName" label="设备名称" min-width="180" data-cy="maintenance-device-name-column" />
+        <el-table-column prop="maintenanceType" label="保养类型" width="120" data-cy="maintenance-type-column">
           <template #default="{ row }">
-            <el-tag :type="getMaintenanceTypeType(row.maintenanceType)">{{
+            <el-tag :type="getMaintenanceTypeType(row.maintenanceType)" :data-cy="`maintenance-type-tag-${row.id}`">{{
               getMaintenanceTypeText(row.maintenanceType)
             }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="maintenanceDate" label="保养日期" width="120" />
-        <el-table-column prop="operatorName" label="保养人员" width="120" />
-        <el-table-column prop="status" label="状态" width="100">
+        <el-table-column prop="maintenanceDate" label="保养日期" width="120" data-cy="maintenance-date-column" />
+        <el-table-column prop="operatorName" label="保养人员" width="120" data-cy="maintenance-operator-column" />
+        <el-table-column prop="status" label="状态" width="100" data-cy="maintenance-status-column">
           <template #default="{ row }">
-            <el-tag :type="getStatusType(row.status)">{{ getStatusText(row.status) }}</el-tag>
+            <el-tag :type="getStatusType(row.status)" :data-cy="`maintenance-status-tag-${row.id}`">{{ getStatusText(row.status) }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="120" fixed="right">
+        <el-table-column label="操作" width="120" fixed="right" data-cy="maintenance-actions-column">
           <template #default="{ row }">
-            <el-button link type="primary" @click="handleView(row)">查看</el-button>
+            <el-button link type="primary" @click="handleView(row)" data-cy="maintenance-view-btn">查看</el-button>
           </template>
         </el-table-column>
       </DataTable>
     </el-card>
 
-    <el-dialog v-model="detailDialogVisible" title="保养记录详情" width="700px">
+    <el-dialog v-model="detailDialogVisible" title="保养记录详情" width="700px" data-cy="maintenance-detail-dialog">
       <el-descriptions :column="2" border>
         <el-descriptions-item label="保养单号">{{ currentRow?.maintenanceNo }}</el-descriptions-item>
         <el-descriptions-item label="设备编号">{{ currentRow?.deviceCode }}</el-descriptions-item>
@@ -132,7 +132,7 @@
         <el-descriptions-item label="备注" :span="2">{{ currentRow?.remark || '-' }}</el-descriptions-item>
       </el-descriptions>
       <template #footer>
-        <el-button @click="detailDialogVisible = false">关闭</el-button>
+        <el-button @click="detailDialogVisible = false" data-cy="maintenance-detail-close-btn">关闭</el-button>
       </template>
     </el-dialog>
   </PageLayout>

@@ -17,7 +17,6 @@ import { createApp } from 'vue';
 import App from './App.vue';
 // 样式系统版本
 const STYLE_VERSION = '2.0.0';
-console.log(`[Style System] Version: ${STYLE_VERSION}`);
 
 // 统一样式入口（推荐方式）
 import './assets/styles/_index.scss';
@@ -35,6 +34,7 @@ import GlobalError from './components/base/GlobalError.vue';
 import GlobalLoading from './components/base/GlobalLoading.vue';
 import OptimizedForm from './components/base/OptimizedForm.vue';
 import PageLayout from './components/base/PageLayout.vue';
+import { permission, role } from './directives/permission.js';
 import router from './router';
 import { initErrorMonitor } from './utils/errors/errorMonitor';
 import { initNetworkMonitor } from './utils/network';
@@ -94,6 +94,10 @@ app.component('DataTable', DataTable);
 app.component('ActionBar', ActionBar);
 app.component('OptimizedForm', OptimizedForm);
 
+// 注册权限指令
+app.directive('permission', permission);
+app.directive('role', role);
+
 // 初始化网络状态监控
 initNetworkMonitor();
 
@@ -102,29 +106,13 @@ app.use(ElementPlus, {
   locale: zhCn,
 });
 
-// 添加调试日志
+// 开发环境调试日志
 if (import.meta.env.DEV) {
-  console.log('🚀 应用初始化开始');
-  console.log(
-    '📊 路由配置:',
-    router.getRoutes().map((r) => ({ path: r.path, name: r.name }))
-  );
-  console.log('🔧 环境配置:', {
-    mode: import.meta.env.MODE,
-    dev: import.meta.env.DEV,
-    prod: import.meta.env.PROD,
-    base: import.meta.env.BASE_URL,
-  });
+  // 调试信息已禁用，使用logger模块记录关键信息
 }
 
 app.mount('#app');
 
 if (import.meta.env.DEV) {
   window.app = app;
-  console.log('✅ 应用挂载完成');
-  console.log('📝 全局对象:', {
-    app: window.app,
-    router,
-    pinia,
-  });
 }

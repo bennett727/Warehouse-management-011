@@ -13,26 +13,42 @@
     :close-on-click-modal="false"
     destroy-on-close
     class="device-selector-dialog"
+    data-cy="device-selector-dialog"
   >
     <div class="selector-container">
-      <div class="selector-filter">
+      <div class="selector-filter" data-cy="device-selector-filter">
         <el-input
           v-model="searchQuery"
           placeholder="搜索设备编号/名称/型号"
           clearable
           style="width: 280px"
           :prefix-icon="Search"
+          data-cy="device-selector-search-input"
           @keyup.enter="handleSearch"
         />
-        <el-select v-model="filterType" placeholder="设备类型" clearable style="width: 140px">
+        <el-select
+          v-model="filterType"
+          placeholder="设备类型"
+          clearable
+          style="width: 140px"
+          data-cy="device-selector-type-select"
+        >
           <el-option v-for="type in deviceTypes" :key="type.value" :label="type.label" :value="type.value" />
         </el-select>
-        <el-select v-model="filterStatus" placeholder="设备状态" clearable style="width: 120px">
+        <el-select
+          v-model="filterStatus"
+          placeholder="设备状态"
+          clearable
+          style="width: 120px"
+          data-cy="device-selector-status-select"
+        >
           <el-option label="在库" value="in_stock" />
           <el-option label="可用" value="available" />
         </el-select>
-        <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
-        <el-button :icon="Refresh" @click="handleReset">重置</el-button>
+        <el-button type="primary" :icon="Search" data-cy="device-selector-search-btn" @click="handleSearch"
+          >搜索</el-button
+        >
+        <el-button :icon="Refresh" data-cy="device-selector-reset-btn" @click="handleReset">重置</el-button>
       </div>
 
       <div class="device-table-wrapper">
@@ -44,10 +60,11 @@
           height="350px"
           row-key="id"
           @selection-change="handleSelectionChange"
+          data-cy="device-selector-table"
         >
-          <el-table-column type="selection" width="55" align="center" :selectable="checkSelectable" />
-          <el-table-column type="index" label="序号" width="60" align="center" />
-          <el-table-column prop="deviceCode" label="设备编号" width="140">
+          <el-table-column type="selection" width="55" align="center" :selectable="checkSelectable" data-cy="device-selector-table-selection-column" />
+          <el-table-column type="index" label="序号" width="60" align="center" data-cy="device-selector-table-index-column" />
+          <el-table-column prop="deviceCode" label="设备编号" width="140" data-cy="device-selector-table-code-column">
             <template #default="{ row }">
               <div class="device-code-cell">
                 <el-icon :size="14" color="#409EFF"><Cpu /></el-icon>
@@ -55,22 +72,22 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="deviceName" label="设备名称" min-width="160" show-overflow-tooltip />
-          <el-table-column prop="deviceType" label="设备类型" width="100">
+          <el-table-column prop="deviceName" label="设备名称" min-width="160" show-overflow-tooltip data-cy="device-selector-table-name-column" />
+          <el-table-column prop="deviceType" label="设备类型" width="100" data-cy="device-selector-table-type-column">
             <template #default="{ row }">
               <el-tag size="small" effect="plain">{{ row.deviceType }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="model" label="规格型号" width="120" show-overflow-tooltip />
-          <el-table-column prop="warehouseName" label="所在仓库" width="100" />
-          <el-table-column prop="status" label="状态" width="80" align="center">
+          <el-table-column prop="model" label="规格型号" width="120" show-overflow-tooltip data-cy="device-selector-table-model-column" />
+          <el-table-column prop="warehouseName" label="所在仓库" width="100" data-cy="device-selector-table-warehouse-column" />
+          <el-table-column prop="status" label="状态" width="80" align="center" data-cy="device-selector-table-status-column">
             <template #default="{ row }">
               <el-tag :type="getStatusType(row.status)" size="small">
                 {{ getStatusText(row.status) }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="quantity" label="库存" width="80" align="center">
+          <el-table-column prop="quantity" label="库存" width="80" align="center" data-cy="device-selector-table-quantity-column">
             <template #default="{ row }">
               <span :class="{ 'low-stock': row.quantity <= 5 }">{{ row.quantity || 0 }}</span>
             </template>
@@ -78,7 +95,7 @@
         </el-table>
       </div>
 
-      <div class="selector-pagination">
+      <div class="selector-pagination" data-cy="device-selector-pagination">
         <el-pagination
           v-model:current-page="pagination.current"
           v-model:page-size="pagination.pageSize"
@@ -87,16 +104,19 @@
           layout="total, sizes, prev, pager, next"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
+          data-cy="device-selector-pagination-control"
         />
       </div>
 
-      <div class="selected-devices" v-if="tempSelected.length > 0">
+      <div class="selected-devices" v-if="tempSelected.length > 0" data-cy="device-selector-selected">
         <div class="selected-header">
           <el-icon :size="16" color="#409EFF"><Box /></el-icon>
           <span
             >已选择 <strong>{{ tempSelected.length }}</strong> 个设备</span
           >
-          <el-button type="danger" link size="small" @click="clearSelection">清空选择</el-button>
+          <el-button type="danger" link size="small" data-cy="device-selector-clear-btn" @click="clearSelection"
+            >清空选择</el-button
+          >
         </div>
         <el-scrollbar max-height="80px">
           <div class="selected-tags">
@@ -105,6 +125,7 @@
               :key="device.id"
               closable
               size="small"
+              :data-cy="`device-selector-tag-${device.id}`"
               @close="removeSelected(device)"
             >
               {{ device.deviceCode }} - {{ device.deviceName }}
@@ -115,9 +136,14 @@
     </div>
 
     <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="handleCancel">取消</el-button>
-        <el-button type="primary" :disabled="tempSelected.length === 0" @click="handleConfirm">
+      <div class="dialog-footer" data-cy="device-selector-footer">
+        <el-button data-cy="device-selector-cancel-btn" @click="handleCancel">取消</el-button>
+        <el-button
+          type="primary"
+          :disabled="tempSelected.length === 0"
+          data-cy="device-selector-confirm-btn"
+          @click="handleConfirm"
+        >
           确定 ({{ tempSelected.length }})
         </el-button>
       </div>

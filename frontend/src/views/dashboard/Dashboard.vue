@@ -113,7 +113,7 @@
             <template #header>
               <div class="card-header">
                 <span>仓库数据概览</span>
-                <el-button link type="primary" @click="navigateTo('/warehouse/list')">
+                <el-button link type="primary" @click="navigateTo('/warehouse/list')" data-cy="warehouse-overview-more-btn">
                   查看详情 <el-icon><ArrowRight /></el-icon>
                 </el-button>
               </div>
@@ -230,10 +230,10 @@
         <template #header>
           <div class="card-header">
             <span>最近活动</span>
-            <el-button link :icon="Refresh" @click="loadRecentActivity" :loading="activityLoading">刷新</el-button>
+            <el-button link :icon="Refresh" @click="loadRecentActivity" :loading="activityLoading" data-cy="activity-refresh-btn">刷新</el-button>
           </div>
         </template>
-        <el-table :data="recentActivity" stripe style="width: 100%" v-loading="activityLoading">
+        <el-table :data="recentActivity" stripe style="width: 100%" v-loading="activityLoading" data-cy="recent-activity-table">
           <el-table-column prop="time" label="时间" width="180" />
           <el-table-column prop="user" label="操作人" width="120" />
           <el-table-column prop="action" label="操作类型" width="150">

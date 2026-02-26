@@ -14,18 +14,20 @@
     destroy-on-close
     :close-on-click-modal="false"
     class="device-detail-input-dialog"
+    data-cy="device-detail-input-dialog"
   >
-    <div class="dialog-description">
+    <div class="dialog-description" data-cy="device-detail-input-description">
       <el-alert
         :title="`已为 ${devices.length} 个设备创建出库记录，请填写每个设备的详细信息`"
         type="info"
         :closable="false"
         show-icon
+        data-cy="device-detail-input-alert"
       />
     </div>
 
     <!-- 设备详情表单列表 -->
-    <el-scrollbar height="500px" class="forms-container">
+    <el-scrollbar height="500px" class="forms-container" data-cy="device-detail-input-scrollbar">
       <div
         v-for="(item, index) in formItems"
         :key="item.deviceId"
@@ -56,22 +58,24 @@
               :rules="getItemRules(item)"
               label-width="120px"
               class="device-form"
+              :data-cy="`device-detail-form-${index}`"
             >
               <el-row :gutter="20">
                 <el-col :span="12">
-                  <el-form-item label="出库数量" prop="quantity">
+                  <el-form-item label="出库数量" prop="quantity" :data-cy="`device-detail-quantity-form-item-${index}`">
                     <el-input-number
                       v-model="item.quantity"
                       :min="1"
                       :max="item.availableStock || 9999"
                       :precision="0"
                       style="width: 100%"
+                      :data-cy="`device-detail-quantity-input-${index}`"
                     />
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="货位" prop="binId">
-                    <el-select v-model="item.binId" placeholder="选择货位" filterable style="width: 100%">
+                  <el-form-item label="货位" prop="binId" :data-cy="`device-detail-bin-form-item-${index}`">
+                    <el-select v-model="item.binId" placeholder="选择货位" filterable style="width: 100%" :data-cy="`device-detail-bin-select-${index}`">
                       <el-option v-for="bin in binOptions" :key="bin.id" :label="bin.code" :value="bin.id" />
                     </el-select>
                   </el-form-item>
@@ -85,37 +89,39 @@
                 </el-divider>
                 <el-row :gutter="20">
                   <el-col :span="24">
-                    <el-form-item label="安装地址" prop="installProvinceId" required>
+                    <el-form-item label="安装地址" prop="installProvinceId" required :data-cy="`device-detail-address-form-item-${index}`">
                       <AddressSelector
                         v-model:province="item.installProvinceId"
                         v-model:city="item.installCityId"
                         v-model:district="item.installDistrictId"
                         v-model:detail="item.installDetailAddress"
                         @change="(data) => handleAddressChange(index, data)"
+                        :data-cy="`device-detail-address-selector-${index}`"
                       />
                     </el-form-item>
                   </el-col>
                 </el-row>
                 <el-row :gutter="20">
                   <el-col :span="8">
-                    <el-form-item label="安装日期" prop="installationDate">
+                    <el-form-item label="安装日期" prop="installationDate" :data-cy="`device-detail-install-date-form-item-${index}`">
                       <el-date-picker
                         v-model="item.installationDate"
                         type="date"
                         placeholder="选择日期"
                         value-format="YYYY-MM-DD"
                         style="width: 100%"
+                        :data-cy="`device-detail-install-date-picker-${index}`"
                       />
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
-                    <el-form-item label="安装人员" prop="installerName">
-                      <el-input v-model="item.installerName" placeholder="请输入安装人员" />
+                    <el-form-item label="安装人员" prop="installerName" :data-cy="`device-detail-installer-form-item-${index}`">
+                      <el-input v-model="item.installerName" placeholder="请输入安装人员" :data-cy="`device-detail-installer-input-${index}`" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="8">
-                    <el-form-item label="保修期(月)" prop="warrantyPeriod">
-                      <el-input-number v-model="item.warrantyPeriod" :min="0" :max="120" style="width: 100%" />
+                    <el-form-item label="保修期(月)" prop="warrantyPeriod" :data-cy="`device-detail-warranty-form-item-${index}`">
+                      <el-input-number v-model="item.warrantyPeriod" :min="0" :max="120" style="width: 100%" :data-cy="`device-detail-warranty-input-${index}`" />
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -128,35 +134,37 @@
                 </el-divider>
                 <el-row :gutter="20">
                   <el-col :span="12">
-                    <el-form-item label="故障描述" prop="faultDescription">
+                    <el-form-item label="故障描述" prop="faultDescription" :data-cy="`device-detail-fault-form-item-${index}`">
                       <el-input
                         v-model="item.faultDescription"
                         type="textarea"
                         :rows="2"
                         placeholder="请输入故障描述"
+                        :data-cy="`device-detail-fault-input-${index}`"
                       />
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item label="维修地点" prop="repairLocation">
-                      <el-input v-model="item.repairLocation" placeholder="请输入维修地点" />
+                    <el-form-item label="维修地点" prop="repairLocation" :data-cy="`device-detail-repair-location-form-item-${index}`">
+                      <el-input v-model="item.repairLocation" placeholder="请输入维修地点" :data-cy="`device-detail-repair-location-input-${index}`" />
                     </el-form-item>
                   </el-col>
                 </el-row>
                 <el-row :gutter="20">
                   <el-col :span="12">
-                    <el-form-item label="维修人员" prop="repairPerson">
-                      <el-input v-model="item.repairPerson" placeholder="请输入维修人员" />
+                    <el-form-item label="维修人员" prop="repairPerson" :data-cy="`device-detail-repair-person-form-item-${index}`">
+                      <el-input v-model="item.repairPerson" placeholder="请输入维修人员" :data-cy="`device-detail-repair-person-input-${index}`" />
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item label="预计完成日期" prop="estimatedCompleteDate">
+                    <el-form-item label="预计完成日期" prop="estimatedCompleteDate" :data-cy="`device-detail-estimated-date-form-item-${index}`">
                       <el-date-picker
                         v-model="item.estimatedCompleteDate"
                         type="date"
                         placeholder="选择日期"
                         value-format="YYYY-MM-DD"
                         style="width: 100%"
+                        :data-cy="`device-detail-estimated-date-picker-${index}`"
                       />
                     </el-form-item>
                   </el-col>
@@ -170,29 +178,29 @@
                 </el-divider>
                 <el-row :gutter="20">
                   <el-col :span="12">
-                    <el-form-item label="报废原因" prop="scrapReason">
-                      <el-select v-model="item.scrapReason" placeholder="选择报废原因" style="width: 100%">
-                        <el-option label="设备老化" value="AGING" />
-                        <el-option label="损坏无法修复" value="UNREPAIRABLE" />
-                        <el-option label="技术淘汰" value="OBSOLETE" />
-                        <el-option label="其他原因" value="OTHER" />
+                    <el-form-item label="报废原因" prop="scrapReason" :data-cy="`device-detail-scrap-reason-form-item-${index}`">
+                      <el-select v-model="item.scrapReason" placeholder="选择报废原因" style="width: 100%" :data-cy="`device-detail-scrap-reason-select-${index}`">
+                        <el-option label="设备老化" value="AGING" :data-cy="`device-detail-scrap-option-aging-${index}`" />
+                        <el-option label="损坏无法修复" value="UNREPAIRABLE" :data-cy="`device-detail-scrap-option-unrepairable-${index}`" />
+                        <el-option label="技术淘汰" value="OBSOLETE" :data-cy="`device-detail-scrap-option-obsolete-${index}`" />
+                        <el-option label="其他原因" value="OTHER" :data-cy="`device-detail-scrap-option-other-${index}`" />
                       </el-select>
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item label="残值评估" prop="residualValue">
-                      <el-input-number v-model="item.residualValue" :min="0" :precision="2" style="width: 100%" />
+                    <el-form-item label="残值评估" prop="residualValue" :data-cy="`device-detail-residual-value-form-item-${index}`">
+                      <el-input-number v-model="item.residualValue" :min="0" :precision="2" style="width: 100%" :data-cy="`device-detail-residual-value-input-${index}`" />
                     </el-form-item>
                   </el-col>
                 </el-row>
               </template>
 
               <!-- 通用字段 -->
-              <el-form-item label="出库原因" prop="outboundReason">
-                <el-input v-model="item.outboundReason" type="textarea" :rows="2" placeholder="请输入出库原因" />
+              <el-form-item label="出库原因" prop="outboundReason" :data-cy="`device-detail-outbound-reason-form-item-${index}`">
+                <el-input v-model="item.outboundReason" type="textarea" :rows="2" placeholder="请输入出库原因" :data-cy="`device-detail-outbound-reason-input-${index}`" />
               </el-form-item>
 
-              <el-form-item label="备注" prop="remark">
+              <el-form-item label="备注" prop="remark" :data-cy="`device-detail-remark-form-item-${index}`">
                 <el-input
                   v-model="item.remark"
                   type="textarea"
@@ -200,6 +208,7 @@
                   placeholder="请输入备注信息"
                   maxlength="500"
                   show-word-limit
+                  :data-cy="`device-detail-remark-input-${index}`"
                 />
               </el-form-item>
             </el-form>
@@ -209,7 +218,7 @@
     </el-scrollbar>
 
     <!-- 快速导航 -->
-    <div class="quick-nav">
+    <div class="quick-nav" data-cy="device-detail-input-quick-nav">
       <span class="nav-label">快速跳转:</span>
       <el-button-group>
         <el-button
@@ -218,6 +227,7 @@
           :type="currentIndex === index ? 'primary' : 'default'"
           size="small"
           @click="currentIndex = index"
+          :data-cy="`device-detail-input-nav-btn-${index}`"
         >
           {{ index + 1 }}
         </el-button>
@@ -225,31 +235,31 @@
     </div>
 
     <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="handleCancel">返回上一步</el-button>
-        <el-button type="success" @click="handleBatchFill">批量填充</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleConfirm"> 确认出库 </el-button>
+      <div class="dialog-footer" data-cy="device-detail-input-footer">
+        <el-button @click="handleCancel" data-cy="device-detail-input-cancel-btn">返回上一步</el-button>
+        <el-button type="success" @click="handleBatchFill" data-cy="device-detail-input-batch-fill-btn">批量填充</el-button>
+        <el-button type="primary" :loading="submitLoading" @click="handleConfirm" data-cy="device-detail-input-confirm-btn"> 确认出库 </el-button>
       </div>
     </template>
 
     <!-- 批量填充对话框 -->
-    <el-dialog v-model="batchFillVisible" title="批量填充" width="500px" append-to-body>
-      <el-form label-width="100px">
+    <el-dialog v-model="batchFillVisible" title="批量填充" width="500px" append-to-body data-cy="batch-fill-dialog">
+      <el-form label-width="100px" data-cy="batch-fill-form">
         <el-form-item label="填充字段">
-          <el-select v-model="batchFillField" placeholder="选择要填充的字段" style="width: 100%">
-            <el-option label="出库原因" value="outboundReason" />
-            <el-option label="备注" value="remark" />
-            <el-option v-if="outboundType === 1" label="安装人员" value="installerName" />
-            <el-option v-if="outboundType === 2" label="维修地点" value="repairLocation" />
+          <el-select v-model="batchFillField" placeholder="选择要填充的字段" style="width: 100%" data-cy="batch-fill-field-select">
+            <el-option label="出库原因" value="outboundReason" data-cy="batch-fill-option-outbound-reason" />
+            <el-option label="备注" value="remark" data-cy="batch-fill-option-remark" />
+            <el-option v-if="outboundType === 1" label="安装人员" value="installerName" data-cy="batch-fill-option-installer" />
+            <el-option v-if="outboundType === 2" label="维修地点" value="repairLocation" data-cy="batch-fill-option-repair-location" />
           </el-select>
         </el-form-item>
         <el-form-item label="填充值">
-          <el-input v-model="batchFillValue" placeholder="输入要填充的值" />
+          <el-input v-model="batchFillValue" placeholder="输入要填充的值" data-cy="batch-fill-value-input" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="batchFillVisible = false">取消</el-button>
-        <el-button type="primary" @click="applyBatchFill">应用</el-button>
+        <el-button @click="batchFillVisible = false" data-cy="batch-fill-cancel-btn">取消</el-button>
+        <el-button type="primary" @click="applyBatchFill" data-cy="batch-fill-apply-btn">应用</el-button>
       </template>
     </el-dialog>
   </el-dialog>

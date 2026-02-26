@@ -176,6 +176,7 @@
               size="small"
               class="fix-address-btn"
               @click.stop="handleFixAddress(scope.row)"
+              data-cy="device-fix-address-btn"
             >
               <el-icon><Edit /></el-icon>
               完善地址
@@ -320,7 +321,7 @@
               编辑
             </el-button>
             <el-dropdown @command="(cmd) => handleMoreAction(cmd, scope.row)" trigger="click" class="action-dropdown">
-              <el-button :icon="MoreFilled" circle size="small" class="more-action-btn" />
+              <el-button :icon="MoreFilled" circle size="small" class="more-action-btn" data-cy="device-more-actions-btn" />
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item command="connect" :icon="Connection">
@@ -388,9 +389,9 @@
         </el-checkbox>
       </el-checkbox-group>
       <template #footer>
-        <el-button @click="handleResetColumns">重置</el-button>
-        <el-button @click="columnConfigVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleSaveColumns">确定</el-button>
+        <el-button @click="handleResetColumns" data-cy="device-columns-reset-btn">重置</el-button>
+        <el-button @click="columnConfigVisible = false" data-cy="device-columns-cancel-btn">取消</el-button>
+        <el-button type="primary" @click="handleSaveColumns" data-cy="device-columns-confirm-btn">确定</el-button>
       </template>
     </el-dialog>
   </PageLayout>

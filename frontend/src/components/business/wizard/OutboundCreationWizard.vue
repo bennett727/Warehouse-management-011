@@ -22,6 +22,7 @@
     :close-on-press-escape="false"
     destroy-on-close
     class="outbound-wizard-dialog"
+    data-cy="outbound-creation-wizard-dialog"
     @close="handleDialogClose"
   >
     <div class="wizard-container">
@@ -97,11 +98,12 @@
               label-width="120px"
               label-position="right"
               class="wizard-form"
+              data-cy="outbound-basic-form"
             >
               <el-row :gutter="24">
                 <el-col :span="12">
-                  <el-form-item label="出库单号" prop="orderNo">
-                    <el-input v-model="formData.basic.orderNo" placeholder="系统自动生成" disabled>
+                  <el-form-item label="出库单号" prop="orderNo" data-cy="outbound-order-no-form-item">
+                    <el-input v-model="formData.basic.orderNo" placeholder="系统自动生成" disabled data-cy="outbound-order-no-input">
                       <template #prefix>
                         <el-icon><Tickets /></el-icon>
                       </template>
@@ -130,7 +132,7 @@
                       placeholder="请选择出库类型"
                       style="width: 100%"
                       @change="handleOutboundTypeChange"
-                    >
+                     data-cy="outbound-wizard-form-data.basic.outbound-type-select">
                       <el-option :value="1" label="安装出库">
                         <el-icon><SetUp /></el-icon> 安装出库
                       </el-option>
@@ -159,7 +161,7 @@
                       placeholder="请选择源仓库"
                       style="width: 100%"
                       filterable
-                    >
+                     data-cy="outbound-wizard-form-data.basic.warehouse-id-select">
                       <el-option v-for="wh in warehouseList" :key="wh.id" :label="wh.name" :value="wh.id">
                         <span>{{ wh.name }}</span>
                         <span style="float: right; color: #8492a6; font-size: 12px">
@@ -174,12 +176,12 @@
               <el-row :gutter="24">
                 <el-col :span="12">
                   <el-form-item label="申请人" prop="applicant">
-                    <el-input v-model="formData.basic.applicant" placeholder="请输入申请人姓名" />
+                    <el-input v-model="formData.basic.applicant" placeholder="请输入申请人姓名" data-cy="outbound-applicant-input" />
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="联系电话" prop="contactPhone">
-                    <el-input v-model="formData.basic.contactPhone" placeholder="请输入联系电话">
+                    <el-input v-model="formData.basic.contactPhone" placeholder="请输入联系电话" data-cy="outbound-contact-phone-input">
                       <template #prefix>
                         <el-icon><Phone /></el-icon>
                       </template>
@@ -196,6 +198,7 @@
                   placeholder="请输入出库原因"
                   maxlength="500"
                   show-word-limit
+                  data-cy="outbound-reason-input"
                 />
               </el-form-item>
 
@@ -207,6 +210,7 @@
                   placeholder="请输入备注信息（选填）"
                   maxlength="300"
                   show-word-limit
+                  data-cy="outbound-remark-input"
                 />
               </el-form-item>
             </el-form>
@@ -230,6 +234,7 @@
                     style="width: 300px"
                     :prefix-icon="Search"
                     @input="handleDeviceSearch"
+                    data-cy="outbound-device-search-input"
                   />
                   <el-select
                     v-model="deviceTypeFilter"
@@ -237,7 +242,7 @@
                     clearable
                     style="width: 150px"
                     @change="handleDeviceSearch"
-                  >
+                   data-cy="outbound-wizard-device-type-filter-select">
                     <el-option label="全部类型" value="" />
                     <el-option v-for="type in deviceTypes" :key="type.value" :label="type.label" :value="type.value" />
                   </el-select>
@@ -247,14 +252,14 @@
                     clearable
                     style="width: 120px"
                     @change="handleDeviceSearch"
-                  >
+                   data-cy="outbound-wizard-device-status-filter-select">
                     <el-option label="全部状态" value="" />
                     <el-option label="在库" value="in_stock" />
                     <el-option label="可用" value="available" />
                   </el-select>
                 </div>
                 <div class="toolbar-right">
-                  <el-button :icon="Delete" :disabled="selectedDevices.length === 0" @click="clearDeviceSelection">
+                  <el-button :icon="Delete" :disabled="selectedDevices.length === 0" @click="clearDeviceSelection" data-cy="outbound-clear-selection-btn">
                     清空选择
                   </el-button>
                 </div>
@@ -270,6 +275,7 @@
                   row-key="id"
                   @selection-change="handleDeviceSelectionChange"
                   highlight-selection-row
+                  data-cy="outbound-device-table"
                 >
                   <el-table-column type="selection" width="55" align="center" :selectable="checkDeviceSelectable" />
                   <el-table-column type="index" label="序号" width="60" align="center" />
@@ -424,7 +430,7 @@
                       <el-tag type="warning" size="small" v-else>未选择</el-tag>
                     </div>
                   </template>
-                  <el-table :data="selectedDevices" size="small" border max-height="200">
+                  <el-table :data="selectedDevices" size="small" border max-height="200" data-cy="outbound-selected-devices-table">
                     <el-table-column type="index" label="序号" width="60" align="center" />
                     <el-table-column prop="deviceCode" label="设备编号" width="150" />
                     <el-table-column prop="deviceName" label="设备名称" min-width="150" />
@@ -537,26 +543,26 @@
     <template #footer>
       <div class="wizard-footer">
         <div class="footer-left">
-          <el-button link @click="handleSaveDraft" :loading="savingDraft">
+          <el-button link @click="handleSaveDraft" :loading="savingDraft" data-cy="outbound-save-draft-btn">
             <el-icon><Document /></el-icon>
             保存草稿
           </el-button>
           <span v-if="lastSaveTime" class="last-save-time"> 上次保存: {{ lastSaveTime }} </span>
         </div>
         <div class="footer-right">
-          <el-button v-if="currentStep > 0" @click="handlePrev">
+          <el-button v-if="currentStep > 0" @click="handlePrev" data-cy="outbound-prev-btn">
             <el-icon><ArrowLeft /></el-icon>
             上一步
           </el-button>
-          <el-button v-if="currentStep < 3" type="primary" @click="handleNext" :disabled="!canProceedToNext">
+          <el-button v-if="currentStep < 3" type="primary" @click="handleNext" :disabled="!canProceedToNext" data-cy="outbound-next-btn">
             下一步
             <el-icon><ArrowRight /></el-icon>
           </el-button>
-          <el-button v-else type="success" :loading="submitting" :disabled="!confirmed" @click="handleSubmit">
+          <el-button v-else type="success" :loading="submitting" :disabled="!confirmed" @click="handleSubmit" data-cy="outbound-submit-btn">
             <el-icon><Check /></el-icon>
             提交审批
           </el-button>
-          <el-button @click="handleCancel">取消</el-button>
+          <el-button @click="handleCancel" data-cy="outbound-cancel-btn">取消</el-button>
         </div>
       </div>
     </template>

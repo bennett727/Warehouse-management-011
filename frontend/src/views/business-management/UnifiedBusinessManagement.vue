@@ -18,9 +18,9 @@
     data-cy="unified-business-management-page"
   >
     <template #headerActions>
-      <el-button type="info" :icon="QuestionFilled" @click="showOperationGuide"> 操作指引 </el-button>
+      <el-button type="info" :icon="QuestionFilled" @click="showOperationGuide" data-cy="business-guide-btn"> 操作指引 </el-button>
       <el-dropdown @command="handleCreateBusiness" trigger="click">
-        <el-button type="primary" :icon="Plus">
+        <el-button type="primary" :icon="Plus" data-cy="business-create-dropdown-btn">
           新建业务<el-icon class="el-icon--right"><ArrowDown /></el-icon>
         </el-button>
         <template #dropdown>
@@ -115,6 +115,7 @@
               clearable
               style="width: 140px"
               @change="handleFilterChange"
+              data-cy="business-type-filter-select"
             >
               <el-option label="全部类型" value="" />
               <el-option label="出库" value="outbound">
@@ -134,6 +135,7 @@
               clearable
               style="width: 130px"
               @change="handleFilterChange"
+              data-cy="business-status-filter-select"
             >
               <el-option label="全部状态" value="" />
               <el-option label="草稿" value="draft" />
@@ -164,8 +166,9 @@
               style="width: 240px"
               :prefix-icon="Search"
               @input="handleSearchDebounced"
+              data-cy="business-keyword-input"
             />
-            <el-button :icon="Refresh" circle @click="handleRefresh" :loading="loading" />
+            <el-button :icon="Refresh" circle @click="handleRefresh" :loading="loading" data-cy="business-refresh-btn" />
           </div>
         </div>
 
@@ -179,6 +182,7 @@
           row-key="id"
           @selection-change="handleSelectionChange"
           @row-click="handleRowClick"
+          data-cy="business-list-table"
         >
           <el-table-column type="selection" width="50" align="center" />
           <el-table-column type="index" label="序号" width="60" align="center" />
@@ -229,39 +233,39 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="操作" width="240" fixed="right" align="center">
+          <el-table-column label="操作" width="240" fixed="right" align="center" data-cy="business-actions-column">
             <template #default="{ row }">
               <div class="action-buttons">
-                <el-button type="primary" link size="small" @click.stop="handleView(row)">
+                <el-button type="primary" link size="small" @click.stop="handleView(row)" data-cy="business-view-btn">
                   <el-icon><View /></el-icon>查看
                 </el-button>
 
                 <template v-if="row.status === 'draft'">
-                  <el-button type="warning" link size="small" @click.stop="handleEdit(row)">
+                  <el-button type="warning" link size="small" @click.stop="handleEdit(row)" data-cy="business-edit-btn">
                     <el-icon><Edit /></el-icon>编辑
                   </el-button>
-                  <el-button type="success" link size="small" @click.stop="handleSubmit(row)">
+                  <el-button type="success" link size="small" @click.stop="handleSubmit(row)" data-cy="business-submit-btn">
                     <el-icon><Position /></el-icon>提交
                   </el-button>
                 </template>
 
                 <template v-if="row.status === 'pending'">
-                  <el-button type="success" link size="small" @click.stop="handleApprove(row)">
+                  <el-button type="success" link size="small" @click.stop="handleApprove(row)" data-cy="business-approve-btn">
                     <el-icon><CircleCheck /></el-icon>通过
                   </el-button>
-                  <el-button type="danger" link size="small" @click.stop="handleReject(row)">
+                  <el-button type="danger" link size="small" @click.stop="handleReject(row)" data-cy="business-reject-btn">
                     <el-icon><CircleClose /></el-icon>驳回
                   </el-button>
                 </template>
 
                 <template v-if="row.status === 'approved'">
-                  <el-button type="primary" link size="small" @click.stop="handleExecute(row)">
+                  <el-button type="primary" link size="small" @click.stop="handleExecute(row)" data-cy="business-execute-btn">
                     <el-icon><VideoPlay /></el-icon>执行
                   </el-button>
                 </template>
 
                 <template v-if="row.status === 'rejected'">
-                  <el-button type="warning" link size="small" @click.stop="handleResubmit(row)">
+                  <el-button type="warning" link size="small" @click.stop="handleResubmit(row)" data-cy="business-resubmit-btn">
                     <el-icon><RefreshRight /></el-icon>重新提交
                   </el-button>
                 </template>
@@ -272,6 +276,7 @@
                   link
                   size="small"
                   @click.stop="handleDelete(row)"
+                  data-cy="business-delete-btn"
                 >
                   <el-icon><Delete /></el-icon>删除
                 </el-button>
@@ -283,13 +288,13 @@
         <div class="pagination-section">
           <div class="batch-actions" v-if="selectedRows.length > 0">
             <span class="selected-count">已选择 {{ selectedRows.length }} 条</span>
-            <el-button v-if="canBatchApprove" type="success" size="small" @click="handleBatchApprove">
+            <el-button v-if="canBatchApprove" type="success" size="small" @click="handleBatchApprove" data-cy="business-batch-approve-btn">
               批量通过
             </el-button>
-            <el-button v-if="canBatchReject" type="danger" size="small" @click="handleBatchReject">
+            <el-button v-if="canBatchReject" type="danger" size="small" @click="handleBatchReject" data-cy="business-batch-reject-btn">
               批量驳回
             </el-button>
-            <el-button size="small" @click="clearSelection">取消选择</el-button>
+            <el-button size="small" @click="clearSelection" data-cy="business-clear-selection-btn">取消选择</el-button>
           </div>
 
           <el-pagination
@@ -300,6 +305,7 @@
             layout="total, sizes, prev, pager, next, jumper"
             @size-change="handlePageSizeChange"
             @current-change="handlePageChange"
+            data-cy="business-pagination"
           />
         </div>
       </el-card>

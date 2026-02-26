@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="formRef" :model="modelValue" :rules="formRules" label-width="120px" class="detail-form">
+  <el-form ref="formRef" :model="modelValue" :rules="formRules" label-width="120px" class="detail-form" data-cy="return-detail-form">
     <div class="form-section">
       <div class="section-title">
         <el-icon><RefreshLeft /></el-icon>
@@ -7,8 +7,8 @@
       </div>
       <el-row :gutter="24">
         <el-col :span="12">
-          <el-form-item label="原出库单号" prop="originalOutboundNo">
-            <el-input v-model="modelValue.originalOutboundNo" placeholder="请输入原出库单号">
+          <el-form-item label="原出库单号" prop="originalOutboundNo" data-cy="return-original-outbound-no-form-item">
+            <el-input v-model="modelValue.originalOutboundNo" placeholder="请输入原出库单号" data-cy="return-original-outbound-no-input">
               <template #prefix>
                 <el-icon><Tickets /></el-icon>
               </template>
@@ -31,7 +31,7 @@
       <el-row :gutter="24">
         <el-col :span="12">
           <el-form-item label="退货类型" prop="returnType">
-            <el-select v-model="modelValue.returnType" placeholder="请选择退货类型" style="width: 100%">
+            <el-select v-model="modelValue.returnType" placeholder="请选择退货类型" style="width: 100%" data-cy="return-model-value.return-type-select">
               <el-option label="质量问题退货" value="quality" />
               <el-option label="规格不符退货" value="specification" />
               <el-option label="数量错误退货" value="quantity" />
@@ -42,7 +42,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="退货优先级" prop="priority">
-            <el-select v-model="modelValue.priority" placeholder="请选择优先级" style="width: 100%">
+            <el-select v-model="modelValue.priority" placeholder="请选择优先级" style="width: 100%" data-cy="return-model-value.priority-select">
               <el-option label="高" value="high">
                 <el-tag type="danger" size="small">高</el-tag>
               </el-option>
@@ -63,7 +63,7 @@
         <el-icon><Warning /></el-icon>
         <span>退货原因</span>
       </div>
-      <el-form-item label="退货原因" prop="returnReason">
+      <el-form-item label="退货原因" prop="returnReason" data-cy="return-reason-form-item">
         <el-input
           v-model="modelValue.returnReason"
           type="textarea"
@@ -71,13 +71,14 @@
           placeholder="请详细描述退货原因"
           maxlength="1000"
           show-word-limit
+          data-cy="return-reason-input"
         />
       </el-form-item>
 
       <el-row :gutter="24">
         <el-col :span="12">
           <el-form-item label="设备状态" prop="deviceStatus">
-            <el-select v-model="modelValue.deviceStatus" placeholder="请选择设备状态" style="width: 100%">
+            <el-select v-model="modelValue.deviceStatus" placeholder="请选择设备状态" style="width: 100%" data-cy="return-model-value.device-status-select">
               <el-option label="完好无损" value="good" />
               <el-option label="轻微损坏" value="minor_damage" />
               <el-option label="严重损坏" value="major_damage" />
@@ -105,12 +106,12 @@
       <el-row :gutter="24">
         <el-col :span="12">
           <el-form-item label="客户名称" prop="customerName">
-            <el-input v-model="modelValue.customerName" placeholder="请输入客户名称" />
+            <el-input v-model="modelValue.customerName" placeholder="请输入客户名称" data-cy="return-customer-name-input" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="联系人" prop="contactPerson">
-            <el-input v-model="modelValue.contactPerson" placeholder="请输入联系人" />
+            <el-input v-model="modelValue.contactPerson" placeholder="请输入联系人" data-cy="return-contact-person-input" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -118,7 +119,7 @@
       <el-row :gutter="24">
         <el-col :span="12">
           <el-form-item label="联系电话" prop="contactPhone">
-            <el-input v-model="modelValue.contactPhone" placeholder="请输入联系电话">
+            <el-input v-model="modelValue.contactPhone" placeholder="请输入联系电话" data-cy="return-contact-phone-input">
               <template #prefix>
                 <el-icon><Phone /></el-icon>
               </template>
@@ -127,7 +128,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="客户地址" prop="customerAddress">
-            <el-input v-model="modelValue.customerAddress" placeholder="请输入客户地址" />
+            <el-input v-model="modelValue.customerAddress" placeholder="请输入客户地址" data-cy="return-customer-address-input" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -164,7 +165,7 @@
       <el-row :gutter="24" v-if="modelValue.isRefund">
         <el-col :span="12">
           <el-form-item label="退款方式" prop="refundMethod">
-            <el-select v-model="modelValue.refundMethod" placeholder="请选择退款方式" style="width: 100%">
+            <el-select v-model="modelValue.refundMethod" placeholder="请选择退款方式" style="width: 100%" data-cy="return-model-value.refund-method-select">
               <el-option label="原路退回" value="original" />
               <el-option label="银行转账" value="bank_transfer" />
               <el-option label="现金退款" value="cash" />
@@ -173,8 +174,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="退款账户" prop="refundAccount">
-            <el-input v-model="modelValue.refundAccount" placeholder="请输入退款账户" />
+          <el-form-item label="退款账户" prop="refundAccount" data-cy="return-refund-account-form-item">
+            <el-input v-model="modelValue.refundAccount" placeholder="请输入退款账户" data-cy="return-refund-account-input" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -185,7 +186,7 @@
         <el-icon><Edit /></el-icon>
         <span>处理意见</span>
       </div>
-      <el-form-item label="处理意见" prop="handlingOpinion">
+      <el-form-item label="处理意见" prop="handlingOpinion" data-cy="return-handling-opinion-form-item">
         <el-input
           v-model="modelValue.handlingOpinion"
           type="textarea"
@@ -193,10 +194,11 @@
           placeholder="请输入处理意见（选填）"
           maxlength="500"
           show-word-limit
+          data-cy="return-handling-opinion-input"
         />
       </el-form-item>
 
-      <el-form-item label="备注" prop="remark">
+      <el-form-item label="备注" prop="remark" data-cy="return-remark-form-item">
         <el-input
           v-model="modelValue.remark"
           type="textarea"
@@ -204,6 +206,7 @@
           placeholder="请输入备注信息（选填）"
           maxlength="300"
           show-word-limit
+          data-cy="return-remark-input"
         />
       </el-form-item>
     </div>

@@ -5,6 +5,7 @@
     width="500px"
     :close-on-click-modal="false"
     class="quick-action-chain-dialog"
+    data-cy="quick-action-chain-dialog"
     @close="handleClose"
   >
     <div class="quick-action-content">
@@ -15,21 +16,21 @@
 
       <div class="action-buttons">
         <template v-for="action in actions" :key="action.key">
-          <el-button :type="action.type || 'default'" :icon="action.icon" @click="handleAction(action)">
+          <el-button :type="action.type || 'default'" :icon="action.icon" @click="handleAction(action)" :data-cy="`quick-action-${action.key}-btn`">
             {{ action.label }}
           </el-button>
         </template>
       </div>
 
       <div class="action-footer">
-        <el-checkbox v-model="dontShowAgain" size="small"> 不再显示此提示 </el-checkbox>
+        <el-checkbox v-model="dontShowAgain" size="small" data-cy="quick-action-dont-show-again"> 不再显示此提示 </el-checkbox>
       </div>
     </div>
 
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="handleBack">返回列表</el-button>
-        <el-button type="primary" @click="handleClose">关闭</el-button>
+        <el-button @click="handleBack" data-cy="quick-action-back-btn">返回列表</el-button>
+        <el-button type="primary" @click="handleClose" data-cy="quick-action-close-btn">关闭</el-button>
       </div>
     </template>
   </el-dialog>

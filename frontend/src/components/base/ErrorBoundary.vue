@@ -16,15 +16,15 @@
         </el-collapse>
       </div>
       <div class="error-boundary__actions">
-        <el-button type="primary" @click="handleReset">
+        <el-button type="primary" @click="handleReset" data-cy="error-boundary-reset-btn">
           <el-icon><RefreshRight /></el-icon>
           重试
         </el-button>
-        <el-button @click="handleGoHome">
+        <el-button @click="handleGoHome" data-cy="error-boundary-home-btn">
           <el-icon><HomeFilled /></el-icon>
           返回首页
         </el-button>
-        <el-button @click="toggleDetails">
+        <el-button @click="toggleDetails" data-cy="error-boundary-details-btn">
           <el-icon><View /></el-icon>
           {{ showDetails ? '隐藏详情' : '查看详情' }}
         </el-button>

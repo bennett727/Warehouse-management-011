@@ -13,7 +13,7 @@
         <span>审批历史</span>
       </div>
       <div class="header-actions">
-        <el-button type="primary" link size="small" @click="handleExport">
+        <el-button type="primary" link size="small" @click="handleExport" data-cy="audit-history-export-btn">
           <el-icon><Download /></el-icon>
           导出记录
         </el-button>
@@ -29,6 +29,7 @@
         :icon="getTimelineItemIcon(item)"
         :timestamp="formatTimestamp(item.timestamp)"
         placement="top"
+        :data-cy="`audit-timeline-item-${index}`"
       >
         <div class="timeline-content">
           <div class="content-header">
@@ -71,32 +72,32 @@
       </el-timeline-item>
     </el-timeline>
 
-    <el-empty v-else description="暂无审批历史记录" />
+    <el-empty v-else description="暂无审批历史记录" data-cy="audit-history-empty" />
 
     <!-- 统计信息 -->
-    <div v-if="showStatistics && historyList.length > 0" class="statistics-section">
+    <div v-if="showStatistics && historyList.length > 0" class="statistics-section" data-cy="audit-statistics-section">
       <el-divider>统计信息</el-divider>
       <el-row :gutter="20">
         <el-col :span="6">
-          <div class="stat-item">
+          <div class="stat-item" data-cy="audit-stat-total">
             <div class="stat-value">{{ statistics.totalCount }}</div>
             <div class="stat-label">总审批次数</div>
           </div>
         </el-col>
         <el-col :span="6">
-          <div class="stat-item">
+          <div class="stat-item" data-cy="audit-stat-approve">
             <div class="stat-value" style="color: #67c23a">{{ statistics.approveCount }}</div>
             <div class="stat-label">通过次数</div>
           </div>
         </el-col>
         <el-col :span="6">
-          <div class="stat-item">
+          <div class="stat-item" data-cy="audit-stat-reject">
             <div class="stat-value" style="color: #f56c6c">{{ statistics.rejectCount }}</div>
             <div class="stat-label">驳回次数</div>
           </div>
         </el-col>
         <el-col :span="6">
-          <div class="stat-item">
+          <div class="stat-item" data-cy="audit-stat-duration">
             <div class="stat-value">{{ formatDuration(statistics.avgDuration) }}</div>
             <div class="stat-label">平均审批耗时</div>
           </div>

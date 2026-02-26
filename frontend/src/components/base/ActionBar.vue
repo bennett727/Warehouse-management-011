@@ -11,11 +11,12 @@
     :class="{ vertical: vertical, compact: compact }"
     role="toolbar"
     :aria-label="ariaLabel || '操作工具栏'"
+    data-cy="action-bar"
   >
-    <div class="action-bar-left" role="group" aria-label="左侧操作">
+    <div class="action-bar-left" role="group" aria-label="左侧操作" data-cy="action-bar-left">
       <slot name="left"></slot>
     </div>
-    <div class="action-bar-right" role="group" aria-label="右侧操作">
+    <div class="action-bar-right" role="group" aria-label="右侧操作" data-cy="action-bar-right">
       <slot name="right"></slot>
     </div>
   </div>

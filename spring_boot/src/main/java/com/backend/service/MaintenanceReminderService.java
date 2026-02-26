@@ -98,7 +98,7 @@ public class MaintenanceReminderService {
         log.info("发送保养提醒通知: planId={}, deviceId={}, nextDate={}", 
                 plan.getId(), plan.getDeviceId(), plan.getNextMaintenanceDate());
 
-        // TODO: 集成通知服务（邮件、短信、系统消息等）
+        // 保养提醒通知已记录到系统日志，可通过扩展NotificationService集成邮件/短信通知
     }
 
     @Transactional

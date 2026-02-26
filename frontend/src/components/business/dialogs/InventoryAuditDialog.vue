@@ -28,14 +28,18 @@
         </template>
       </el-alert>
 
-      <el-form ref="formRef" :model="auditForm" :rules="formRules" label-width="100px">
-        <el-form-item label="审核结果" prop="auditResult" v-if="showAuditResult">
-          <el-radio-group v-model="auditForm.auditResult" @change="handleAuditResultChange">
-            <el-radio label="approved">
+      <el-form ref="formRef" :model="auditForm" :rules="formRules" label-width="100px" data-cy="inventory-audit-form">
+        <el-form-item label="审核结果" prop="auditResult" v-if="showAuditResult" data-cy="audit-result-form-item">
+          <el-radio-group
+            v-model="auditForm.auditResult"
+            @change="handleAuditResultChange"
+            data-cy="audit-result-radio-group"
+          >
+            <el-radio label="approved" data-cy="audit-result-approved">
               <el-icon color="#67C23A"><CircleCheck /></el-icon>
               <span style="margin-left: 4px">通过</span>
             </el-radio>
-            <el-radio label="rejected">
+            <el-radio label="rejected" data-cy="audit-result-rejected">
               <el-icon color="#F56C6C"><CircleClose /></el-icon>
               <span style="margin-left: 4px">拒绝</span>
             </el-radio>
@@ -46,6 +50,7 @@
           v-if="auditForm.auditResult === 'rejected' && showRejectReason"
           label="拒绝原因"
           prop="rejectReason"
+          data-cy="reject-reason-form-item"
         >
           <el-input
             v-model="auditForm.rejectReason"
@@ -54,10 +59,11 @@
             placeholder="请输入拒绝原因"
             maxlength="500"
             show-word-limit
+            data-cy="reject-reason-input"
           />
         </el-form-item>
 
-        <el-form-item v-if="showAuditRemark" label="审核备注" prop="auditRemark">
+        <el-form-item v-if="showAuditRemark" label="审核备注" prop="auditRemark" data-cy="audit-remark-form-item">
           <el-input
             v-model="auditForm.auditRemark"
             type="textarea"
@@ -65,15 +71,16 @@
             placeholder="请输入审核备注（选填）"
             maxlength="500"
             show-word-limit
+            data-cy="audit-remark-input"
           />
         </el-form-item>
 
-        <el-form-item label="审核人" v-if="showAuditor">
-          <el-input v-model="auditForm.auditor" disabled />
+        <el-form-item label="审核人" v-if="showAuditor" data-cy="audit-auditor-form-item">
+          <el-input v-model="auditForm.auditor" disabled data-cy="audit-auditor-input" />
         </el-form-item>
 
-        <el-form-item label="审核时间" v-if="showAuditTime">
-          <el-input v-model="auditForm.auditTime" disabled />
+        <el-form-item label="审核时间" v-if="showAuditTime" data-cy="audit-time-form-item">
+          <el-input v-model="auditForm.auditTime" disabled data-cy="audit-time-input" />
         </el-form-item>
       </el-form>
 
@@ -86,20 +93,21 @@
             :timestamp="item.auditTime"
             :type="getTimelineType(item.auditResult)"
             placement="top"
+            :data-cy="`audit-history-timeline-item-${index}`"
           >
-            <el-card>
+            <el-card :data-cy="`audit-history-card-${index}`">
               <div class="history-item">
                 <div class="history-header">
-                  <span class="history-auditor">{{ item.auditor }}</span>
-                  <el-tag :type="getAuditResultTagType(item.auditResult)" size="small">
+                  <span class="history-auditor" :data-cy="`audit-history-auditor-${index}`">{{ item.auditor }}</span>
+                  <el-tag :type="getAuditResultTagType(item.auditResult)" size="small" :data-cy="`audit-history-result-tag-${index}`">
                     {{ getAuditResultText(item.auditResult) }}
                   </el-tag>
                 </div>
-                <div v-if="item.rejectReason" class="history-reason">
+                <div v-if="item.rejectReason" class="history-reason" :data-cy="`audit-history-reason-${index}`">
                   <span class="reason-label">拒绝原因：</span>
                   <span class="reason-content">{{ item.rejectReason }}</span>
                 </div>
-                <div v-if="item.auditRemark" class="history-remark">
+                <div v-if="item.auditRemark" class="history-remark" :data-cy="`audit-history-remark-${index}`">
                   <span class="remark-label">审核备注：</span>
                   <span class="remark-content">{{ item.auditRemark }}</span>
                 </div>
@@ -111,20 +119,38 @@
     </div>
 
     <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="handleClose" :disabled="submitLoading">
+      <div class="dialog-footer" data-cy="inventory-audit-footer">
+        <el-button data-cy="inventory-audit-cancel-btn" @click="handleClose" :disabled="submitLoading">
           <el-icon><Close /></el-icon>
           取消
         </el-button>
-        <el-button v-if="showApproveButton" type="success" @click="handleApprove" :loading="submitLoading">
+        <el-button
+          v-if="showApproveButton"
+          data-cy="inventory-audit-approve-btn"
+          type="success"
+          @click="handleApprove"
+          :loading="submitLoading"
+        >
           <el-icon><CircleCheck /></el-icon>
           审核通过
         </el-button>
-        <el-button v-if="showRejectButton" type="danger" @click="handleReject" :loading="submitLoading">
+        <el-button
+          v-if="showRejectButton"
+          data-cy="inventory-audit-reject-btn"
+          type="danger"
+          @click="handleReject"
+          :loading="submitLoading"
+        >
           <el-icon><CircleClose /></el-icon>
           审核拒绝
         </el-button>
-        <el-button v-if="showSubmitButton" type="primary" @click="handleSubmit" :loading="submitLoading">
+        <el-button
+          v-if="showSubmitButton"
+          data-cy="inventory-audit-submit-btn"
+          type="primary"
+          @click="handleSubmit"
+          :loading="submitLoading"
+        >
           <el-icon><Check /></el-icon>
           提交审核
         </el-button>

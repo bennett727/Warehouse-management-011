@@ -38,32 +38,33 @@
       :loading="loading"
       :current-page="pagination.current"
       :page-size="pagination.pageSize"
+      data-cy="alerts-table"
       @page-change="handlePageChange"
     >
-      <el-table-column label="序号" width="60" align="center">
+      <el-table-column label="序号" width="60" align="center" data-cy="alerts-index-column">
         <template #default="{ $index }">
           {{ (pagination.current - 1) * pagination.pageSize + $index + 1 }}
         </template>
       </el-table-column>
-      <el-table-column prop="deviceCode" label="设备编号" width="150" />
-      <el-table-column prop="deviceName" label="设备名称" min-width="180" />
-      <el-table-column prop="alertType" label="预警类型" width="120">
+      <el-table-column prop="deviceCode" label="设备编号" width="150" data-cy="alerts-device-code-column" />
+      <el-table-column prop="deviceName" label="设备名称" min-width="180" data-cy="alerts-device-name-column" />
+      <el-table-column prop="alertType" label="预警类型" width="120" data-cy="alerts-type-column">
         <template #default="{ row }">
-          <el-tag :type="getAlertTypeType(row.alertType)">{{ getAlertTypeText(row.alertType) }}</el-tag>
+          <el-tag :type="getAlertTypeType(row.alertType)" :data-cy="`alerts-type-tag-${row.id}`">{{ getAlertTypeText(row.alertType) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="currentStock" label="当前库存" width="100" />
-      <el-table-column prop="threshold" label="预警阈值" width="100" />
-      <el-table-column prop="alertTime" label="预警时间" width="180" />
-      <el-table-column prop="status" label="状态" width="100">
+      <el-table-column prop="currentStock" label="当前库存" width="100" data-cy="alerts-stock-column" />
+      <el-table-column prop="threshold" label="预警阈值" width="100" data-cy="alerts-threshold-column" />
+      <el-table-column prop="alertTime" label="预警时间" width="180" data-cy="alerts-time-column" />
+      <el-table-column prop="status" label="状态" width="100" data-cy="alerts-status-column">
         <template #default="{ row }">
-          <el-tag :type="getStatusType(row.status)">{{ getStatusText(row.status) }}</el-tag>
+          <el-tag :type="getStatusType(row.status)" :data-cy="`alerts-status-tag-${row.id}`">{{ getStatusText(row.status) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="150" fixed="right">
+      <el-table-column label="操作" width="150" fixed="right" data-cy="alerts-action-column">
         <template #default="{ row }">
-          <el-button link type="primary" @click="handleView(row)">查看</el-button>
-          <el-button link type="success" @click="handleProcess(row)">处理</el-button>
+          <el-button link type="primary" @click="handleView(row)" :data-cy="`alerts-view-btn-${row.id}`">查看</el-button>
+          <el-button link type="success" @click="handleProcess(row)" :data-cy="`alerts-process-btn-${row.id}`">处理</el-button>
         </template>
       </el-table-column>
     </DataTable>

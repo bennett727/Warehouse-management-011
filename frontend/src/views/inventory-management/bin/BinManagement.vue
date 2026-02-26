@@ -1,26 +1,26 @@
 <template>
-  <PageLayout title="货位管理" description="管理仓库货位信息及状态" data-cy="binmanagement-page">
+  <PageLayout title="货位管理" description="管理仓库货位信息及状态" data-cy="bin-management-page">
     <template #headerActions>
-      <el-button data-cy="btn-2" type="primary" @click="handleAddBin" :loading="addBinLoading">
-        <el-icon data-cy="icon-1">
+      <el-button data-cy="bin-add-button" type="primary" @click="handleAddBin" :loading="addBinLoading">
+        <el-icon>
           <Plus />
         </el-icon>
         新增货位
       </el-button>
-      <el-button data-cy="btn-3" type="success" @click="handleBatchCreate" :loading="batchCreateLoading">
-        <el-icon data-cy="icon-2">
+      <el-button data-cy="bin-batch-create-button" type="success" @click="handleBatchCreate" :loading="batchCreateLoading">
+        <el-icon>
           <Grid />
         </el-icon>
         批量生成
       </el-button>
-      <el-button data-cy="btn-4" @click="handleImport">
-        <el-icon data-cy="icon-3">
+      <el-button data-cy="bin-import-button" @click="handleImport">
+        <el-icon>
           <Upload />
         </el-icon>
         导入
       </el-button>
-      <el-button data-cy="btn-5" @click="handleExport">
-        <el-icon data-cy="icon-4">
+      <el-button data-cy="bin-export-button" @click="handleExport">
+        <el-icon>
           <Download />
         </el-icon>
         导出
@@ -43,7 +43,7 @@
         <TableSkeleton :row-count="10" :column-count="10" />
       </div>
       <el-table
-        data-cy="table-0"
+        data-cy="bin-table"
         v-else
         :data="binList"
         :row-key="(row) => row.id || row.code"
@@ -52,50 +52,49 @@
         style="width: 100%"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column data-cy="table-1" type="selection" width="55" align="center" />
-        <el-table-column data-cy="table-2" prop="code" label="货位编号" min-width="120" align="center" />
-        <el-table-column data-cy="table-3" prop="zone" label="区域" min-width="100" align="center" />
-        <el-table-column data-cy="table-4" prop="row" label="排" min-width="80" align="center" />
-        <el-table-column data-cy="table-5" prop="column" label="列" min-width="80" align="center" />
-        <el-table-column data-cy="table-6" prop="level" label="层" min-width="80" align="center" />
-        <el-table-column data-cy="table-7" label="货位类型" min-width="120" align="center">
+        <el-table-column type="selection" width="55" align="center" data-cy="bin-selection-column" />
+        <el-table-column prop="code" label="货位编号" min-width="120" align="center" data-cy="bin-code-column" />
+        <el-table-column prop="zone" label="区域" min-width="100" align="center" data-cy="bin-zone-column" />
+        <el-table-column prop="row" label="排" min-width="80" align="center" data-cy="bin-row-column" />
+        <el-table-column prop="column" label="列" min-width="80" align="center" data-cy="bin-column-column" />
+        <el-table-column prop="level" label="层" min-width="80" align="center" data-cy="bin-level-column" />
+        <el-table-column label="货位类型" min-width="120" align="center" data-cy="bin-type-column">
           <template #default="{ row }">
-            <el-tag data-cy="tag-0" :type="getBinTypeTagType(row.type)">
+            <el-tag :type="getBinTypeTagType(row.type)" :data-cy="`bin-type-tag-${row.id}`">
               {{ getBinTypeText(row.type) }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column data-cy="table-8" label="货位状态" min-width="100" align="center">
+        <el-table-column label="货位状态" min-width="100" align="center" data-cy="bin-status-column">
           <template #default="{ row }">
-            <el-tag data-cy="tag-1" :type="getBinStatusTagType(row.status)">
+            <el-tag :type="getBinStatusTagType(row.status)" :data-cy="`bin-status-tag-${row.id}`">
               {{ getBinStatusText(row.status) }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column data-cy="table-9" label="使用率" min-width="120" align="center">
+        <el-table-column label="使用率" min-width="120" align="center" data-cy="bin-usage-column">
           <template #default="{ row }">
             <el-progress
-              data-cy="progress-0"
               :percentage="getCapacityPercentage(row)"
               :color="getCapacityColor(row)"
               :stroke-width="8"
             />
           </template>
         </el-table-column>
-        <el-table-column data-cy="table-10" label="操作" width="200" align="center" fixed="right">
+        <el-table-column label="操作" width="200" align="center" fixed="right" data-cy="bin-actions-column">
           <template #default="{ row }">
-            <el-button data-cy="btn-6" type="primary" link size="small" @click="handleViewDetail(row)">
+            <el-button type="primary" link size="small" data-cy="bin-view-button" @click="handleViewDetail(row)">
               查看
             </el-button>
-            <el-button data-cy="btn-7" type="warning" link size="small" @click="handleEditBin(row)"> 编辑 </el-button>
-            <el-button data-cy="btn-8" type="danger" link size="small" @click="handleDeleteBin(row)"> 删除 </el-button>
+            <el-button type="warning" link size="small" data-cy="bin-edit-button" @click="handleEditBin(row)"> 编辑 </el-button>
+            <el-button type="danger" link size="small" data-cy="bin-delete-button" @click="handleDeleteBin(row)"> 删除 </el-button>
           </template>
         </el-table-column>
       </el-table>
 
       <div class="pagination-container">
         <el-pagination
-          data-cy="pagination-0"
+          data-cy="bin-pagination"
           v-model:current-page="pagination.currentPage"
           v-model:page-size="pagination.pageSize"
           :page-sizes="[10, 20, 50, 100]"
@@ -108,30 +107,30 @@
     </div>
 
     <el-dialog
-      data-cy="dialog-0"
+      data-cy="bin-form-dialog"
       v-model="dialogVisible"
       :title="dialogTitle"
       width="700px"
       :close-on-click-modal="false"
     >
-      <el-form data-cy="form-0" ref="binFormRef" :model="binForm" :rules="binRules" label-width="120px">
-        <el-form-item data-cy="form-1" prop="code" label="货位编号">
-          <el-input data-cy="input-1" v-model="binForm.code" placeholder="请输入货位编号" clearable />
+      <el-form ref="binFormRef" :model="binForm" :rules="binRules" label-width="120px" data-cy="bin-form">
+        <el-form-item prop="code" label="货位编号">
+          <el-input v-model="binForm.code" placeholder="请输入货位编号" clearable data-cy="bin-code-input" />
         </el-form-item>
-        <el-form-item data-cy="form-2" prop="zone" label="区域">
-          <el-input data-cy="input-2" v-model="binForm.zone" placeholder="例如：A区" clearable />
+        <el-form-item prop="zone" label="区域">
+          <el-input v-model="binForm.zone" placeholder="例如：A区" clearable data-cy="bin-zone-input" />
         </el-form-item>
-        <el-form-item data-cy="form-3" prop="row" label="排">
-          <el-input data-cy="input-3" v-model="binForm.row" placeholder="例如：01排" clearable />
+        <el-form-item prop="row" label="排">
+          <el-input v-model="binForm.row" placeholder="例如：01排" clearable data-cy="bin-row-input" />
         </el-form-item>
-        <el-form-item data-cy="form-4" prop="column" label="列">
-          <el-input data-cy="input-4" v-model="binForm.column" placeholder="例如：01列" clearable />
+        <el-form-item prop="column" label="列">
+          <el-input v-model="binForm.column" placeholder="例如：01列" clearable data-cy="bin-column-input" />
         </el-form-item>
-        <el-form-item data-cy="form-5" prop="level" label="层">
-          <el-input data-cy="input-5" v-model="binForm.level" placeholder="例如：01层" clearable />
+        <el-form-item prop="level" label="层">
+          <el-input v-model="binForm.level" placeholder="例如：01层" clearable data-cy="bin-level-input" />
         </el-form-item>
-        <el-form-item data-cy="form-6" prop="type" label="货位类型">
-          <el-select data-cy="select-3" v-model="binForm.type" placeholder="请选择货位类型" style="width: 100%">
+        <el-form-item prop="type" label="货位类型">
+          <el-select v-model="binForm.type" placeholder="请选择货位类型" style="width: 100%" data-cy="bin-type-select">
             <el-option label="普通货位" value="NORMAL" />
             <el-option label="冷藏货位" value="REFRIGERATED" />
             <el-option label="冷冻货位" value="FROZEN" />
@@ -142,8 +141,8 @@
             <el-option label="特殊货位" value="SPECIAL" />
           </el-select>
         </el-form-item>
-        <el-form-item data-cy="form-7" prop="status" label="货位状态">
-          <el-select data-cy="select-4" v-model="binForm.status" placeholder="请选择货位状态" style="width: 100%">
+        <el-form-item prop="status" label="货位状态">
+          <el-select v-model="binForm.status" placeholder="请选择货位状态" style="width: 100%" data-cy="bin-status-select">
             <el-option label="空闲" value="AVAILABLE" />
             <el-option label="占用" value="OCCUPIED" />
             <el-option label="锁定" value="LOCKED" />
@@ -151,66 +150,66 @@
             <el-option label="禁用" value="DISABLED" />
           </el-select>
         </el-form-item>
-        <el-form-item data-cy="form-8" prop="maxWeight" label="最大承重(kg)">
-          <el-input-number data-cy="input-6" v-model="binForm.maxWeight" :min="0" :precision="2" style="width: 100%" />
+        <el-form-item prop="maxWeight" label="最大承重(kg)">
+          <el-input-number v-model="binForm.maxWeight" :min="0" :precision="2" style="width: 100%" data-cy="bin-max-weight-input" />
         </el-form-item>
-        <el-form-item data-cy="form-9" prop="maxCapacity" label="最大容量(m3)">
+        <el-form-item prop="maxCapacity" label="最大容量(m3)">
           <el-input-number
-            data-cy="input-7"
             v-model="binForm.maxCapacity"
             :min="0"
             :precision="2"
             style="width: 100%"
+            data-cy="bin-max-capacity-input"
           />
         </el-form-item>
-        <el-form-item data-cy="form-10" prop="remark" label="备注">
+        <el-form-item prop="remark" label="备注">
           <el-input
-            data-cy="input-8"
             v-model="binForm.remark"
             type="textarea"
             placeholder="请输入备注信息"
             :rows="3"
             resize="none"
+            data-cy="bin-remark-input"
           />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button data-cy="btn-9" @click="dialogVisible = false">取消</el-button>
-        <el-button data-cy="btn-10" type="primary" @click="handleFormSubmit" :loading="submitLoading">确定</el-button>
+        <el-button data-cy="bin-form-cancel-button" @click="dialogVisible = false">取消</el-button>
+        <el-button data-cy="bin-form-submit-button" type="primary" @click="handleFormSubmit" :loading="submitLoading">确定</el-button>
       </template>
     </el-dialog>
 
     <el-dialog
-      data-cy="dialog-1"
+      data-cy="bin-batch-create-dialog"
       v-model="batchCreateDialogVisible"
       title="批量生成货位"
       width="600px"
       :close-on-click-modal="false"
     >
-      <el-form data-cy="form-11" ref="batchFormRef" :model="batchForm" :rules="batchRules" label-width="120px">
-        <el-form-item data-cy="form-12" prop="zone" label="区域">
-          <el-input data-cy="input-9" v-model="batchForm.zone" placeholder="例如：A区" clearable />
+      <el-form ref="batchFormRef" :model="batchForm" :rules="batchRules" label-width="120px" data-cy="bin-batch-form">
+        <el-form-item prop="zone" label="区域">
+          <el-input v-model="batchForm.zone" placeholder="例如：A区" clearable data-cy="bin-batch-zone-input" />
         </el-form-item>
-        <el-form-item data-cy="form-13" prop="startRow" label="起始排">
-          <el-input data-cy="input-10" v-model="batchForm.startRow" placeholder="例如：01" clearable />
+        <el-form-item prop="startRow" label="起始排">
+          <el-input v-model="batchForm.startRow" placeholder="例如：01" clearable data-cy="bin-batch-start-row-input" />
         </el-form-item>
-        <el-form-item data-cy="form-14" prop="endRow" label="结束排">
-          <el-input data-cy="input-11" v-model="batchForm.endRow" placeholder="例如：10" clearable />
+        <el-form-item prop="endRow" label="结束排">
+          <el-input v-model="batchForm.endRow" placeholder="例如：10" clearable data-cy="bin-batch-end-row-input" />
         </el-form-item>
-        <el-form-item data-cy="form-15" prop="startColumn" label="起始列">
-          <el-input data-cy="input-12" v-model="batchForm.startColumn" placeholder="例如：01" clearable />
+        <el-form-item prop="startColumn" label="起始列">
+          <el-input v-model="batchForm.startColumn" placeholder="例如：01" clearable data-cy="bin-batch-start-column-input" />
         </el-form-item>
-        <el-form-item data-cy="form-16" prop="endColumn" label="结束列">
-          <el-input data-cy="input-13" v-model="batchForm.endColumn" placeholder="例如：10" clearable />
+        <el-form-item prop="endColumn" label="结束列">
+          <el-input v-model="batchForm.endColumn" placeholder="例如：10" clearable data-cy="bin-batch-end-column-input" />
         </el-form-item>
-        <el-form-item data-cy="form-17" prop="startLevel" label="起始层">
-          <el-input data-cy="input-14" v-model="batchForm.startLevel" placeholder="例如：01" clearable />
+        <el-form-item prop="startLevel" label="起始层">
+          <el-input v-model="batchForm.startLevel" placeholder="例如：01" clearable data-cy="bin-batch-start-level-input" />
         </el-form-item>
-        <el-form-item data-cy="form-18" prop="endLevel" label="结束层">
-          <el-input data-cy="input-15" v-model="batchForm.endLevel" placeholder="例如：05" clearable />
+        <el-form-item prop="endLevel" label="结束层">
+          <el-input v-model="batchForm.endLevel" placeholder="例如：05" clearable data-cy="bin-batch-end-level-input" />
         </el-form-item>
-        <el-form-item data-cy="form-19" prop="type" label="货位类型">
-          <el-select data-cy="select-5" v-model="batchForm.type" placeholder="请选择货位类型" style="width: 100%">
+        <el-form-item prop="type" label="货位类型">
+          <el-select v-model="batchForm.type" placeholder="请选择货位类型" style="width: 100%" data-cy="bin-batch-type-select">
             <el-option label="普通货位" value="NORMAL" />
             <el-option label="冷藏货位" value="REFRIGERATED" />
             <el-option label="冷冻货位" value="FROZEN" />
@@ -223,57 +222,57 @@
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button data-cy="btn-11" @click="batchCreateDialogVisible = false">取消</el-button>
-        <el-button data-cy="btn-12" type="primary" @click="handleBatchSubmit" :loading="batchSubmitLoading"
+        <el-button data-cy="bin-batch-cancel-button" @click="batchCreateDialogVisible = false">取消</el-button>
+        <el-button data-cy="bin-batch-submit-button" type="primary" @click="handleBatchSubmit" :loading="batchSubmitLoading"
           >确定</el-button
         >
       </template>
     </el-dialog>
 
-    <el-dialog data-cy="dialog-2" v-model="detailDialogVisible" title="货位详情" width="700px">
-      <el-descriptions data-cy="descriptions-0" :column="2" border>
-        <el-descriptions-item data-cy="descriptions-1" label="货位编号">{{ currentBin.code }}</el-descriptions-item>
-        <el-descriptions-item data-cy="descriptions-2" label="完整位置">{{
+    <el-dialog data-cy="bin-detail-dialog" v-model="detailDialogVisible" title="货位详情" width="700px">
+      <el-descriptions :column="2" border data-cy="bin-detail-descriptions">
+        <el-descriptions-item label="货位编号">{{ currentBin.code }}</el-descriptions-item>
+        <el-descriptions-item label="完整位置">{{
           currentBin.fullLocation
         }}</el-descriptions-item>
-        <el-descriptions-item data-cy="descriptions-3" label="区域">{{ currentBin.zone }}</el-descriptions-item>
-        <el-descriptions-item data-cy="descriptions-4" label="排">{{ currentBin.row }}</el-descriptions-item>
-        <el-descriptions-item data-cy="descriptions-5" label="列">{{ currentBin.column }}</el-descriptions-item>
-        <el-descriptions-item data-cy="descriptions-6" label="层">{{ currentBin.level }}</el-descriptions-item>
-        <el-descriptions-item data-cy="descriptions-7" label="货位类型">
-          <el-tag data-cy="tag-2" :type="getBinTypeTagType(currentBin.type)">
+        <el-descriptions-item label="区域">{{ currentBin.zone }}</el-descriptions-item>
+        <el-descriptions-item label="排">{{ currentBin.row }}</el-descriptions-item>
+        <el-descriptions-item label="列">{{ currentBin.column }}</el-descriptions-item>
+        <el-descriptions-item label="层">{{ currentBin.level }}</el-descriptions-item>
+        <el-descriptions-item label="货位类型">
+          <el-tag :type="getBinTypeTagType(currentBin.type)" data-cy="bin-detail-type-tag">
             {{ getBinTypeText(currentBin.type) }}
           </el-tag>
         </el-descriptions-item>
-        <el-descriptions-item data-cy="descriptions-8" label="货位状态">
-          <el-tag data-cy="tag-3" :type="getBinStatusTagType(currentBin.status)">
+        <el-descriptions-item label="货位状态">
+          <el-tag :type="getBinStatusTagType(currentBin.status)" data-cy="bin-detail-status-tag">
             {{ getBinStatusText(currentBin.status) }}
           </el-tag>
         </el-descriptions-item>
-        <el-descriptions-item data-cy="descriptions-9" label="最大承重"
+        <el-descriptions-item label="最大承重"
           >{{ currentBin.maxWeight }} kg</el-descriptions-item
         >
-        <el-descriptions-item data-cy="descriptions-10" label="当前重量"
+        <el-descriptions-item label="当前重量"
           >{{ currentBin.currentWeight }} kg</el-descriptions-item
         >
-        <el-descriptions-item data-cy="descriptions-11" label="最大容量"
+        <el-descriptions-item label="最大容量"
           >{{ currentBin.maxCapacity }} m3</el-descriptions-item
         >
-        <el-descriptions-item data-cy="descriptions-12" label="当前容量"
+        <el-descriptions-item label="当前容量"
           >{{ currentBin.currentCapacity }} m3</el-descriptions-item
         >
-        <el-descriptions-item data-cy="descriptions-13" label="创建时间">{{
+        <el-descriptions-item label="创建时间">{{
           formatDate(currentBin.createTime)
         }}</el-descriptions-item>
-        <el-descriptions-item data-cy="descriptions-14" label="更新时间">{{
+        <el-descriptions-item label="更新时间">{{
           formatDate(currentBin.updateTime)
         }}</el-descriptions-item>
-        <el-descriptions-item data-cy="descriptions-15" label="备注" :span="2">{{
+        <el-descriptions-item label="备注" :span="2">{{
           currentBin.remark || '-'
         }}</el-descriptions-item>
       </el-descriptions>
       <template #footer>
-        <el-button data-cy="btn-13" @click="detailDialogVisible = false">关闭</el-button>
+        <el-button data-cy="bin-detail-close-button" @click="detailDialogVisible = false">关闭</el-button>
       </template>
     </el-dialog>
 

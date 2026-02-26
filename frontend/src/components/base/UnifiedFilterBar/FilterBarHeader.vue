@@ -1,17 +1,30 @@
 <template>
-  <div class="filter-bar-header">
+  <div class="filter-bar-header" data-cy="filter-bar-header">
     <div class="header-left">
       <el-icon v-if="icon" class="header-icon">
         <component :is="icon" />
       </el-icon>
-      <span class="header-title">{{ title }}</span>
-      <el-tag v-if="showResultCount && total > 0" type="info" size="small" class="result-count">
+      <span class="header-title" data-cy="filter-bar-title">{{ title }}</span>
+      <el-tag
+        v-if="showResultCount && total > 0"
+        type="info"
+        size="small"
+        class="result-count"
+        data-cy="filter-bar-result-count"
+      >
         共 {{ total }} 条
       </el-tag>
     </div>
     <div class="header-right">
       <slot name="headerActions" />
-      <el-button v-if="showCollapse && collapsible" link type="primary" class="collapse-btn" @click="handleCollapse">
+      <el-button
+        v-if="showCollapse && collapsible"
+        link
+        type="primary"
+        class="collapse-btn"
+        data-cy="filter-bar-collapse-btn"
+        @click="handleCollapse"
+      >
         <el-icon class="collapse-icon" :class="{ 'is-collapsed': collapsed }">
           <ArrowDown />
         </el-icon>

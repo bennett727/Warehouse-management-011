@@ -13,7 +13,7 @@
         </el-tag>
       </div>
       <div class="header-actions" v-if="showActions">
-        <el-button type="primary" link :icon="Refresh" @click="refreshData"> 刷新 </el-button>
+        <el-button type="primary" link :icon="Refresh" @click="refreshData" data-cy="map-refresh-btn"> 刷新 </el-button>
       </div>
     </div>
 
@@ -66,7 +66,7 @@
 
         <!-- 操作按钮 -->
         <div class="card-actions" v-if="clickable">
-          <el-button type="primary" link :icon="View" @click.stop="handleView(warehouse)"> 查看 </el-button>
+          <el-button type="primary" link :icon="View" @click.stop="handleView(warehouse)" :data-cy="`map-view-btn-${warehouse.warehouseId}`"> 查看 </el-button>
         </div>
       </div>
 

@@ -14,6 +14,7 @@
     destroy-on-close
     :close-on-click-modal="false"
     class="inbound-order-dialog"
+    data-cy="inbound-order-dialog"
   >
     <div class="dialog-container">
       <!-- 上半部分：入库单基本信息区域 -->
@@ -23,27 +24,28 @@
           <span>入库单基本信息</span>
         </div>
 
-        <el-form ref="formRef" :model="formData" :rules="getDynamicFormRules" label-width="100px" class="order-form">
+        <el-form ref="formRef" :model="formData" :rules="getDynamicFormRules" label-width="100px" class="order-form" data-cy="inbound-order-form">
           <el-row :gutter="20">
             <el-col :span="8">
-              <el-form-item label="入库单号" prop="orderNo">
-                <el-input v-model="formData.orderNo" placeholder="系统自动生成" disabled />
+              <el-form-item label="入库单号" prop="orderNo" data-cy="inbound-order-no-form-item">
+                <el-input v-model="formData.orderNo" placeholder="系统自动生成" disabled data-cy="inbound-order-no-input" />
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="入库日期" prop="orderDate">
+              <el-form-item label="入库日期" prop="orderDate" data-cy="inbound-order-date-form-item">
                 <el-date-picker
                   v-model="formData.orderDate"
                   type="date"
                   placeholder="选择日期"
                   value-format="YYYY-MM-DD"
                   style="width: 100%"
+                  data-cy="inbound-order-date-picker"
                 />
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="入库类型" prop="inboundType">
-                <el-select v-model="formData.inboundType" placeholder="请选择入库类型" style="width: 100%">
+              <el-form-item label="入库类型" prop="inboundType" data-cy="inbound-order-type-form-item">
+                <el-select v-model="formData.inboundType" placeholder="请选择入库类型" style="width: 100%" data-cy="inbound-order-type-select">
                   <el-option label="采购入库" :value="0">
                     <el-icon><ShoppingCart /></el-icon> 采购入库
                   </el-option>
@@ -63,21 +65,23 @@
 
           <el-row :gutter="20">
             <el-col :span="8">
-              <el-form-item label="供应商" prop="supplier" :required="formData.inboundType === 0">
+              <el-form-item label="供应商" prop="supplier" :required="formData.inboundType === 0" data-cy="inbound-supplier-form-item">
                 <el-input
                   v-model="formData.supplier"
                   :placeholder="formData.inboundType === 0 ? '请输入供应商名称（必填）' : '请输入供应商名称'"
+                  data-cy="inbound-supplier-input"
                 />
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="经办人" prop="operatorName">
+              <el-form-item label="经办人" prop="operatorName" data-cy="inbound-operator-form-item">
                 <el-select
                   v-model="formData.operatorId"
                   placeholder="请选择经办人"
                   filterable
                   style="width: 100%"
                   @change="handleOperatorChange"
+                  data-cy="inbound-operator-select"
                 >
                   <el-option
                     v-for="user in userOptions"
@@ -89,34 +93,34 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="联系电话" prop="contactPhone">
-                <el-input v-model="formData.contactPhone" placeholder="请输入联系电话" />
+              <el-form-item label="联系电话" prop="contactPhone" data-cy="inbound-contact-phone-form-item">
+                <el-input v-model="formData.contactPhone" placeholder="请输入联系电话" data-cy="inbound-contact-phone-input" />
               </el-form-item>
             </el-col>
           </el-row>
 
           <el-row :gutter="20" v-if="formData.inboundType === 1">
             <el-col :span="8">
-              <el-form-item label="原出库单号" prop="relatedOutboundNo">
-                <el-input v-model="formData.relatedOutboundNo" placeholder="请输入原出库单号" />
+              <el-form-item label="原出库单号" prop="relatedOutboundNo" data-cy="inbound-related-outbound-no-form-item">
+                <el-input v-model="formData.relatedOutboundNo" placeholder="请输入原出库单号" data-cy="inbound-related-outbound-no-input" />
               </el-form-item>
             </el-col>
             <el-col :span="16">
-              <el-form-item label="退货原因" prop="returnReason">
-                <el-input v-model="formData.returnReason" placeholder="请输入退货原因" />
+              <el-form-item label="退货原因" prop="returnReason" data-cy="inbound-return-reason-form-item">
+                <el-input v-model="formData.returnReason" placeholder="请输入退货原因" data-cy="inbound-return-reason-input" />
               </el-form-item>
             </el-col>
           </el-row>
 
           <el-row :gutter="20" v-if="formData.inboundType === 2">
             <el-col :span="8">
-              <el-form-item label="调拨单号" prop="relatedTransferNo">
-                <el-input v-model="formData.relatedTransferNo" placeholder="请输入调拨单号" />
+              <el-form-item label="调拨单号" prop="relatedTransferNo" data-cy="inbound-related-transfer-no-form-item">
+                <el-input v-model="formData.relatedTransferNo" placeholder="请输入调拨单号" data-cy="inbound-related-transfer-no-input" />
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="调出仓库" prop="sourceWarehouseId">
-                <el-select v-model="formData.sourceWarehouseId" placeholder="请选择调出仓库" style="width: 100%">
+              <el-form-item label="调出仓库" prop="sourceWarehouseId" data-cy="inbound-source-warehouse-form-item">
+                <el-select v-model="formData.sourceWarehouseId" placeholder="请选择调出仓库" style="width: 100%" data-cy="inbound-source-warehouse-select">
                   <el-option
                     v-for="warehouse in warehouseOptions"
                     :key="warehouse.id"
@@ -128,7 +132,7 @@
             </el-col>
           </el-row>
 
-          <el-form-item label="备注" prop="remark">
+          <el-form-item label="备注" prop="remark" data-cy="inbound-remark-form-item">
             <el-input
               v-model="formData.remark"
               type="textarea"
@@ -136,6 +140,7 @@
               placeholder="请输入备注信息"
               maxlength="500"
               show-word-limit
+              data-cy="inbound-remark-input"
             />
           </el-form-item>
         </el-form>
@@ -153,13 +158,13 @@
 
         <!-- 设备列表工具栏 -->
         <div class="device-toolbar">
-          <el-button type="primary" :icon="Plus" @click="handleAddItem">添加设备</el-button>
-          <el-button type="success" :icon="Upload" @click="handleImport">批量导入</el-button>
+          <el-button type="primary" :icon="Plus" @click="handleAddItem" data-cy="inbound-add-item-btn">添加设备</el-button>
+          <el-button type="success" :icon="Upload" @click="handleImport" data-cy="inbound-import-btn">批量导入</el-button>
           <el-button
-            v-if="formData.items?.length > 0 && binOptions.length > 0"
             type="warning"
             :icon="MagicStick"
             @click="handleAutoAssignBins"
+            data-cy="inbound-auto-assign-bins-btn"
           >
             自动分配货位
           </el-button>
@@ -170,9 +175,9 @@
         </div>
 
         <!-- 设备明细表格 -->
-        <el-table :data="formData.items" border size="small" height="300px" class="device-table">
-          <el-table-column type="index" label="序号" width="50" align="center" />
-          <el-table-column label="设备" min-width="200">
+        <el-table :data="formData.items" border size="small" height="300px" class="device-table" data-cy="inbound-device-table">
+          <el-table-column type="index" label="序号" width="50" align="center" data-cy="inbound-device-table-index-column" />
+          <el-table-column label="设备" min-width="200" data-cy="inbound-device-table-device-column">
             <template #default="{ row, $index }">
               <el-select
                 v-model="row.deviceId"
@@ -183,6 +188,7 @@
                 :loading="deviceSearchLoading"
                 style="width: 100%"
                 @change="(val) => handleDeviceChange(val, $index)"
+                :data-cy="`inbound-device-select-${$index}`"
               >
                 <el-option
                   v-for="device in deviceOptions"
@@ -198,39 +204,39 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column label="规格型号" width="120">
+          <el-table-column label="规格型号" width="120" data-cy="inbound-device-table-spec-column">
             <template #default="{ row }">
               {{ row.specification || '-' }}
             </template>
           </el-table-column>
-          <el-table-column label="货位" width="150">
-            <template #default="{ row }">
-              <el-select v-model="row.binId" placeholder="选择货位" style="width: 100%">
+          <el-table-column label="货位" width="150" data-cy="inbound-device-table-bin-column">
+            <template #default="{ row, $index }">
+              <el-select v-model="row.binId" placeholder="选择货位" style="width: 100%" :data-cy="`inbound-bin-select-${$index}`">
                 <el-option v-for="bin in binOptions" :key="bin.id" :label="bin.code" :value="bin.id" />
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column label="数量" width="100">
-            <template #default="{ row }">
-              <el-input-number v-model="row.quantity" :min="1" :max="9999" style="width: 100%" />
+          <el-table-column label="数量" width="100" data-cy="inbound-device-table-quantity-column">
+            <template #default="{ row, $index }">
+              <el-input-number v-model="row.quantity" :min="1" :max="9999" style="width: 100%" :data-cy="`inbound-quantity-input-${$index}`" />
             </template>
           </el-table-column>
-          <el-table-column label="单价" width="120">
-            <template #default="{ row }">
-              <el-input-number v-model="row.unitPrice" :min="0" :precision="2" style="width: 100%" />
+          <el-table-column label="单价" width="120" data-cy="inbound-device-table-price-column">
+            <template #default="{ row, $index }">
+              <el-input-number v-model="row.unitPrice" :min="0" :precision="2" style="width: 100%" :data-cy="`inbound-unit-price-input-${$index}`" />
             </template>
           </el-table-column>
-          <el-table-column label="金额" width="120" align="right">
+          <el-table-column label="金额" width="120" align="right" data-cy="inbound-device-table-amount-column">
             <template #default="{ row }"> ¥{{ ((row.quantity || 0) * (row.unitPrice || 0)).toFixed(2) }} </template>
           </el-table-column>
-          <el-table-column label="备注" min-width="120">
-            <template #default="{ row }">
-              <el-input v-model="row.remark" placeholder="备注" size="small" />
+          <el-table-column label="备注" min-width="120" data-cy="inbound-device-table-remark-column">
+            <template #default="{ row, $index }">
+              <el-input v-model="row.remark" placeholder="备注" size="small" :data-cy="`inbound-remark-input-${$index}`" />
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="70" fixed="right">
+          <el-table-column label="操作" width="70" fixed="right" data-cy="inbound-device-table-action-column">
             <template #default="{ $index }">
-              <el-button link type="danger" size="small" @click="handleRemoveItem($index)">删除</el-button>
+              <el-button link type="danger" size="small" @click="handleRemoveItem($index)" :data-cy="`inbound-remove-item-btn-${$index}`">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -238,26 +244,29 @@
     </div>
 
     <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit"> 确定 </el-button>
+      <div class="dialog-footer" data-cy="inbound-order-footer">
+        <el-button data-cy="inbound-order-cancel-btn" @click="dialogVisible = false">取消</el-button>
+        <el-button data-cy="inbound-order-submit-btn" type="primary" :loading="submitLoading" @click="handleSubmit">
+          确定
+        </el-button>
       </div>
     </template>
 
     <!-- 批量导入对话框 -->
-    <el-dialog v-model="importDialogVisible" title="批量导入设备" width="600px" append-to-body>
+    <el-dialog v-model="importDialogVisible" title="批量导入设备" width="600px" append-to-body data-cy="inbound-import-dialog">
       <el-upload
         drag
         action="/api/inventory/inbound/import"
         :on-success="handleImportSuccess"
         :on-error="handleImportError"
         accept=".xlsx,.xls,.csv"
+        data-cy="inbound-import-upload"
       >
         <el-icon class="el-icon--upload"><UploadFilled /></el-icon>
         <div class="el-upload__text">拖拽文件到此处或 <em>点击上传</em></div>
         <template #tip>
           <div class="el-upload__tip">
-            支持 .xlsx, .xls, .csv 格式，<el-link type="primary" @click="downloadTemplate">下载模板</el-link>
+            支持 .xlsx, .xls, .csv 格式，<el-link type="primary" @click="downloadTemplate" data-cy="inbound-download-template-link">下载模板</el-link>
           </div>
         </template>
       </el-upload>

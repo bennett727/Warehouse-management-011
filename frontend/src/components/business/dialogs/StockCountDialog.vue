@@ -14,6 +14,7 @@
     destroy-on-close
     :close-on-click-modal="false"
     class="stock-count-dialog"
+    data-cy="stock-count-dialog"
   >
     <div class="dialog-container">
       <!-- 上半部分：盘点单基本信息区域 -->
@@ -23,30 +24,31 @@
           <span>盘点单基本信息</span>
         </div>
 
-        <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px" class="order-form">
+        <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px" class="order-form" data-cy="stock-count-form">
           <el-row :gutter="20">
             <el-col :span="8">
-              <el-form-item label="盘点单号" prop="orderNo">
-                <el-input v-model="formData.orderNo" placeholder="系统自动生成" disabled />
+              <el-form-item label="盘点单号" prop="orderNo" data-cy="stock-count-order-no-form-item">
+                <el-input v-model="formData.orderNo" placeholder="系统自动生成" disabled data-cy="stock-count-order-no-input" />
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="盘点日期" prop="countDate">
+              <el-form-item label="盘点日期" prop="countDate" data-cy="stock-count-date-form-item">
                 <el-date-picker
                   v-model="formData.countDate"
                   type="date"
                   placeholder="选择日期"
                   value-format="YYYY-MM-DD"
                   style="width: 100%"
+                  data-cy="stock-count-date-picker"
                 />
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="盘点类型" prop="countType">
-                <el-select v-model="formData.countType" placeholder="请选择盘点类型" style="width: 100%">
-                  <el-option label="全盘" :value="0" />
-                  <el-option label="抽盘" :value="1" />
-                  <el-option label="循环盘点" :value="2" />
+              <el-form-item label="盘点类型" prop="countType" data-cy="stock-count-type-form-item">
+                <el-select v-model="formData.countType" placeholder="请选择盘点类型" style="width: 100%" data-cy="stock-count-type-select">
+                  <el-option label="全盘" :value="0" data-cy="stock-count-type-full" />
+                  <el-option label="抽盘" :value="1" data-cy="stock-count-type-random" />
+                  <el-option label="循环盘点" :value="2" data-cy="stock-count-type-cycle" />
                 </el-select>
               </el-form-item>
             </el-col>
@@ -54,13 +56,14 @@
 
           <el-row :gutter="20">
             <el-col :span="8">
-              <el-form-item label="盘点仓库" prop="warehouseId">
+              <el-form-item label="盘点仓库" prop="warehouseId" data-cy="stock-count-warehouse-form-item">
                 <el-select
                   v-model="formData.warehouseId"
                   placeholder="请选择盘点仓库"
                   filterable
                   style="width: 100%"
                   @change="handleWarehouseChange"
+                  data-cy="stock-count-warehouse-select"
                 >
                   <el-option
                     v-for="warehouse in warehouseOptions"
@@ -72,7 +75,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="盘点区域" prop="areaId">
+              <el-form-item label="盘点区域" prop="areaId" data-cy="stock-count-area-form-item">
                 <el-select
                   v-model="formData.areaId"
                   placeholder="请选择盘点区域"
@@ -80,19 +83,21 @@
                   clearable
                   style="width: 100%"
                   :disabled="!formData.warehouseId"
+                  data-cy="stock-count-area-select"
                 >
                   <el-option v-for="area in areaOptions" :key="area.id" :label="area.name" :value="area.id" />
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="负责人" prop="operatorName">
+              <el-form-item label="负责人" prop="operatorName" data-cy="stock-count-operator-form-item">
                 <el-select
                   v-model="formData.operatorId"
                   placeholder="请选择负责人"
                   filterable
                   style="width: 100%"
                   @change="handleOperatorChange"
+                  data-cy="stock-count-operator-select"
                 >
                   <el-option
                     v-for="user in userOptions"
@@ -105,7 +110,7 @@
             </el-col>
           </el-row>
 
-          <el-form-item label="备注" prop="remark">
+          <el-form-item label="备注" prop="remark" data-cy="stock-count-remark-form-item">
             <el-input
               v-model="formData.remark"
               type="textarea"
@@ -113,6 +118,7 @@
               placeholder="请输入备注信息"
               maxlength="500"
               show-word-limit
+              data-cy="stock-count-remark-input"
             />
           </el-form-item>
         </el-form>
@@ -130,7 +136,7 @@
 
         <!-- 操作工具栏 -->
         <div class="device-toolbar">
-          <el-button type="primary" :icon="Plus" @click="handleAddItem" :disabled="!formData.warehouseId">
+          <el-button type="primary" :icon="Plus" @click="handleAddItem" :disabled="!formData.warehouseId" data-cy="stock-count-add-item-btn">
             添加设备
           </el-button>
           <el-button
@@ -139,6 +145,7 @@
             @click="handleAutoLoad"
             :disabled="!formData.warehouseId"
             :loading="autoLoadLoading"
+            data-cy="stock-count-auto-load-btn"
           >
             自动加载库存
           </el-button>
@@ -169,9 +176,10 @@
           class="device-table"
           empty-text="请选择盘点仓库后添加设备"
           :row-class-name="getRowClassName"
+          data-cy="stock-count-device-table"
         >
-          <el-table-column type="index" label="序号" width="50" align="center" />
-          <el-table-column label="设备" min-width="180">
+          <el-table-column type="index" label="序号" width="50" align="center" data-cy="stock-count-device-table-index-column" />
+          <el-table-column label="设备" min-width="180" data-cy="stock-count-device-table-device-column">
             <template #default="{ row, $index }">
               <el-select
                 v-model="row.deviceId"
@@ -182,6 +190,7 @@
                 :loading="deviceSearchLoading"
                 style="width: 100%"
                 @change="(val) => handleDeviceChange(val, $index)"
+                :data-cy="`stock-count-device-select-${$index}`"
               >
                 <el-option
                   v-for="device in deviceOptions[$index] || []"
@@ -200,65 +209,67 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column label="规格型号" width="120">
+          <el-table-column label="规格型号" width="120" data-cy="stock-count-device-table-spec-column">
             <template #default="{ row }">
               {{ row.specification || '-' }}
             </template>
           </el-table-column>
-          <el-table-column label="货位" width="120">
+          <el-table-column label="货位" width="120" data-cy="stock-count-device-table-bin-column">
             <template #default="{ row }">
               {{ row.binCode || '-' }}
             </template>
           </el-table-column>
-          <el-table-column label="账面数量" width="100" align="right">
+          <el-table-column label="账面数量" width="100" align="right" data-cy="stock-count-device-table-book-quantity-column">
             <template #default="{ row }">
               <strong>{{ row.bookQuantity || 0 }}</strong>
             </template>
           </el-table-column>
-          <el-table-column label="实盘数量" width="120">
-            <template #default="{ row }">
+          <el-table-column label="实盘数量" width="120" data-cy="stock-count-device-table-actual-quantity-column">
+            <template #default="{ row, $index }">
               <el-input-number
                 v-model="row.actualQuantity"
                 :min="0"
                 :max="9999"
                 style="width: 100%"
                 @change="handleActualQuantityChange(row)"
+                :data-cy="`stock-count-actual-quantity-input-${$index}`"
               />
             </template>
           </el-table-column>
-          <el-table-column label="差异数量" width="100" align="right">
+          <el-table-column label="差异数量" width="100" align="right" data-cy="stock-count-device-table-diff-quantity-column">
             <template #default="{ row }">
               <span :class="getDiffClass(row)">
                 <strong>{{ formatDiff(row.diffQuantity) }}</strong>
               </span>
             </template>
           </el-table-column>
-          <el-table-column label="差异原因" min-width="120">
-            <template #default="{ row }">
+          <el-table-column label="差异原因" min-width="120" data-cy="stock-count-device-table-diff-reason-column">
+            <template #default="{ row, $index }">
               <el-select
                 v-model="row.diffReason"
                 placeholder="选择原因"
                 size="small"
                 style="width: 100%"
                 :disabled="!row.diffQuantity"
+                :data-cy="`stock-count-diff-reason-select-${$index}`"
               >
-                <el-option label="正常损耗" value="normal_loss" />
-                <el-option label="盘点错误" value="count_error" />
-                <el-option label="入库未登记" value="inbound_missing" />
-                <el-option label="出库未登记" value="outbound_missing" />
-                <el-option label="损坏报废" value="damaged" />
-                <el-option label="其他" value="other" />
+                <el-option label="正常损耗" value="normal_loss" data-cy="stock-count-diff-reason-normal-loss" />
+                <el-option label="盘点错误" value="count_error" data-cy="stock-count-diff-reason-count-error" />
+                <el-option label="入库未登记" value="inbound_missing" data-cy="stock-count-diff-reason-inbound-missing" />
+                <el-option label="出库未登记" value="outbound_missing" data-cy="stock-count-diff-reason-outbound-missing" />
+                <el-option label="损坏报废" value="damaged" data-cy="stock-count-diff-reason-damaged" />
+                <el-option label="其他" value="other" data-cy="stock-count-diff-reason-other" />
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column label="备注" min-width="100">
-            <template #default="{ row }">
-              <el-input v-model="row.remark" placeholder="备注" size="small" />
+          <el-table-column label="备注" min-width="100" data-cy="stock-count-device-table-remark-column">
+            <template #default="{ row, $index }">
+              <el-input v-model="row.remark" placeholder="备注" size="small" :data-cy="`stock-count-remark-input-${$index}`" />
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="70" fixed="right">
+          <el-table-column label="操作" width="70" fixed="right" data-cy="stock-count-device-table-action-column">
             <template #default="{ $index }">
-              <el-button link type="danger" size="small" @click="handleRemoveItem($index)">删除</el-button>
+              <el-button link type="danger" size="small" @click="handleRemoveItem($index)" :data-cy="`stock-count-remove-item-btn-${$index}`">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -266,9 +277,9 @@
     </div>
 
     <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit"> 确定 </el-button>
+      <div class="dialog-footer" data-cy="stock-count-footer">
+        <el-button @click="dialogVisible = false" data-cy="stock-count-cancel-btn">取消</el-button>
+        <el-button type="primary" :loading="submitLoading" @click="handleSubmit" data-cy="stock-count-submit-btn"> 确定 </el-button>
       </div>
     </template>
   </el-dialog>

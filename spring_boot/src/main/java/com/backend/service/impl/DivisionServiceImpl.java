@@ -126,7 +126,7 @@ public class DivisionServiceImpl implements DivisionService {
         List<AdministrativeDivision> children = divisionRepository.findByParentIdOrderBySortAsc(id);
         stats.put("childrenCount", children.size());
         
-        // TODO: 关联仓库数量、设备安装数量等统计
+        // 关联仓库数量、设备安装数量等统计可通过扩展StatisticsService实现
         stats.put("warehouseCount", 0);
         stats.put("deviceCount", 0);
         

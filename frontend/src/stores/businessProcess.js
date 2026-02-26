@@ -94,7 +94,7 @@ export const useBusinessProcessStore = defineStore('businessProcess', () => {
     return repairStore;
   };
 
-  const getMaintenanceStore = () => {
+  const _getMaintenanceStore = () => {
     if (!maintenanceStore) {
       const { useMaintenanceStore } = require('./maintenance.js');
       maintenanceStore = useMaintenanceStore();
@@ -324,7 +324,7 @@ export const useBusinessProcessStore = defineStore('businessProcess', () => {
       const device = devices[i];
 
       try {
-        const result = await executeOutbound(device, outboundType);
+        await executeOutbound(device, outboundType);
         batchOperationStatus.successCount++;
         results.push({ deviceId: device.deviceId, success: true });
       } catch (error) {

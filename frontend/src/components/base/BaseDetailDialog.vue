@@ -105,17 +105,29 @@
     </div>
 
     <template #footer v-if="showFooter">
-      <div class="dialog-footer">
+      <div class="dialog-footer" data-cy="detail-dialog-footer">
         <slot name="footer" :row="detailData">
-          <el-button @click="handleClose">
+          <el-button data-cy="detail-dialog-close-btn" @click="handleClose">
             <el-icon><Close /></el-icon>
             关闭
           </el-button>
-          <el-button v-if="showEdit" type="primary" @click="handleEdit" :disabled="loading">
+          <el-button
+            v-if="showEdit"
+            type="primary"
+            data-cy="detail-dialog-edit-btn"
+            @click="handleEdit"
+            :disabled="loading"
+          >
             <el-icon><Edit /></el-icon>
             编辑
           </el-button>
-          <el-button v-if="showDelete" type="danger" @click="handleDelete" :disabled="loading">
+          <el-button
+            v-if="showDelete"
+            type="danger"
+            data-cy="detail-dialog-delete-btn"
+            @click="handleDelete"
+            :disabled="loading"
+          >
             <el-icon><Delete /></el-icon>
             删除
           </el-button>

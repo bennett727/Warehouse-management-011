@@ -23,15 +23,16 @@
       :current-page="pagination.current"
       :page-size="pagination.pageSize"
       height="500px"
+      data-cy="device-status-table"
       @page-change="handlePageChange"
     >
-      <el-table-column prop="statusCode" label="状态编码" width="120" />
-      <el-table-column prop="statusName" label="状态名称" width="150" />
-      <el-table-column prop="description" label="描述" min-width="200" />
-      <el-table-column prop="sortOrder" label="排序" width="80" align="center" />
-      <el-table-column prop="isActive" label="状态" width="100">
+      <el-table-column prop="statusCode" label="状态编码" width="120" data-cy="device-status-code-column" />
+      <el-table-column prop="statusName" label="状态名称" width="150" data-cy="device-status-name-column" />
+      <el-table-column prop="description" label="描述" min-width="200" data-cy="device-status-desc-column" />
+      <el-table-column prop="sortOrder" label="排序" width="80" align="center" data-cy="device-status-sort-column" />
+      <el-table-column prop="isActive" label="状态" width="100" data-cy="device-status-active-column">
         <template #default="{ row }">
-          <el-tag :type="row.isActive ? 'success' : 'info'">{{ row.isActive ? '启用' : '禁用' }}</el-tag>
+          <el-tag :type="row.isActive ? 'success' : 'info'" :data-cy="`device-status-tag-${row.statusCode}`">{{ row.isActive ? '启用' : '禁用' }}</el-tag>
         </template>
       </el-table-column>
     </DataTable>

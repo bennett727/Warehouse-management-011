@@ -1,7 +1,7 @@
 // 优化后的登录命令 - 支持session缓存和快速验证
 Cypress.Commands.add('login', (username, password) => {
   const user = username || 'admin'
-  const pass = password || 'Admin@123456'
+  const pass = password || '123456'
   const sessionKey = `session_${user}`
   
   // 检查是否启用session缓存
@@ -12,10 +12,11 @@ Cypress.Commands.add('login', (username, password) => {
       performLogin(user, pass)
     }, {
       validate: () => {
-        // 快速验证session有效性 - 检查localStorage中的token
+        // 快速验证session有效性 - 检查localStorage中的access_token
         cy.window().then((win) => {
-          const token = win.localStorage.getItem('token')
+          const token = win.localStorage.getItem('access_token')
           expect(token).to.exist
+          expect(token).to.not.be.empty
         })
       },
       cacheAcrossSpecs: true
@@ -37,15 +38,19 @@ function performLogin(username, password) {
   cy.url({ timeout: 15000 }).should('not.include', '/login')
   cy.get('.el-loading-mask', { timeout: 5000 }).should('not.exist')
   
-  // 等待token被存储
-  cy.window().its('localStorage.token').should('exist')
+  // 等待token被存储并验证token不为空
+  cy.window().then((win) => {
+    const token = win.localStorage.getItem('access_token')
+    expect(token).to.exist
+    expect(token).to.not.be.empty
+  })
 }
 
 // 快速登录 - 使用API直接获取token，跳过UI操作
 Cypress.Commands.add('loginByApi', (username, password) => {
   const user = username || 'admin'
-  const pass = password || 'Admin@123456'
-  
+  const pass = password || '123456'
+
   cy.request({
     method: 'POST',
     url: `${Cypress.env('apiUrl')}/auth/login`,
@@ -53,12 +58,12 @@ Cypress.Commands.add('loginByApi', (username, password) => {
     failOnStatusCode: false
   }).then((response) => {
     expect(response.status).to.eq(200)
-    const token = response.body.data?.token
+    const token = response.body.data?.accessToken || response.body.data?.token
     expect(token).to.exist
     
     // 设置token到localStorage
     cy.window().then((win) => {
-      win.localStorage.setItem('token', token)
+      win.localStorage.setItem('access_token', token)
     })
     
     // 设置到cookie以保持兼容性

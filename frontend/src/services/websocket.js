@@ -119,7 +119,7 @@ export class WebSocketService {
    * 处理收到的消息
    */
   handleMessage(data) {
-    const { type, payload, timestamp } = data;
+    const { type, payload } = data;
 
     // 处理心跳响应
     if (type === 'pong') {

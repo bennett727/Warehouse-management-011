@@ -17,9 +17,9 @@
   >
     <div v-loading="loading" class="detail-content">
       <!-- 标签页切换 -->
-      <el-tabs v-model="activeTab" type="border-card">
+      <el-tabs v-model="activeTab" type="border-card" data-cy="device-detail-tabs">
         <!-- 设备详情标签 -->
-        <el-tab-pane name="detail">
+        <el-tab-pane name="detail" data-cy="device-detail-tab-pane">
           <template #label>
             <el-icon><InfoFilled /></el-icon>
             <span>设备详情</span>
@@ -112,64 +112,65 @@
         </el-tab-pane>
 
         <!-- 状态记录标签 -->
-        <el-tab-pane name="status">
+        <el-tab-pane name="status" data-cy="device-status-tab-pane">
           <template #label>
             <el-icon><Timer /></el-icon>
             <span>状态记录</span>
           </template>
-          <el-empty v-if="!statusRecords.length" description="暂无状态记录" />
+          <el-empty v-if="!statusRecords.length" description="暂无状态记录" data-cy="device-status-empty" />
           <el-timeline v-else>
             <el-timeline-item
               v-for="(record, index) in statusRecords"
               :key="index"
               :timestamp="record.createTime"
               placement="top"
+              :data-cy="`device-status-timeline-item-${index}`"
             >
-              <el-card shadow="hover" size="small">
+              <el-card shadow="hover" size="small" :data-cy="`device-status-card-${index}`">
                 <template #header>
-                  <span class="timeline-title">{{ record.statusName }}</span>
+                  <span class="timeline-title" :data-cy="`device-status-title-${index}`">{{ record.statusName }}</span>
                 </template>
-                <p class="timeline-desc">{{ record.description || '无描述' }}</p>
-                <p class="timeline-operator">操作人: {{ record.operatorName || '-' }}</p>
+                <p class="timeline-desc" :data-cy="`device-status-desc-${index}`">{{ record.description || '无描述' }}</p>
+                <p class="timeline-operator" :data-cy="`device-status-operator-${index}`">操作人: {{ record.operatorName || '-' }}</p>
               </el-card>
             </el-timeline-item>
           </el-timeline>
         </el-tab-pane>
 
         <!-- 操作记录标签 -->
-        <el-tab-pane name="operation">
+        <el-tab-pane name="operation" data-cy="device-operation-tab-pane">
           <template #label>
             <el-icon><List /></el-icon>
             <span>操作记录</span>
           </template>
-          <el-empty v-if="!operationRecords.length" description="暂无操作记录" />
-          <el-table v-else :data="operationRecords" border stripe size="small">
-            <el-table-column prop="operationType" label="操作类型" width="120" />
-            <el-table-column prop="operationTime" label="操作时间" width="160" />
-            <el-table-column prop="operatorName" label="操作人" width="100" />
-            <el-table-column prop="description" label="操作描述" min-width="200" />
+          <el-empty v-if="!operationRecords.length" description="暂无操作记录" data-cy="device-operation-empty" />
+          <el-table v-else :data="operationRecords" border stripe size="small" data-cy="device-operation-table">
+            <el-table-column prop="operationType" label="操作类型" width="120" data-cy="device-operation-type-column" />
+            <el-table-column prop="operationTime" label="操作时间" width="160" data-cy="device-operation-time-column" />
+            <el-table-column prop="operatorName" label="操作人" width="100" data-cy="device-operation-operator-column" />
+            <el-table-column prop="description" label="操作描述" min-width="200" data-cy="device-operation-desc-column" />
           </el-table>
         </el-tab-pane>
 
         <!-- 安装记录标签 -->
-        <el-tab-pane name="installation">
+        <el-tab-pane name="installation" data-cy="device-installation-tab-pane">
           <template #label>
             <el-icon><Location /></el-icon>
             <span>安装记录</span>
           </template>
-          <el-empty v-if="!installationRecords.length" description="暂无安装记录" />
-          <el-table v-else :data="installationRecords" border stripe size="small">
-            <el-table-column prop="installationId" label="安装单号" width="120" />
-            <el-table-column prop="installationDate" label="安装日期" width="120" />
-            <el-table-column prop="installerName" label="安装人" width="100" />
-            <el-table-column label="安装位置" min-width="200">
+          <el-empty v-if="!installationRecords.length" description="暂无安装记录" data-cy="device-installation-empty" />
+          <el-table v-else :data="installationRecords" border stripe size="small" data-cy="device-installation-table">
+            <el-table-column prop="installationId" label="安装单号" width="120" data-cy="device-installation-id-column" />
+            <el-table-column prop="installationDate" label="安装日期" width="120" data-cy="device-installation-date-column" />
+            <el-table-column prop="installerName" label="安装人" width="100" data-cy="device-installation-installer-column" />
+            <el-table-column label="安装位置" min-width="200" data-cy="device-installation-location-column">
               <template #default="{ row }">
                 {{ getFullInstallationLocation(row) }}
               </template>
             </el-table-column>
-            <el-table-column prop="status" label="状态" width="80">
+            <el-table-column prop="status" label="状态" width="80" data-cy="device-installation-status-column">
               <template #default="{ row }">
-                <el-tag :type="row.status === 'completed' ? 'success' : 'warning'" size="small">
+                <el-tag :type="row.status === 'completed' ? 'success' : 'warning'" size="small" :data-cy="`device-installation-status-tag-${row.installationId}`">
                   {{ row.status === 'completed' ? '已完成' : '进行中' }}
                 </el-tag>
               </template>
@@ -178,21 +179,21 @@
         </el-tab-pane>
 
         <!-- 维修记录标签 -->
-        <el-tab-pane name="repair">
+        <el-tab-pane name="repair" data-cy="device-repair-tab-pane">
           <template #label>
             <el-icon><FirstAidKit /></el-icon>
             <span>维修记录</span>
           </template>
-          <el-empty v-if="!repairRecords.length" description="暂无维修记录" />
-          <el-table v-else :data="repairRecords" border stripe size="small">
-            <el-table-column prop="repairId" label="维修单号" width="120" />
-            <el-table-column prop="repairDate" label="维修日期" width="120" />
-            <el-table-column prop="repairerName" label="维修人" width="100" />
-            <el-table-column prop="faultDescription" label="故障描述" min-width="150" />
-            <el-table-column prop="repairContent" label="维修内容" min-width="150" />
-            <el-table-column prop="status" label="状态" width="80">
+          <el-empty v-if="!repairRecords.length" description="暂无维修记录" data-cy="device-repair-empty" />
+          <el-table v-else :data="repairRecords" border stripe size="small" data-cy="device-repair-table">
+            <el-table-column prop="repairId" label="维修单号" width="120" data-cy="device-repair-id-column" />
+            <el-table-column prop="repairDate" label="维修日期" width="120" data-cy="device-repair-date-column" />
+            <el-table-column prop="repairerName" label="维修人" width="100" data-cy="device-repair-repairer-column" />
+            <el-table-column prop="faultDescription" label="故障描述" min-width="150" data-cy="device-repair-fault-column" />
+            <el-table-column prop="repairContent" label="维修内容" min-width="150" data-cy="device-repair-content-column" />
+            <el-table-column prop="status" label="状态" width="80" data-cy="device-repair-status-column">
               <template #default="{ row }">
-                <el-tag :type="getRepairStatusType(row.status)" size="small">
+                <el-tag :type="getRepairStatusType(row.status)" size="small" :data-cy="`device-repair-status-tag-${row.repairId}`">
                   {{ getRepairStatusText(row.status) }}
                 </el-tag>
               </template>
@@ -201,17 +202,17 @@
         </el-tab-pane>
 
         <!-- 附件文档标签 -->
-        <el-tab-pane name="documents">
+        <el-tab-pane name="documents" data-cy="device-documents-tab-pane">
           <template #label>
             <el-icon><Folder /></el-icon>
             <span>附件文档</span>
           </template>
-          <el-empty v-if="!documents.length" description="暂无附件文档" />
+          <el-empty v-if="!documents.length" description="暂无附件文档" data-cy="device-documents-empty" />
           <div v-else class="document-list">
-            <div v-for="doc in documents" :key="doc.id" class="document-item">
+            <div v-for="doc in documents" :key="doc.id" class="document-item" :data-cy="`device-document-item-${doc.id}`">
               <el-icon><Document /></el-icon>
               <span class="doc-name">{{ doc.name }}</span>
-              <el-button type="primary" link size="small" @click="downloadDocument(doc)">下载</el-button>
+              <el-button type="primary" link size="small" @click="downloadDocument(doc)" :data-cy="`device-document-download-btn-${doc.id}`">下载</el-button>
             </div>
           </div>
         </el-tab-pane>

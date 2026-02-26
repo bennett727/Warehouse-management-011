@@ -212,7 +212,7 @@ public class AlertService {
             log.warn(logMessage);
         }
 
-        // TODO: 发送告警通知（邮件、WebHook等）
+        // 发送告警通知（钉钉、企业微信、邮件等）
         sendNotification(alertName, message, level);
     }
 

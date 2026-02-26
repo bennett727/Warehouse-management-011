@@ -47,6 +47,7 @@
         :cell-class-name="cellClassName"
         :header-cell-class-name="headerCellClassName"
         :row-style="rowStyle"
+        data-cy="data-table"
         :cell-style="cellStyle"
         :header-row-style="headerRowStyle"
         :header-cell-style="headerCellStyle"
@@ -65,7 +66,6 @@
         :load="load"
         :tree-props="treeProps"
         :row-key="rowKey"
-        data-cy="data-table"
         role="grid"
         :aria-label="ariaLabel || '数据表格'"
         :aria-rowcount="safeRowCount"
@@ -100,6 +100,7 @@
         :layout="pagination.layout || 'total, sizes, prev, pager, next, jumper'"
         :background="true"
         aria-label="分页导航"
+        data-cy="data-table-pagination"
         @size-change="handleSizeChange"
         @current-change="handlePageChange"
       />
@@ -301,7 +302,6 @@ const safeData = computed(() => {
   if (Array.isArray(props.data)) {
     return props.data;
   }
-  console.warn('[DataTable] data prop 不是数组，将使用空数组:', props.data);
   return [];
 });
 

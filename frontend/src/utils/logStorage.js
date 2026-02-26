@@ -37,7 +37,7 @@ class LogStorage {
       const request = indexedDB.open(DB_NAME, DB_VERSION);
 
       request.onerror = () => {
-        console.error('[LogStorage] IndexedDB打开失败:', request.error);
+        // 静默处理IndexedDB打开失败，避免生产环境控制台报错
         this.isInitialized = false;
         resolve(false);
       };
@@ -45,7 +45,6 @@ class LogStorage {
       request.onsuccess = () => {
         this.db = request.result;
         this.isInitialized = true;
-        console.log('[LogStorage] IndexedDB初始化成功');
         this._flushPendingLogs();
         this._cleanupOldLogs();
         resolve(true);
@@ -211,7 +210,7 @@ class LogStorage {
       await this._addToStore(entry);
       await this._checkAndCleanup();
     } catch (error) {
-      console.error('[LogStorage] 添加日志失败:', error);
+      // 静默处理日志添加失败
     }
   }
 
@@ -281,7 +280,6 @@ class LogStorage {
       };
 
       request.onerror = () => {
-        console.error('[LogStorage] 查询日志失败:', request.error);
         resolve([]);
       };
     });
@@ -345,7 +343,6 @@ class LogStorage {
       };
 
       request.onerror = () => {
-        console.error('[LogStorage] 获取统计失败:', request.error);
         resolve(null);
       };
     });
@@ -362,12 +359,10 @@ class LogStorage {
       const request = store.clear();
 
       request.onsuccess = () => {
-        console.log('[LogStorage] 日志已清空');
         resolve(true);
       };
 
       request.onerror = () => {
-        console.error('[LogStorage] 清空日志失败:', request.error);
         resolve(false);
       };
     });
@@ -616,9 +611,6 @@ class LogStorage {
           deleted++;
           cursor.continue();
         } else {
-          if (deleted > 0) {
-            console.log(`[LogStorage] 清理了 ${deleted} 条过期日志`);
-          }
           resolve(deleted);
         }
       };

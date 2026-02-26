@@ -1,0 +1,186 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 5,
+    "passes": 5,
+    "pending": 0,
+    "failures": 0,
+    "start": "2026-02-26T13:34:50.563Z",
+    "end": "2026-02-26T13:35:02.833Z",
+    "duration": 12270,
+    "testsRegistered": 5,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "6b84c146-537b-47b0-90a7-0b7e6634ecdf",
+      "title": "",
+      "fullFile": "tests\\cypress\\e2e\\login-simple-test.cy.js",
+      "file": "tests\\cypress\\e2e\\login-simple-test.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "065d0922-fd2c-43d6-a9c8-72960110ba62",
+          "title": "🔐 简化登录测试",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "应该成功访问登录页面",
+              "fullTitle": "🔐 简化登录测试 应该成功访问登录页面",
+              "timedOut": null,
+              "duration": 1283,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('/login');\ncy.url().should('include', '/login');\ncy.get('[data-cy=\"login-page\"]').should('be.visible');\ncy.get('[data-cy=\"login-form\"]').should('be.visible');\ncy.get('[data-cy=\"login-username-input\"]').should('be.visible');\ncy.get('[data-cy=\"login-password-input\"]').should('be.visible');\ncy.get('[data-cy=\"login-submit-button\"]').should('be.visible');",
+              "err": {},
+              "uuid": "7d9dd0d9-8057-4625-8c5d-d5c631ad5493",
+              "parentUUID": "065d0922-fd2c-43d6-a9c8-72960110ba62",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "应该能够填写登录表单",
+              "fullTitle": "🔐 简化登录测试 应该能够填写登录表单",
+              "timedOut": null,
+              "duration": 872,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('/login');\ncy.get('[data-cy=\"login-username-input\"]').clear().type('admin');\ncy.get('[data-cy=\"login-password-input\"]').clear().type('123456');\ncy.get('[data-cy=\"login-username-input\"]').should('have.value', 'admin');\ncy.get('[data-cy=\"login-password-input\"]').should('have.value', '123456');",
+              "err": {},
+              "uuid": "468f79b2-2ab8-4bfc-b91a-5b7667fd7643",
+              "parentUUID": "065d0922-fd2c-43d6-a9c8-72960110ba62",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "应该能够提交登录表单并接收响应",
+              "fullTitle": "🔐 简化登录测试 应该能够提交登录表单并接收响应",
+              "timedOut": null,
+              "duration": 3953,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('/login');\n// 填写表单\ncy.get('[data-cy=\"login-username-input\"]').clear().type('admin');\ncy.get('[data-cy=\"login-password-input\"]').clear().type('123456');\n// 点击登录按钮\ncy.get('[data-cy=\"login-submit-button\"]').click();\n// 等待响应（无论成功或失败）\ncy.wait(3000);\n// 检查是否有消息提示\ncy.get('body').then($body => {\n  const hasMessage = $body.find('.el-message').length > 0;\n  const hasErrorMessage = $body.find('.el-message--error').length > 0;\n  const hasSuccessMessage = $body.find('.el-message--success').length > 0;\n  cy.log(`消息提示存在: ${hasMessage}`);\n  cy.log(`错误消息: ${hasErrorMessage}`);\n  cy.log(`成功消息: ${hasSuccessMessage}`);\n  // 检查URL是否改变\n  cy.url().then(url => {\n    cy.log(`当前URL: ${url}`);\n    if (url.includes('/dashboard')) {\n      cy.log('✅ 登录成功，已跳转到仪表盘');\n    } else if (url.includes('/login')) {\n      cy.log('⚠️ 仍在登录页面，登录可能失败');\n    }\n  });\n});",
+              "err": {},
+              "uuid": "d95a988c-a35e-447e-a9c0-63a1f3781a8f",
+              "parentUUID": "065d0922-fd2c-43d6-a9c8-72960110ba62",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "应该验证登录API响应格式",
+              "fullTitle": "🔐 简化登录测试 应该验证登录API响应格式",
+              "timedOut": null,
+              "duration": 120,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// 直接调用API测试登录\ncy.request({\n  method: 'POST',\n  url: 'http://localhost:8080/api/auth/login',\n  body: {\n    username: 'admin',\n    password: '123456'\n  },\n  failOnStatusCode: false\n}).then(response => {\n  cy.log('API响应状态:', response.status);\n  cy.log('API响应体:', JSON.stringify(response.body));\n  expect(response.status).to.eq(200);\n  expect(response.body).to.have.property('code');\n  if (response.body.code === 200) {\n    cy.log('✅ 登录API调用成功');\n    expect(response.body.data).to.have.property('accessToken');\n    expect(response.body.data).to.have.property('userInfo');\n  } else {\n    cy.log('❌ 登录API返回错误:', response.body.message);\n  }\n});",
+              "err": {},
+              "uuid": "e2ad2920-f92f-4c88-8428-84581015a6ab",
+              "parentUUID": "065d0922-fd2c-43d6-a9c8-72960110ba62",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "应该验证localStorage中token存储",
+              "fullTitle": "🔐 简化登录测试 应该验证localStorage中token存储",
+              "timedOut": null,
+              "duration": 5900,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('/login');\n// 填写并提交表单\ncy.get('[data-cy=\"login-username-input\"]').clear().type('admin');\ncy.get('[data-cy=\"login-password-input\"]').clear().type('123456');\ncy.get('[data-cy=\"login-submit-button\"]').click();\n// 等待登录处理\ncy.wait(5000);\n// 检查localStorage\ncy.window().then(win => {\n  const accessToken = win.localStorage.getItem('access_token');\n  const userInfo = win.localStorage.getItem('user_info');\n  cy.log('access_token:', accessToken ? '存在' : '不存在');\n  cy.log('user_info:', userInfo ? '存在' : '不存在');\n  if (accessToken) {\n    cy.log('✅ Token已存储到localStorage');\n  } else {\n    cy.log('❌ Token未存储到localStorage');\n  }\n});",
+              "err": {},
+              "uuid": "bb7ecbec-4819-41bd-a426-334a311031e7",
+              "parentUUID": "065d0922-fd2c-43d6-a9c8-72960110ba62",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "7d9dd0d9-8057-4625-8c5d-d5c631ad5493",
+            "468f79b2-2ab8-4bfc-b91a-5b7667fd7643",
+            "d95a988c-a35e-447e-a9c0-63a1f3781a8f",
+            "e2ad2920-f92f-4c88-8428-84581015a6ab",
+            "bb7ecbec-4819-41bd-a426-334a311031e7"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 12128,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "charts": true,
+        "reportPageTitle": "WMS E2E Test Report",
+        "embeddedScreenshots": true,
+        "inlineAssets": true,
+        "saveAllAttempts": false,
+        "reportDir": "tests\\cypress\\reports\\.jsons",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.3.2"
+    }
+  }
+}

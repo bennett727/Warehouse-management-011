@@ -14,6 +14,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,6 +48,7 @@ public class DashboardController {
      * @return 系统概览数据
      */
     @GetMapping("/overview")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('OPERATOR') or hasRole('TECHNICIAN')")
     @Operation(summary = "获取系统概览数据", description = "获取设备、库存、出入库等统计数据")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getSystemOverview() {
         logger.info("获取系统概览数据");
@@ -79,6 +81,7 @@ public class DashboardController {
      * @return 统计数据
      */
     @GetMapping("/statistics")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('OPERATOR') or hasRole('TECHNICIAN')")
     @Operation(summary = "获取统计数据", description = "获取系统综合统计数据")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getStatistics() {
         logger.info("获取统计数据");
@@ -96,6 +99,7 @@ public class DashboardController {
      * @return 设备统计数据
      */
     @GetMapping("/statistics/device")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('OPERATOR') or hasRole('TECHNICIAN')")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getDeviceStatistics() {
         logger.info("获取设备统计数据");
         try {
@@ -113,6 +117,7 @@ public class DashboardController {
      * @return 最近活动记录
      */
     @GetMapping("/activity")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('OPERATOR') or hasRole('TECHNICIAN')")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getRecentActivity(
             @RequestParam(defaultValue = "10") int limit) {
         logger.info("获取最近活动记录, limit: {}", limit);
@@ -140,6 +145,7 @@ public class DashboardController {
      * @return 库存统计数据
      */
     @GetMapping("/statistics/inventory")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('OPERATOR') or hasRole('TECHNICIAN')")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getInventoryStatistics() {
         logger.info("获取库存统计数据");
         try {
@@ -156,6 +162,7 @@ public class DashboardController {
      * @return 维护统计数据
      */
     @GetMapping("/statistics/maintenance")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('OPERATOR') or hasRole('TECHNICIAN')")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getMaintenanceStatistics() {
         logger.info("获取维护统计数据");
         try {
@@ -172,6 +179,7 @@ public class DashboardController {
      * @return 区域分布数据
      */
     @GetMapping("/statistics/area")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('OPERATOR') or hasRole('TECHNICIAN')")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getAreaDistribution() {
         logger.info("获取区域分布数据");
         try {
@@ -188,6 +196,7 @@ public class DashboardController {
      * @return 待办事项列表
      */
     @GetMapping("/tasks")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('OPERATOR') or hasRole('TECHNICIAN')")
     @Operation(summary = "获取待办事项", description = "获取待处理的入库、出库、维护等任务")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getPendingTasks() {
         logger.info("获取待办事项");
@@ -205,6 +214,7 @@ public class DashboardController {
      * @return 系统健康状态
      */
     @GetMapping("/health")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('OPERATOR') or hasRole('TECHNICIAN')")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getSystemHealth() {
         logger.info("获取系统健康状态");
         try {

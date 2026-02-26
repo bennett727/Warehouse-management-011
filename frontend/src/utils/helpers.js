@@ -357,3 +357,152 @@ export function isTablet(breakpoint = 1023) {
 export function isDesktop(breakpoint = 1023) {
   return getWindowWidth() > breakpoint;
 }
+
+export function formatFileSize(bytes) {
+  if (bytes === 0) {
+    return '0 B';
+  }
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  const value = bytes / Math.pow(k, i);
+  return `${i === 0 ? value : value.toFixed(2)} ${sizes[i]}`;
+}
+
+export function downloadFile(url, filename) {
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+export function getFileExtension(filename) {
+  if (!filename) {
+    return '';
+  }
+  const parts = filename.split('.');
+  if (parts.length < 2) {
+    return '';
+  }
+  return parts.pop().toLowerCase();
+}
+
+export function stripHtml(html) {
+  if (!html) {
+    return '';
+  }
+  return html.replace(/<[^>]*>/g, '');
+}
+
+export function truncateText(text, maxLength = 100, suffix = '...') {
+  if (!text || text.length <= maxLength) {
+    return text;
+  }
+  return text.substring(0, maxLength) + suffix;
+}
+
+export function camelToKebab(str) {
+  return str
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
+    .toLowerCase();
+}
+
+export function kebabToCamel(str) {
+  return str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+}
+
+export function snakeToCamel(str) {
+  return str.replace(/_([a-z])/g, (g) => g[1].toUpperCase());
+}
+
+export function camelToSnake(str) {
+  return str.replace(/([a-z0-9])([A-Z])/g, '$1_$2').toLowerCase();
+}
+
+export function sortBy(array, key, order = 'asc') {
+  return [...array].sort((a, b) => {
+    const aVal = typeof key === 'function' ? key(a) : a[key];
+    const bVal = typeof key === 'function' ? key(b) : b[key];
+    if (aVal < bVal) {
+      return order === 'asc' ? -1 : 1;
+    }
+    if (aVal > bVal) {
+      return order === 'asc' ? 1 : -1;
+    }
+    return 0;
+  });
+}
+
+export function unique(array, key) {
+  if (key) {
+    const seen = new Set();
+    return array.filter((item) => {
+      const val = typeof key === 'function' ? key(item) : item[key];
+      if (seen.has(val)) {
+        return false;
+      }
+      seen.add(val);
+      return true;
+    });
+  }
+  return [...new Set(array)];
+}
+
+export function flatten(array, depth = Infinity) {
+  return array.flat(depth);
+}
+
+export function chunk(array, size = 1) {
+  const result = [];
+  for (let i = 0; i < array.length; i += size) {
+    result.push(array.slice(i, i + size));
+  }
+  return result;
+}
+
+export function pick(obj, keys) {
+  const result = {};
+  keys.forEach((key) => {
+    if (key in obj) {
+      result[key] = obj[key];
+    }
+  });
+  return result;
+}
+
+export function omit(obj, keys) {
+  const result = { ...obj };
+  keys.forEach((key) => {
+    delete result[key];
+  });
+  return result;
+}
+
+export function merge(target, ...sources) {
+  if (!sources.length) {
+    return target;
+  }
+  const source = sources.shift();
+
+  if (isObject(target) && isObject(source)) {
+    for (const key in source) {
+      if (isObject(source[key])) {
+        if (!target[key]) {
+          Object.assign(target, { [key]: {} });
+        }
+        merge(target[key], source[key]);
+      } else {
+        Object.assign(target, { [key]: source[key] });
+      }
+    }
+  }
+
+  return merge(target, ...sources);
+}
+
+function isObject(item) {
+  return item && typeof item === 'object' && !Array.isArray(item);
+}

@@ -8,8 +8,8 @@
 <template>
   <PageLayout title="批次管理" description="管理设备批次信息">
     <template #headerActions>
-      <el-button type="primary" :icon="Plus" @click="handleCreate">新建批次</el-button>
-      <el-button type="success" :icon="Download" @click="handleExport" :loading="exportLoading">导出</el-button>
+      <el-button type="primary" :icon="Plus" @click="handleCreate" data-cy="batch-create-btn">新建批次</el-button>
+      <el-button type="success" :icon="Download" @click="handleExport" :loading="exportLoading" data-cy="batch-export-btn">导出</el-button>
     </template>
 
     <UnifiedFilterBar
@@ -29,23 +29,24 @@
       :loading="loading"
       :current-page="pagination.current"
       :page-size="pagination.pageSize"
+      data-cy="batch-table"
       @page-change="handlePageChange"
     >
-      <el-table-column type="index" label="序号" width="60" />
-      <el-table-column prop="batchNo" label="批次号" width="180" />
-      <el-table-column prop="batchName" label="批次名称" min-width="180" />
-      <el-table-column prop="supplier" label="供应商" width="150" />
-      <el-table-column prop="purchaseDate" label="采购日期" width="120" />
-      <el-table-column prop="totalQuantity" label="总数量" width="100" />
-      <el-table-column prop="status" label="状态" width="100">
+      <el-table-column type="index" label="序号" width="60" data-cy="batch-table-index-column" />
+      <el-table-column prop="batchNo" label="批次号" width="180" data-cy="batch-table-batch-no-column" />
+      <el-table-column prop="batchName" label="批次名称" min-width="180" data-cy="batch-table-name-column" />
+      <el-table-column prop="supplier" label="供应商" width="150" data-cy="batch-table-supplier-column" />
+      <el-table-column prop="purchaseDate" label="采购日期" width="120" data-cy="batch-table-date-column" />
+      <el-table-column prop="totalQuantity" label="总数量" width="100" data-cy="batch-table-quantity-column" />
+      <el-table-column prop="status" label="状态" width="100" data-cy="batch-table-status-column">
         <template #default="{ row }">
-          <el-tag :type="getStatusType(row.status)">{{ getStatusText(row.status) }}</el-tag>
+          <el-tag :type="getStatusType(row.status)" :data-cy="`batch-status-tag-${row.batchNo}`">{{ getStatusText(row.status) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="200" fixed="right">
+      <el-table-column label="操作" width="200" fixed="right" data-cy="batch-table-action-column">
         <template #default="{ row }">
-          <el-button link type="primary" @click="handleView(row)">查看</el-button>
-          <el-button link type="primary" @click="handleEdit(row)">编辑</el-button>
+          <el-button link type="primary" @click="handleView(row)" :data-cy="`batch-view-btn-${row.batchNo}`">查看</el-button>
+          <el-button link type="primary" @click="handleEdit(row)" :data-cy="`batch-edit-btn-${row.batchNo}`">编辑</el-button>
         </template>
       </el-table-column>
     </DataTable>

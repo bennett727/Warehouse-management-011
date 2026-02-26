@@ -2,13 +2,13 @@
   <PageLayout
     title="个人中心"
     description="管理您的个人信息、安全设置和系统偏好"
-    data-cy="usercenter-page"
+    data-cy="user-center-page"
     :no-padding="true"
   >
     <div class="user-center-container">
-      <el-tabs data-cy="tabs-0" v-model="activeTab" class="user-center-tabs">
+      <el-tabs data-cy="user-center-tabs" v-model="activeTab" class="user-center-tabs">
         <!-- 个人信息 -->
-        <el-tab-pane data-cy="tab-pane-0" name="info">
+        <el-tab-pane data-cy="user-center-info-tab" name="info">
           <template #label>
             <div class="tab-label">
               <el-icon><User /></el-icon>
@@ -19,7 +19,7 @@
             <div class="avatar-upload-section">
               <div class="avatar-wrapper">
                 <div class="avatar-container">
-                  <el-avatar data-cy="avatar-0" :size="120" :src="userInfo.avatar" class="user-avatar">
+                  <el-avatar data-cy="user-center-avatar" :size="120" :src="userInfo.avatar" class="user-avatar">
                     {{ userInfo.username?.charAt(0).toUpperCase() || 'U' }}
                   </el-avatar>
                   <div class="avatar-overlay">
@@ -29,44 +29,44 @@
               </div>
               <div class="upload-buttons">
                 <el-upload
-                  data-cy="upload-0"
+                  data-cy="user-center-avatar-upload"
                   class="avatar-uploader"
                   action="#"
                   :show-file-list="false"
                   :before-upload="handleAvatarUpload"
                 >
-                  <el-button data-cy="btn-0" type="primary" :icon="Upload">上传头像</el-button>
+                  <el-button data-cy="user-center-upload-avatar-btn" type="primary" :icon="Upload">上传头像</el-button>
                 </el-upload>
                 <div class="upload-tip">支持JPG、PNG格式，文件大小不超过2MB</div>
-                <el-button data-cy="btn-1" type="default" :icon="Delete" @click="removeAvatar">移除头像</el-button>
+                <el-button data-cy="user-center-remove-avatar-btn" type="default" :icon="Delete" @click="removeAvatar">移除头像</el-button>
               </div>
             </div>
 
             <el-card class="info-card" shadow="never">
-              <el-form data-cy="form-0" :model="userInfo" label-width="120px" class="info-form">
-                <el-row data-cy="row-0" :gutter="20">
-                  <el-col data-cy="col-0" :span="12">
-                    <el-form-item data-cy="form-1" label="用户名" prop="username">
-                      <el-input data-cy="input-0" v-model="userInfo.username" disabled placeholder="请输入用户名">
+              <el-form data-cy="user-center-info-form" :model="userInfo" label-width="120px" class="info-form">
+                <el-row :gutter="20">
+                  <el-col :span="12">
+                    <el-form-item label="用户名" prop="username">
+                      <el-input data-cy="user-center-username-input" v-model="userInfo.username" disabled placeholder="请输入用户名">
                         <template #prefix>
                           <el-icon><User /></el-icon>
                         </template>
                       </el-input>
                     </el-form-item>
                   </el-col>
-                  <el-col data-cy="col-1" :span="12">
-                    <el-form-item data-cy="form-2" label="真实姓名" prop="realName">
-                      <el-input data-cy="input-1" v-model="userInfo.realName" placeholder="请输入姓名">
+                  <el-col :span="12">
+                    <el-form-item label="真实姓名" prop="realName">
+                      <el-input data-cy="user-center-realname-input" v-model="userInfo.realName" placeholder="请输入姓名">
                         <template #prefix>
                           <el-icon><UserFilled /></el-icon>
                         </template>
                       </el-input>
                     </el-form-item>
                   </el-col>
-                  <el-col data-cy="col-2" :span="12">
-                    <el-form-item data-cy="form-3" label="性别" prop="gender">
+                  <el-col :span="12">
+                    <el-form-item label="性别" prop="gender">
                       <el-select
-                        data-cy="select-0"
+                        data-cy="user-center-gender-select"
                         v-model="userInfo.gender"
                         placeholder="请选择性别"
                         style="width: 100%"
@@ -92,46 +92,46 @@
                       </el-select>
                     </el-form-item>
                   </el-col>
-                  <el-col data-cy="col-3" :span="12">
-                    <el-form-item data-cy="form-4" label="邮箱" prop="email">
-                      <el-input data-cy="input-2" v-model="userInfo.email" type="email" placeholder="请输入邮箱">
+                  <el-col :span="12">
+                    <el-form-item label="邮箱" prop="email">
+                      <el-input data-cy="user-center-email-input" v-model="userInfo.email" type="email" placeholder="请输入邮箱">
                         <template #prefix>
                           <el-icon><Message /></el-icon>
                         </template>
                       </el-input>
                     </el-form-item>
                   </el-col>
-                  <el-col data-cy="col-4" :span="12">
-                    <el-form-item data-cy="form-5" label="手机号" prop="phone">
-                      <el-input data-cy="input-3" v-model="userInfo.phone" placeholder="请输入手机号码">
+                  <el-col :span="12">
+                    <el-form-item label="手机号" prop="phone">
+                      <el-input data-cy="user-center-phone-input" v-model="userInfo.phone" placeholder="请输入手机号码">
                         <template #prefix>
                           <el-icon><Phone /></el-icon>
                         </template>
                       </el-input>
                     </el-form-item>
                   </el-col>
-                  <el-col data-cy="col-5" :span="12">
-                    <el-form-item data-cy="form-6" label="部门" prop="department">
-                      <el-input data-cy="input-4" v-model="userInfo.department" placeholder="请输入部门">
+                  <el-col :span="12">
+                    <el-form-item label="部门" prop="department">
+                      <el-input data-cy="user-center-department-input" v-model="userInfo.department" placeholder="请输入部门">
                         <template #prefix>
                           <el-icon><OfficeBuilding /></el-icon>
                         </template>
                       </el-input>
                     </el-form-item>
                   </el-col>
-                  <el-col data-cy="col-6" :span="12">
-                    <el-form-item data-cy="form-7" label="职位" prop="position">
-                      <el-input data-cy="input-5" v-model="userInfo.position" placeholder="请输入职位">
+                  <el-col :span="12">
+                    <el-form-item label="职位" prop="position">
+                      <el-input data-cy="user-center-position-input" v-model="userInfo.position" placeholder="请输入职位">
                         <template #prefix>
                           <el-icon><Briefcase /></el-icon>
                         </template>
                       </el-input>
                     </el-form-item>
                   </el-col>
-                  <el-col data-cy="col-7" :span="24">
-                    <el-form-item data-cy="form-8" label="个性签名" prop="signature">
+                  <el-col :span="24">
+                    <el-form-item label="个性签名" prop="signature">
                       <el-input
-                        data-cy="input-6"
+                        data-cy="user-center-signature-input"
                         v-model="userInfo.signature"
                         type="textarea"
                         :rows="3"
@@ -140,9 +140,9 @@
                     </el-form-item>
                   </el-col>
                 </el-row>
-                <el-form-item data-cy="form-9" class="form-actions">
-                  <el-button data-cy="btn-2" type="primary" :icon="Check" @click="saveUserInfo">保存信息</el-button>
-                  <el-button data-cy="btn-3" :icon="RefreshLeft" @click="resetInfoForm">重置</el-button>
+                <el-form-item class="form-actions">
+                  <el-button data-cy="user-center-save-info-btn" type="primary" :icon="Check" @click="saveUserInfo">保存信息</el-button>
+                  <el-button data-cy="user-center-reset-info-btn" :icon="RefreshLeft" @click="resetInfoForm">重置</el-button>
                 </el-form-item>
               </el-form>
             </el-card>
@@ -150,7 +150,7 @@
         </el-tab-pane>
 
         <!-- 修改密码 -->
-        <el-tab-pane data-cy="tab-pane-1" name="password">
+        <el-tab-pane data-cy="user-center-password-tab" name="password">
           <template #label>
             <div class="tab-label">
               <el-icon><Lock /></el-icon>
@@ -168,16 +168,16 @@
               </template>
             </el-alert>
             <el-form
-              data-cy="form-10"
+              data-cy="user-center-password-form"
               ref="passwordFormRef"
               :model="passwordForm"
               :rules="passwordRules"
               label-width="120px"
               class="password-form"
             >
-              <el-form-item data-cy="form-11" label="当前密码" prop="oldPassword">
+              <el-form-item label="当前密码" prop="oldPassword">
                 <el-input
-                  data-cy="input-7"
+                  data-cy="user-center-old-password-input"
                   v-model="passwordForm.oldPassword"
                   type="password"
                   placeholder="请输入当前密码"
@@ -188,9 +188,9 @@
                   </template>
                 </el-input>
               </el-form-item>
-              <el-form-item data-cy="form-12" label="新密码" prop="newPassword">
+              <el-form-item label="新密码" prop="newPassword">
                 <el-input
-                  data-cy="input-8"
+                  data-cy="user-center-new-password-input"
                   v-model="passwordForm.newPassword"
                   type="password"
                   placeholder="请输入新密码"
@@ -201,9 +201,9 @@
                   </template>
                 </el-input>
               </el-form-item>
-              <el-form-item data-cy="form-13" label="确认新密码" prop="confirmPassword">
+              <el-form-item label="确认新密码" prop="confirmPassword">
                 <el-input
-                  data-cy="input-9"
+                  data-cy="user-center-confirm-password-input"
                   v-model="passwordForm.confirmPassword"
                   type="password"
                   placeholder="请再次输入新密码"
@@ -214,16 +214,16 @@
                   </template>
                 </el-input>
               </el-form-item>
-              <el-form-item data-cy="form-14" class="form-actions">
-                <el-button data-cy="btn-4" type="primary" :icon="Check" @click="changePassword">修改密码</el-button>
-                <el-button data-cy="btn-5" :icon="RefreshLeft" @click="resetPasswordForm">重置</el-button>
+              <el-form-item class="form-actions">
+                <el-button data-cy="user-center-change-password-btn" type="primary" :icon="Check" @click="changePassword">修改密码</el-button>
+                <el-button data-cy="user-center-reset-password-btn" :icon="RefreshLeft" @click="resetPasswordForm">重置</el-button>
               </el-form-item>
             </el-form>
           </el-card>
         </el-tab-pane>
 
         <!-- 登录日志 -->
-        <el-tab-pane data-cy="tab-pane-2" name="logs">
+        <el-tab-pane data-cy="user-center-logs-tab" name="logs">
           <template #label>
             <div class="tab-label">
               <el-icon><Clock /></el-icon>
@@ -234,8 +234,8 @@
             <TableSkeleton v-if="loginLogsLoading" :row-count="10" :column-count="6" :height="400" />
 
             <el-card v-else shadow="never">
-              <el-table data-cy="table-0" :data="loginLogs" style="width: 100%" class="logs-table">
-                <el-table-column data-cy="table-1" prop="loginTime" label="登录时间" width="180">
+              <el-table data-cy="user-center-login-logs-table" :data="loginLogs" style="width: 100%" class="logs-table">
+                <el-table-column prop="loginTime" label="登录时间" width="180">
                   <template #default="scope">
                     <div class="log-time">
                       <el-icon><Clock /></el-icon>
@@ -243,7 +243,7 @@
                     </div>
                   </template>
                 </el-table-column>
-                <el-table-column data-cy="table-2" prop="loginIp" label="登录IP" width="150">
+                <el-table-column prop="loginIp" label="登录IP" width="150">
                   <template #default="scope">
                     <div class="log-ip">
                       <el-icon><Location /></el-icon>
@@ -251,12 +251,12 @@
                     </div>
                   </template>
                 </el-table-column>
-                <el-table-column data-cy="table-3" prop="loginLocation" label="登录地点" width="200" />
-                <el-table-column data-cy="table-4" prop="browser" label="浏览器" width="200" />
-                <el-table-column data-cy="table-5" prop="os" label="操作系统" width="150" />
-                <el-table-column data-cy="table-6" prop="loginStatus" label="登录状态" width="100">
+                <el-table-column prop="loginLocation" label="登录地点" width="200" />
+                <el-table-column prop="browser" label="浏览器" width="200" />
+                <el-table-column prop="os" label="操作系统" width="150" />
+                <el-table-column prop="loginStatus" label="登录状态" width="100">
                   <template #default="scope">
-                    <el-tag data-cy="tag-0" :type="scope.row.loginStatus === 'success' ? 'success' : 'danger'">
+                    <el-tag :type="scope.row.loginStatus === 'success' ? 'success' : 'danger'">
                       <el-icon v-if="scope.row.loginStatus === 'success'"><CircleCheck /></el-icon>
                       <el-icon v-else><CircleClose /></el-icon>
                       {{ scope.row.loginStatus === 'success' ? '成功' : '失败' }}
@@ -267,7 +267,7 @@
 
               <div class="pagination-container">
                 <el-pagination
-                  data-cy="pagination-0"
+                  data-cy="user-center-logs-pagination"
                   v-model:current-page="logsPage.currentPage"
                   v-model:page-size="logsPage.pageSize"
                   :page-sizes="[10, 20, 50]"
@@ -282,7 +282,7 @@
         </el-tab-pane>
 
         <!-- 密码保护问题 -->
-        <el-tab-pane data-cy="tab-pane-3" name="security">
+        <el-tab-pane data-cy="user-center-security-tab" name="security">
           <template #label>
             <div class="tab-label">
               <el-icon><Lock /></el-icon>
@@ -298,16 +298,16 @@
               style="margin-bottom: 24px"
             />
             <el-form
-              data-cy="form-15"
+              data-cy="user-center-security-form"
               ref="securityFormRef"
               :model="securityForm"
               :rules="securityRules"
               label-width="150px"
               class="security-form"
             >
-              <el-form-item data-cy="form-16" label="当前密码" prop="currentPassword">
+              <el-form-item label="当前密码" prop="currentPassword">
                 <el-input
-                  data-cy="input-10"
+                  data-cy="user-center-security-password-input"
                   v-model="securityForm.currentPassword"
                   type="password"
                   placeholder="请输入当前密码"
@@ -318,9 +318,9 @@
                   </template>
                 </el-input>
               </el-form-item>
-              <el-form-item data-cy="form-17" label="密保问题1" prop="question1">
+              <el-form-item label="密保问题1" prop="question1">
                 <el-select
-                  data-cy="select-1"
+                  data-cy="user-center-question1-select"
                   v-model="securityForm.question1"
                   placeholder="请选择密保问题1"
                   style="width: 100%"
@@ -332,18 +332,18 @@
                   <el-option label="您的第一只宠物名字是什么？" value="question5" />
                 </el-select>
               </el-form-item>
-              <el-form-item data-cy="form-18" label="密保答案1" prop="answer1">
+              <el-form-item label="密保答案1" prop="answer1">
                 <el-input
-                  data-cy="input-11"
+                  data-cy="user-center-answer1-input"
                   v-model="securityForm.answer1"
                   type="password"
                   placeholder="请输入密保答案1"
                   show-password
                 />
               </el-form-item>
-              <el-form-item data-cy="form-19" label="密保问题2" prop="question2">
+              <el-form-item label="密保问题2" prop="question2">
                 <el-select
-                  data-cy="select-2"
+                  data-cy="user-center-question2-select"
                   v-model="securityForm.question2"
                   placeholder="请选择密保问题2"
                   style="width: 100%"
@@ -355,27 +355,27 @@
                   <el-option label="您的第一只宠物名字是什么？" value="question5" />
                 </el-select>
               </el-form-item>
-              <el-form-item data-cy="form-20" label="密保答案2" prop="answer2">
+              <el-form-item label="密保答案2" prop="answer2">
                 <el-input
-                  data-cy="input-12"
+                  data-cy="user-center-answer2-input"
                   v-model="securityForm.answer2"
                   type="password"
                   placeholder="请输入密保答案2"
                   show-password
                 />
               </el-form-item>
-              <el-form-item data-cy="form-21" class="form-actions">
-                <el-button data-cy="btn-6" type="primary" :icon="Check" @click="saveSecurityQuestions"
+              <el-form-item class="form-actions">
+                <el-button data-cy="user-center-save-security-btn" type="primary" :icon="Check" @click="saveSecurityQuestions"
                   >保存密保问题</el-button
                 >
-                <el-button data-cy="btn-7" :icon="RefreshLeft" @click="resetSecurityForm">重置</el-button>
+                <el-button data-cy="user-center-reset-security-btn" :icon="RefreshLeft" @click="resetSecurityForm">重置</el-button>
               </el-form-item>
             </el-form>
           </el-card>
         </el-tab-pane>
 
         <!-- 操作日志 -->
-        <el-tab-pane data-cy="tab-pane-4" name="operation">
+        <el-tab-pane data-cy="user-center-operation-tab" name="operation">
           <template #label>
             <div class="tab-label">
               <el-icon><Document /></el-icon>
@@ -389,10 +389,10 @@
                   <span>操作日志查询</span>
                 </div>
               </template>
-              <el-form data-cy="form-22" :inline="true" class="operation-logs-search">
-                <el-form-item data-cy="form-23" label="操作类型">
+              <el-form data-cy="user-center-operation-search-form" :inline="true" class="operation-logs-search">
+                <el-form-item label="操作类型">
                   <el-select
-                    data-cy="select-3"
+                    data-cy="user-center-operation-type-select"
                     v-model="operationLogsSearch.operationType"
                     placeholder="请选择操作类型"
                     clearable

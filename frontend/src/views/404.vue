@@ -107,7 +107,7 @@
 
       <div class="contact-info">
         <p>如果问题持续存在，请联系技术支持</p>
-        <el-button link type="primary" @click="goToPage('/contact-support')">
+        <el-button link type="primary" @click="goToPage('/contact-support')" data-cy="contact-support-btn">
           <el-icon><Service /></el-icon>
           联系技术支持
         </el-button>

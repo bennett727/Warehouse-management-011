@@ -27,5 +27,8 @@
 @use './design-system.scss';
 @use './ui-system.scss';
 
-// 8. 动画层
+// 8. 移动端适配层
+@use './mobile.scss';
+
+// 9. 动画层
 @use './animations.scss';

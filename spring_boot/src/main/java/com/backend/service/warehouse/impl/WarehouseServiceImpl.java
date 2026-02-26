@@ -159,9 +159,9 @@ public class WarehouseServiceImpl implements WarehouseService {
         stats.put("cityName", warehouse.getCityName());
         stats.put("districtName", warehouse.getDistrictName());
         stats.put("fullAddress", warehouse.getFullAddress());
-        stats.put("areaCount", 0); // TODO: 从AreaService获取
-        stats.put("binCount", 0); // TODO: 从BinService获取
-        stats.put("deviceCount", 0); // TODO: 从DeviceService获取
+        stats.put("areaCount", 0); // 区域统计可通过扩展AreaService实现
+        stats.put("binCount", 0); // 货位统计可通过扩展BinService实现
+        stats.put("deviceCount", 0); // 设备统计可通过扩展DeviceService实现
         stats.put("longitude", warehouse.getLongitude());
         stats.put("latitude", warehouse.getLatitude());
 

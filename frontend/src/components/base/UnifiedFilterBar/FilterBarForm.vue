@@ -5,9 +5,10 @@
     :inline="true"
     :label-width="labelWidth"
     class="filter-bar-form"
+    data-cy="filter-bar-form"
     @submit.prevent="handleSearch"
   >
-    <el-row :gutter="gutter">
+    <el-row :gutter="gutter" data-cy="filter-row">
       <el-col
         v-for="field in displayFields"
         :key="field.prop"
@@ -17,8 +18,14 @@
         :lg="field.lg || 6"
         :xl="field.xl || 6"
         class="field-col"
+        :data-cy="`filter-col-${field.prop}`"
       >
-        <el-form-item :label="field.label" :prop="field.prop" class="filter-field">
+        <el-form-item
+          :label="field.label"
+          :prop="field.prop"
+          class="filter-field"
+          :data-cy="`filter-field-${field.prop}`"
+        >
           <!-- 输入框 -->
           <template v-if="field.type === 'input'">
             <el-input
@@ -31,6 +38,7 @@
               :suffix-icon="field.suffixIcon"
               :maxlength="field.maxlength"
               :show-word-limit="field.showWordLimit"
+              :data-cy="`filter-${field.prop}-input`"
               @keyup.enter="handleFieldEnter(field)"
               @clear="handleFieldClear(field)"
             />
@@ -50,6 +58,7 @@
               :remote="field.remote"
               :remote-method="field.remoteMethod"
               :loading="field.loading"
+              :data-cy="`filter-${field.prop}-select`"
               @clear="handleFieldClear(field)"
               style="width: 100%"
             >
@@ -59,6 +68,7 @@
                 :label="option.label"
                 :value="option.value"
                 :disabled="option.disabled"
+                :data-cy="`filter-${field.prop}-option-${option.value}`"
               />
             </el-select>
           </template>
@@ -75,6 +85,7 @@
               :format="field.format || 'YYYY-MM-DD'"
               :value-format="field.valueFormat || 'YYYY-MM-DD'"
               :disabled-date="field.disabledDate"
+              :data-cy="`filter-${field.prop}-date-picker`"
               style="width: 100%"
             />
           </template>
@@ -93,6 +104,7 @@
               :value-format="field.valueFormat || 'YYYY-MM-DD'"
               :range-separator="field.rangeSeparator || '至'"
               :disabled-date="field.disabledDate"
+              :data-cy="`filter-${field.prop}-date-range-picker`"
               style="width: 100%"
             />
           </template>
@@ -109,6 +121,7 @@
               :step="field.step"
               :precision="field.precision"
               :controls-position="field.controlsPosition || 'right'"
+              :data-cy="`filter-${field.prop}-number-input`"
               style="width: 100%"
             />
           </template>
@@ -125,6 +138,7 @@
               :props="field.props"
               :filterable="field.filterable !== false"
               :show-all-levels="field.showAllLevels !== false"
+              :data-cy="`filter-${field.prop}-cascader`"
               style="width: 100%"
             />
           </template>

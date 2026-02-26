@@ -12,6 +12,7 @@
     width="600px"
     :close-on-click-modal="true"
     class="shortcut-help-dialog"
+    data-cy="shortcut-help-dialog"
   >
     <div class="shortcut-help-content">
       <el-descriptions :column="1" border>
@@ -36,7 +37,7 @@
       </el-descriptions>
     </div>
     <template #footer>
-      <el-button @click="dialogVisible = false">关闭</el-button>
+      <el-button @click="dialogVisible = false" data-cy="shortcut-help-close-btn">关闭</el-button>
     </template>
   </el-dialog>
 </template>

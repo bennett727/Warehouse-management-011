@@ -1,20 +1,27 @@
 <template>
-  <div class="filter-bar-footer">
-    <div class="footer-left">
+  <div class="filter-bar-footer" data-cy="filter-bar-footer">
+    <div class="footer-left" data-cy="filter-bar-footer-left">
       <slot name="leftActions" />
     </div>
-    <div class="footer-right">
+    <div class="footer-right" data-cy="filter-bar-footer-right">
       <el-button
         v-if="showSearch"
         type="primary"
         :icon="Search"
         :loading="loading"
+        data-cy="filter-bar-search-btn"
         @click="handleSearch"
         class="search-btn"
       >
         {{ searchText }}
       </el-button>
-      <el-button v-if="showReset" :icon="RefreshLeft" @click="handleReset" class="reset-btn">
+      <el-button
+        v-if="showReset"
+        :icon="RefreshLeft"
+        data-cy="filter-bar-reset-btn"
+        @click="handleReset"
+        class="reset-btn"
+      >
         {{ resetText }}
       </el-button>
       <slot name="actions" />

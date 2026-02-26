@@ -149,13 +149,13 @@
 
             <!-- 快捷操作 -->
             <div class="quick-actions">
-              <el-button v-if="selectedDivision.level < 3" type="success" @click="handleAddChild(selectedDivision)">
+              <el-button v-if="selectedDivision.level < 3" type="success" @click="handleAddChild(selectedDivision)" data-cy="division-quick-add-btn">
                 <el-icon><Plus /></el-icon>添加下级
               </el-button>
-              <el-button type="primary" @click="handleEditDivision(selectedDivision)">
+              <el-button type="primary" @click="handleEditDivision(selectedDivision)" data-cy="division-quick-edit-btn">
                 <el-icon><Edit /></el-icon>编辑区划
               </el-button>
-              <el-button type="danger" plain @click="handleDeleteDivision(selectedDivision)">
+              <el-button type="danger" plain @click="handleDeleteDivision(selectedDivision)" data-cy="division-quick-delete-btn">
                 <el-icon><Delete /></el-icon>删除区划
               </el-button>
             </div>
@@ -181,10 +181,10 @@
         label-width="100px"
       >
         <el-form-item label="区划编码" prop="code">
-          <el-input v-model="divisionForm.code" placeholder="请输入区划编码" clearable />
+          <el-input v-model="divisionForm.code" placeholder="请输入区划编码" clearable data-cy="division-code-input" />
         </el-form-item>
         <el-form-item label="区划名称" prop="name">
-          <el-input v-model="divisionForm.name" placeholder="请输入区划名称" clearable />
+          <el-input v-model="divisionForm.name" placeholder="请输入区划名称" clearable data-cy="division-name-input" />
         </el-form-item>
         <el-form-item label="区划级别" prop="level">
           <el-radio-group v-model="divisionForm.level" :disabled="isEdit">
@@ -214,8 +214,8 @@
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleFormSubmit" :loading="submitLoading">确定</el-button>
+        <el-button @click="dialogVisible = false" data-cy="division-cancel-btn">取消</el-button>
+        <el-button type="primary" @click="handleFormSubmit" :loading="submitLoading" data-cy="division-submit-btn">确定</el-button>
       </template>
     </el-dialog>
   </PageLayout>
@@ -302,7 +302,6 @@ const divisionTreeData = computed(() => buildTree(divisionList.value));
 const buildTree = (list) => {
   // 确保list是数组
   if (!Array.isArray(list)) {
-    console.warn('[DivisionManagement] buildTree: list不是数组:', list);
     return [];
   }
 

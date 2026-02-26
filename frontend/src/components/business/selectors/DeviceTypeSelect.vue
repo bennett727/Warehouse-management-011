@@ -21,6 +21,7 @@
       @clear="handleClear"
       class="device-type-select"
       value-key="id"
+      data-cy="device-type-select"
     >
       <el-option v-for="type in filteredDeviceTypes" :key="type.id" :label="type.name" :value="type">
         <div class="device-type-option">
@@ -45,6 +46,7 @@
         type="primary"
         class="quick-add-btn"
         @click="handleOpenCreateDialog"
+        data-cy="device-type-quick-add-btn"
       />
     </el-tooltip>
 
@@ -55,31 +57,33 @@
       :close-on-click-modal="false"
       append-to-body
       class="create-type-dialog"
+      data-cy="device-type-create-dialog"
     >
       <div class="dialog-tip">
         <el-icon class="tip-icon"><InfoFilled /></el-icon>
         <span>创建设备类型后，该类型将自动选中并同步到设备类型管理</span>
       </div>
-      <el-form ref="typeFormRef" :model="typeForm" :rules="typeFormRules" label-position="top">
-        <el-form-item label="类型名称" prop="name">
+      <el-form ref="typeFormRef" :model="typeForm" :rules="typeFormRules" label-position="top" data-cy="device-type-form">
+        <el-form-item label="类型名称" prop="name" data-cy="device-type-name-form-item">
           <el-input
             v-model="typeForm.name"
             placeholder="请输入设备类型名称，如：自助机"
             maxlength="50"
             show-word-limit
+            data-cy="device-type-name-input"
           />
         </el-form-item>
-        <el-form-item label="类型编码" prop="code">
-          <el-input v-model="typeForm.code" placeholder="请输入类型编码，如：ZJ" maxlength="20" show-word-limit />
+        <el-form-item label="类型编码" prop="code" data-cy="device-type-code-form-item">
+          <el-input v-model="typeForm.code" placeholder="请输入类型编码，如：ZJ" maxlength="20" show-word-limit data-cy="device-type-code-input" />
           <div class="form-tip">编码只能包含大写字母和数字，且必须唯一</div>
         </el-form-item>
-        <el-form-item label="状态" prop="status">
-          <el-radio-group v-model="typeForm.status">
-            <el-radio :label="1">启用</el-radio>
-            <el-radio :label="0">禁用</el-radio>
+        <el-form-item label="状态" prop="status" data-cy="device-type-status-form-item">
+          <el-radio-group v-model="typeForm.status" data-cy="device-type-status-group">
+            <el-radio :label="1" data-cy="device-type-status-enable">启用</el-radio>
+            <el-radio :label="0" data-cy="device-type-status-disable">禁用</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="描述" prop="description">
+        <el-form-item label="描述" prop="description" data-cy="device-type-description-form-item">
           <el-input
             v-model="typeForm.description"
             type="textarea"
@@ -88,12 +92,13 @@
             maxlength="200"
             show-word-limit
             resize="none"
+            data-cy="device-type-description-input"
           />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="createDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleCreateType" :loading="createLoading"> 创建并选中 </el-button>
+        <el-button @click="createDialogVisible = false" data-cy="device-type-cancel-btn">取消</el-button>
+        <el-button type="primary" @click="handleCreateType" :loading="createLoading" data-cy="device-type-create-btn"> 创建并选中 </el-button>
       </template>
     </el-dialog>
   </div>

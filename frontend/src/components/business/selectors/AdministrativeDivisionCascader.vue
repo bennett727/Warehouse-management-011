@@ -17,7 +17,7 @@
         <template #empty>
           <div class="cascader-empty">
             <el-empty description="暂无数据" :image-size="60" />
-            <el-button v-if="allowCreate" type="primary" link size="small" @click="handleQuickCreate">
+            <el-button v-if="allowCreate" type="primary" link size="small" @click="handleQuickCreate" data-cy="division-quick-create-btn">
               <el-icon><Plus /></el-icon>
               快速创建
             </el-button>
@@ -27,7 +27,7 @@
 
       <!-- 快速创建按钮 -->
       <el-tooltip v-if="allowCreate" content="快速创建行政区划" placement="top">
-        <el-button class="quick-create-btn" :size="size" circle @click="handleQuickCreate">
+        <el-button class="quick-create-btn" :size="size" circle @click="handleQuickCreate" data-cy="division-quick-create-circle-btn">
           <el-icon><Plus /></el-icon>
         </el-button>
       </el-tooltip>
@@ -48,8 +48,8 @@
     </div>
 
     <!-- 快速创建对话框 -->
-    <el-dialog v-model="createDialogVisible" title="快速创建行政区划" width="500px" :close-on-click-modal="false">
-      <el-form ref="formRef" :model="createForm" :rules="createRules" label-width="100px">
+    <el-dialog v-model="createDialogVisible" title="快速创建行政区划" width="500px" :close-on-click-modal="false" data-cy="division-create-dialog">
+      <el-form ref="formRef" :model="createForm" :rules="createRules" label-width="100px" data-cy="division-create-form">
         <el-form-item label="级别" prop="level">
           <el-radio-group v-model="createForm.level">
             <el-radio-button :label="1">省份</el-radio-button>
@@ -70,18 +70,18 @@
         </el-form-item>
 
         <el-form-item label="名称" prop="name">
-          <el-input v-model="createForm.name" placeholder="请输入行政区划名称" clearable />
+          <el-input v-model="createForm.name" placeholder="请输入行政区划名称" clearable data-cy="division-create-name-input" />
         </el-form-item>
 
         <el-form-item label="编码" prop="code">
-          <el-input v-model="createForm.code" placeholder="请输入行政区划编码" clearable />
+          <el-input v-model="createForm.code" placeholder="请输入行政区划编码" clearable data-cy="division-create-code-input" />
           <div class="form-tip">编码规则：省份6位(如440000)，城市4位(如440100)，区县2位(如440106)</div>
         </el-form-item>
       </el-form>
 
       <template #footer>
-        <el-button @click="createDialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="creating" @click="handleCreateSubmit"> 创建 </el-button>
+        <el-button @click="createDialogVisible = false" data-cy="division-create-cancel-btn">取消</el-button>
+        <el-button type="primary" :loading="creating" @click="handleCreateSubmit" data-cy="division-create-confirm-btn"> 创建 </el-button>
       </template>
     </el-dialog>
   </div>

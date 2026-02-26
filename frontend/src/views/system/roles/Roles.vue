@@ -95,6 +95,7 @@
           layout="total, sizes, prev, pager, next, jumper"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
+          data-cy="roles-pagination"
         />
       </div>
     </el-card>
@@ -107,7 +108,7 @@
       :close-on-click-modal="false"
       data-cy="roles-add-dialog"
     >
-      <el-form ref="addFormRef" :model="addForm" :rules="addRules" label-width="100px">
+      <el-form ref="addFormRef" :model="addForm" :rules="addRules" label-width="100px" data-cy="roles-add-form">
         <el-form-item prop="roleCode" label="角色编码">
           <el-input
             v-model="addForm.roleCode"
@@ -150,7 +151,7 @@
       :close-on-click-modal="false"
       data-cy="roles-edit-dialog"
     >
-      <el-form ref="editFormRef" :model="editForm" :rules="editRules" label-width="100px">
+      <el-form ref="editFormRef" :model="editForm" :rules="editRules" label-width="100px" data-cy="roles-edit-form">
         <el-form-item prop="roleCode" label="角色编码">
           <el-input
             v-model="editForm.roleCode"

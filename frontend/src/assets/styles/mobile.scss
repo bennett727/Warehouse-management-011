@@ -1,0 +1,422 @@
+/**
+ * 移动端适配样式
+ * @file: mobile.scss
+ * @description: 提供响应式布局和移动端优化样式
+ * @author: 前端开发团队
+ * @createTime: 2026-02-25
+ * @version: 1.0.0
+ */
+
+// ==================== 断点定义 ====================
+$breakpoint-xs: 480px; // 超小屏幕（手机）
+$breakpoint-sm: 768px; // 小屏幕（平板）
+$breakpoint-md: 1024px; // 中等屏幕（笔记本）
+$breakpoint-lg: 1280px; // 大屏幕（桌面）
+$breakpoint-xl: 1920px; // 超大屏幕
+
+// ==================== 响应式混合宏 ====================
+
+// 手机
+@mixin mobile {
+  @media screen and (max-width: #{$breakpoint-xs}) {
+    @content;
+  }
+}
+
+// 平板
+@mixin tablet {
+  @media screen and (min-width: #{$breakpoint-xs + 1}) and (max-width: #{$breakpoint-sm}) {
+    @content;
+  }
+}
+
+// 小屏幕及以下
+@mixin small-screen {
+  @media screen and (max-width: #{$breakpoint-sm}) {
+    @content;
+  }
+}
+
+// 中等屏幕及以下
+@mixin medium-screen {
+  @media screen and (max-width: #{$breakpoint-md}) {
+    @content;
+  }
+}
+
+// 大屏幕
+@mixin large-screen {
+  @media screen and (min-width: #{$breakpoint-md + 1}) {
+    @content;
+  }
+}
+
+// ==================== 基础响应式样式 ====================
+
+// 隐藏元素
+.hide-on-mobile {
+  @include small-screen {
+    display: none !important;
+  }
+}
+
+.hide-on-desktop {
+  @include large-screen {
+    display: none !important;
+  }
+}
+
+// 显示元素
+.show-on-mobile {
+  display: none !important;
+  @include small-screen {
+    display: block !important;
+  }
+}
+
+.show-on-desktop {
+  display: none !important;
+  @include large-screen {
+    display: block !important;
+  }
+}
+
+// ==================== 布局响应式 ====================
+
+// 弹性布局
+.flex-responsive {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  @include small-screen {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+// 网格布局
+.grid-responsive {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+
+  @include small-screen {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+// 两列布局
+.two-column-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+
+  @include medium-screen {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+// 三列布局
+.three-column-layout {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+
+  @include medium-screen {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  @include small-screen {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+// ==================== 容器响应式 ====================
+
+.container-responsive {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 24px;
+
+  @include medium-screen {
+    padding: 0 16px;
+  }
+
+  @include small-screen {
+    padding: 0 12px;
+  }
+}
+
+// ==================== 表格响应式 ====================
+
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  @include small-screen {
+    font-size: 14px;
+
+    .el-table {
+      th,
+      td {
+        padding: 8px 4px;
+      }
+    }
+  }
+}
+
+// 移动端卡片式表格
+.mobile-card-table {
+  @include small-screen {
+    .el-table {
+      display: block;
+
+      thead {
+        display: none;
+      }
+
+      tbody {
+        display: block;
+      }
+
+      tr {
+        display: block;
+        margin-bottom: 12px;
+        padding: 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background: var(--bg-color-white);
+      }
+
+      td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border: none;
+
+        &::before {
+          content: attr(data-label);
+          font-weight: 600;
+          color: var(--text-secondary);
+        }
+      }
+    }
+  }
+}
+
+// ==================== 表单响应式 ====================
+
+.form-responsive {
+  .el-form-item {
+    @include small-screen {
+      margin-bottom: 16px;
+
+      .el-form-item__label {
+        float: none;
+        display: block;
+        text-align: left;
+        margin-bottom: 4px;
+      }
+
+      .el-form-item__content {
+        margin-left: 0 !important;
+      }
+    }
+  }
+}
+
+// ==================== 对话框响应式 ====================
+
+.dialog-responsive {
+  .el-dialog {
+    @include small-screen {
+      width: 95% !important;
+      max-width: none;
+      margin: 10px auto !important;
+
+      .el-dialog__body {
+        max-height: calc(100vh - 200px);
+        overflow-y: auto;
+      }
+    }
+  }
+}
+
+// ==================== 导航响应式 ====================
+
+.nav-responsive {
+  @include small-screen {
+    .el-menu {
+      flex-direction: column;
+
+      .el-menu-item,
+      .el-submenu {
+        width: 100%;
+      }
+    }
+  }
+}
+
+// ==================== 按钮响应式 ====================
+
+.btn-responsive {
+  @include small-screen {
+    .el-button {
+      width: 100%;
+      margin-left: 0 !important;
+      margin-bottom: 8px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// ==================== 字体响应式 ====================
+
+.text-responsive {
+  font-size: 16px;
+
+  @include medium-screen {
+    font-size: 15px;
+  }
+
+  @include small-screen {
+    font-size: 14px;
+  }
+}
+
+// 标题响应式
+.title-responsive {
+  font-size: 24px;
+  font-weight: 600;
+
+  @include medium-screen {
+    font-size: 20px;
+  }
+
+  @include small-screen {
+    font-size: 18px;
+  }
+}
+
+// ==================== 间距响应式 ====================
+
+.spacing-responsive {
+  padding: 24px;
+
+  @include medium-screen {
+    padding: 16px;
+  }
+
+  @include small-screen {
+    padding: 12px;
+  }
+}
+
+.margin-responsive {
+  margin: 24px;
+
+  @include medium-screen {
+    margin: 16px;
+  }
+
+  @include small-screen {
+    margin: 12px;
+  }
+}
+
+// ==================== 触摸优化 ====================
+
+.touch-optimized {
+  @include small-screen {
+    // 增大触摸目标
+    .el-button,
+    .el-input__inner,
+    .el-select .el-input__inner,
+    .el-checkbox__inner,
+    .el-radio__inner {
+      min-height: 44px;
+    }
+
+    // 增大点击区域
+    .el-table .cell {
+      padding: 12px 8px;
+    }
+
+    // 优化滚动
+    .el-scrollbar__wrap {
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+}
+
+// ==================== 移动端特定优化 ====================
+
+.mobile-optimizations {
+  @include small-screen {
+    // 隐藏复杂操作，简化界面
+    .complex-operation {
+      display: none;
+    }
+
+    // 简化表格显示
+    .simplified-mobile {
+      .hide-on-mobile {
+        display: none;
+      }
+    }
+
+    // 全宽按钮
+    .full-width-mobile {
+      width: 100%;
+    }
+
+    // 底部固定操作栏
+    .fixed-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 12px;
+      background: var(--bg-color-white);
+      border-top: 1px solid var(--border-color);
+      z-index: 100;
+    }
+
+    // 增加内容底部间距，避免被固定栏遮挡
+    .content-with-fixed-bar {
+      padding-bottom: 80px;
+    }
+  }
+}
+
+// ==================== 打印样式 ====================
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+
+  .el-table {
+    font-size: 10pt;
+
+    th,
+    td {
+      padding: 4px 8px;
+    }
+  }
+}

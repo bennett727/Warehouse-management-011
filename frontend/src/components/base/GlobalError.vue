@@ -28,7 +28,7 @@
           <div v-if="error.details" class="error-details">
             <div class="error-details-header">
               <span>错误详情</span>
-              <el-button link type="primary" size="small" @click="toggleDetails">
+              <el-button link type="primary" size="small" @click="toggleDetails" data-cy="global-error-details-toggle-btn">
                 {{ showFullDetails ? '收起' : '展开' }}
               </el-button>
             </div>
@@ -42,7 +42,7 @@
           <div v-if="error.stack" class="error-stack">
             <div class="error-stack-header">
               <span>错误堆栈</span>
-              <el-button link type="primary" size="small" @click="toggleStack">
+              <el-button link type="primary" size="small" @click="toggleStack" data-cy="global-error-stack-toggle-btn">
                 {{ showFullStack ? '收起' : '展开' }}
               </el-button>
             </div>
@@ -51,11 +51,11 @@
             </div>
           </div>
           <div class="error-actions">
-            <el-button v-if="error.retryable" type="primary" @click="handleRetry">
+            <el-button v-if="error.retryable" type="primary" @click="handleRetry" data-cy="global-error-retry-btn">
               <el-icon><Refresh /></el-icon>
               重试
             </el-button>
-            <el-button @click="handleClose">
+            <el-button @click="handleClose" data-cy="global-error-close-btn">
               <el-icon><Close /></el-icon>
               关闭
             </el-button>

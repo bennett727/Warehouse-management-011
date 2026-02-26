@@ -31,11 +31,13 @@ scripts/
 │   ├── generate-test-report.js    # 测试报告生成
 │   └── cleanup-test-data.js       # 测试数据清理
 │
-└── 迁移脚本 (一次性使用)
-    ├── migrate-to-pagelayout.cjs
-    ├── migrate-filter-bar.cjs
-    └── fix-filter-config.cjs
+└── 安全审计
+    ├── security-audit.cjs         # 安全审计脚本
+    ├── clear-browser-cache.cjs    # 清理浏览器缓存
+    └── production-readiness-check.cjs  # 生产环境就绪检查
 ```
+
+> **注意**: 一次性迁移脚本已归档到 `docs/archive/scripts/` 目录。
 
 ## 快速开始
 

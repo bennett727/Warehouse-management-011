@@ -126,13 +126,14 @@
 
         <el-table-column label="操作" width="180" fixed="right">
           <template #default="{ row }">
-            <el-button type="primary" link :icon="Edit" @click="handleEdit(row)"> 编辑 </el-button>
+            <el-button type="primary" link :icon="Edit" @click="handleEdit(row)" data-cy="zone-type-edit-btn"> 编辑 </el-button>
             <el-button
               type="danger"
               link
               :icon="Delete"
               @click="handleDelete(row)"
               :disabled="row.isSystem || row.usageCount > 0"
+              data-cy="zone-type-delete-btn"
             >
               删除
             </el-button>
@@ -153,6 +154,7 @@
           layout="total, sizes, prev, pager, next, jumper"
           @size-change="handleSizeChange"
           @current-change="handlePageChange"
+          data-cy="zone-type-pagination"
         />
       </div>
     </el-card>
@@ -175,24 +177,25 @@
                 placeholder="请输入类型编码"
                 clearable
                 :disabled="isEdit && form.isSystem"
+                data-cy="zone-type-code-input"
               />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="类型名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入类型名称" clearable />
+              <el-input v-model="form.name" placeholder="请输入类型名称" clearable data-cy="zone-type-name-input" />
             </el-form-item>
           </el-col>
         </el-row>
 
         <el-form-item label="描述" prop="description">
-          <el-input v-model="form.description" type="textarea" :rows="3" placeholder="请输入类型描述" />
+          <el-input v-model="form.description" type="textarea" :rows="3" placeholder="请输入类型描述" data-cy="zone-type-description-input" />
         </el-form-item>
 
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="图标" prop="icon">
-              <el-select v-model="form.icon" placeholder="选择图标" style="width: 100%">
+              <el-select v-model="form.icon" placeholder="选择图标" style="width: 100%" data-cy="zone-type-icon-select">
                 <el-option v-for="icon in iconOptions" :key="icon.value" :label="icon.label" :value="icon.value">
                   <div class="icon-option">
                     <el-icon><component :is="icon.value" /></el-icon>
@@ -227,8 +230,8 @@
       </el-form>
 
       <template #footer>
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleSubmit" :loading="submitLoading">确定</el-button>
+        <el-button @click="dialogVisible = false" data-cy="zone-type-cancel-btn">取消</el-button>
+        <el-button type="primary" @click="handleSubmit" :loading="submitLoading" data-cy="zone-type-submit-btn">确定</el-button>
       </template>
     </el-dialog>
   </PageLayout>

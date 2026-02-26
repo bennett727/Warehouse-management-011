@@ -60,7 +60,10 @@ export default defineConfig({
     // 模拟全局对象
     mockReset: true,
     restoreMocks: true,
-    clearMocks: true
+    clearMocks: true,
+    
+    // 设置全局对象
+    setupFiles: ['./tests/setup.js']
   },
   
   // 路径别名

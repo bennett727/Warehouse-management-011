@@ -15,15 +15,15 @@
   <div class="inbound-device-form">
     <!-- 模式切换 -->
     <div class="mode-switch">
-      <el-radio-group v-model="currentMode" size="large">
-        <el-radio-button label="batch">
+      <el-radio-group v-model="currentMode" size="large" data-cy="inbound-device-mode-group">
+        <el-radio-button label="batch" data-cy="inbound-device-batch-btn">
           <el-icon><Box /></el-icon>
           批量入库
           <el-tooltip content="适用于同型号设备批量采购" placement="top">
             <el-icon class="mode-tip"><QuestionFilled /></el-icon>
           </el-tooltip>
         </el-radio-button>
-        <el-radio-button label="single">
+        <el-radio-button label="single" data-cy="inbound-device-single-btn">
           <el-icon><Cpu /></el-icon>
           单个录入
           <el-tooltip content="适用于高价值设备详细录入" placement="top">
@@ -43,11 +43,11 @@
           </div>
         </template>
 
-        <el-form :model="batchForm" label-width="100px" class="batch-form">
+        <el-form :model="batchForm" label-width="100px" class="batch-form" data-cy="inbound-device-batch-form">
           <el-row :gutter="20">
             <el-col :span="12">
               <el-form-item label="设备类型" required>
-                <el-select v-model="batchForm.deviceType" placeholder="请选择设备类型" style="width: 100%" filterable>
+                <el-select v-model="batchForm.deviceType" placeholder="请选择设备类型" style="width: 100%" filterable data-cy="inbound-device-batch-form.device-type-select">
                   <el-option
                     v-for="type in deviceTypeOptions"
                     :key="type.value"
@@ -62,7 +62,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="设备名称" required>
-                <el-input v-model="batchForm.deviceName" placeholder="请输入设备名称" />
+                <el-input v-model="batchForm.deviceName" placeholder="请输入设备名称" data-cy="inbound-device-batch-form.device-name-input" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -70,12 +70,12 @@
           <el-row :gutter="20">
             <el-col :span="12">
               <el-form-item label="品牌/厂商">
-                <el-input v-model="batchForm.brand" placeholder="请输入品牌或厂商" />
+                <el-input v-model="batchForm.brand" placeholder="请输入品牌或厂商" data-cy="inbound-device-batch-form.brand-input" />
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="规格型号" required>
-                <el-input v-model="batchForm.model" placeholder="请输入规格型号" />
+                <el-input v-model="batchForm.model" placeholder="请输入规格型号" data-cy="inbound-device-batch-form.model-input" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -89,12 +89,13 @@
                   :max="9999"
                   style="width: 100%"
                   controls-position="right"
+                  data-cy="inbound-device-batch-form.quantity-input"
                 />
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="单位" required>
-                <el-select v-model="batchForm.unit" placeholder="请选择单位" style="width: 100%">
+                <el-select v-model="batchForm.unit" placeholder="请选择单位" style="width: 100%" data-cy="inbound-device-batch-form.unit-select">
                   <el-option label="个" value="个" />
                   <el-option label="台" value="台" />
                   <el-option label="套" value="套" />
@@ -114,6 +115,7 @@
                   :precision="2"
                   style="width: 100%"
                   controls-position="right"
+                  data-cy="inbound-device-batch-form.unit-price-input"
                 />
               </el-form-item>
             </el-col>
@@ -132,7 +134,7 @@
                 placeholder="选择仓库"
                 style="width: 160px"
                 @change="handleWarehouseChange"
-              >
+               data-cy="inbound-device-batch-form.warehouse-id-select">
                 <el-option v-for="wh in warehouseList" :key="wh.id" :label="wh.name" :value="wh.id" />
               </el-select>
               <el-select
@@ -141,7 +143,7 @@
                 style="width: 160px"
                 :disabled="!batchForm.warehouseId"
                 @change="handleZoneChange"
-              >
+               data-cy="inbound-device-batch-form.zone-id-select">
                 <el-option v-for="zone in availableZones" :key="zone.id" :label="zone.name" :value="zone.id" />
               </el-select>
               <el-select
@@ -149,7 +151,7 @@
                 placeholder="选择货位"
                 style="width: 160px"
                 :disabled="!batchForm.zoneId"
-              >
+               data-cy="inbound-device-batch-form.bin-id-select">
                 <el-option v-for="bin in availableBins" :key="bin.id" :label="bin.code" :value="bin.id" />
               </el-select>
             </div>
@@ -176,8 +178,8 @@
         </el-form>
 
         <div class="form-actions">
-          <el-button type="primary" :icon="Plus" @click="handleAddBatchDevice"> 添加到清单 </el-button>
-          <el-button @click="resetBatchForm">重置</el-button>
+          <el-button type="primary" :icon="Plus" @click="handleAddBatchDevice" data-cy="inbound-add-batch-btn"> 添加到清单 </el-button>
+          <el-button @click="resetBatchForm" data-cy="inbound-reset-batch-btn">重置</el-button>
         </div>
       </el-card>
 
@@ -199,6 +201,7 @@
             border
             size="small"
             :max-height="deviceList.length > 50 ? 380 : undefined"
+            data-cy="inbound-device-list-table"
             v-el-table-infinite-scroll="handleLoadMore"
             :infinite-scroll-disabled="deviceList.length <= 50"
             :infinite-scroll-distance="50"
@@ -225,7 +228,7 @@
             </el-table-column>
             <el-table-column label="操作" width="80" align="center" fixed="right">
               <template #default="{ $index }">
-                <el-button type="danger" link :icon="Delete" @click="handleRemoveDevice($index)" />
+                <el-button type="danger" link :icon="Delete" @click="handleRemoveDevice($index)" data-cy="inbound-batch-remove-btn" />
               </template>
             </el-table-column>
           </el-table>
@@ -261,10 +264,10 @@
           </div>
         </template>
 
-        <el-form :model="singleForm" label-width="120px" class="single-form">
+        <el-form :model="singleForm" label-width="120px" class="single-form" data-cy="inbound-device-single-form">
           <!-- 设备编号预览 -->
           <el-form-item label="设备编号">
-            <el-input v-model="previewDeviceCode" disabled class="code-preview">
+            <el-input v-model="previewDeviceCode" disabled class="code-preview" data-cy="inbound-device-preview-code-input">
               <template #prefix>
                 <el-icon><Ticket /></el-icon>
               </template>
@@ -279,7 +282,7 @@
           <el-row :gutter="20">
             <el-col :span="12">
               <el-form-item label="设备类型" required>
-                <el-select v-model="singleForm.deviceType" placeholder="请选择设备类型" style="width: 100%" filterable>
+                <el-select v-model="singleForm.deviceType" placeholder="请选择设备类型" style="width: 100%" filterable data-cy="inbound-device-single-form.device-type-select">
                   <el-option
                     v-for="type in deviceTypeOptions"
                     :key="type.value"
@@ -291,7 +294,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="设备名称" required>
-                <el-input v-model="singleForm.deviceName" placeholder="请输入设备名称" />
+                <el-input v-model="singleForm.deviceName" placeholder="请输入设备名称" data-cy="inbound-device-single-form.device-name-input" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -299,12 +302,12 @@
           <el-row :gutter="20">
             <el-col :span="12">
               <el-form-item label="品牌/厂商">
-                <el-input v-model="singleForm.brand" placeholder="请输入品牌或厂商" />
+                <el-input v-model="singleForm.brand" placeholder="请输入品牌或厂商" data-cy="inbound-device-single-form.brand-input" />
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="规格型号" required>
-                <el-input v-model="singleForm.model" placeholder="请输入规格型号" />
+                <el-input v-model="singleForm.model" placeholder="请输入规格型号" data-cy="inbound-device-single-form.model-input" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -312,9 +315,9 @@
           <el-row :gutter="20">
             <el-col :span="12">
               <el-form-item label="序列号">
-                <el-input v-model="singleForm.serialNumber" placeholder="请输入或扫描序列号">
+                <el-input v-model="singleForm.serialNumber" placeholder="请输入或扫描序列号" data-cy="inbound-device-single-form.serial-number-input">
                   <template #append>
-                    <el-button :icon="FullScreen" title="扫码输入" />
+                    <el-button :icon="FullScreen" title="扫码输入" data-cy="inbound-scan-btn" />
                   </template>
                 </el-input>
               </el-form-item>
@@ -341,6 +344,7 @@
                   :precision="2"
                   style="width: 100%"
                   controls-position="right"
+                  data-cy="inbound-device-single-form.unit-price-input"
                 />
               </el-form-item>
             </el-col>
@@ -352,6 +356,7 @@
                   :max="120"
                   style="width: 100%"
                   controls-position="right"
+                  data-cy="inbound-device-single-form.warranty-months-input"
                 />
               </el-form-item>
             </el-col>
@@ -365,7 +370,7 @@
                 placeholder="选择仓库"
                 style="width: 160px"
                 @change="handleSingleWarehouseChange"
-              >
+               data-cy="inbound-device-single-form.warehouse-id-select">
                 <el-option v-for="wh in warehouseList" :key="wh.id" :label="wh.name" :value="wh.id" />
               </el-select>
               <el-select
@@ -374,7 +379,7 @@
                 style="width: 160px"
                 :disabled="!singleForm.warehouseId"
                 @change="handleSingleZoneChange"
-              >
+               data-cy="inbound-device-single-form.zone-id-select">
                 <el-option v-for="zone in singleAvailableZones" :key="zone.id" :label="zone.name" :value="zone.id" />
               </el-select>
               <el-select
@@ -382,7 +387,7 @@
                 placeholder="选择货位"
                 style="width: 160px"
                 :disabled="!singleForm.zoneId"
-              >
+               data-cy="inbound-device-single-form.bin-id-select">
                 <el-option v-for="bin in singleAvailableBins" :key="bin.id" :label="bin.code" :value="bin.id" />
               </el-select>
             </div>
@@ -408,13 +413,13 @@
           </el-form-item>
 
           <el-form-item label="备注">
-            <el-input v-model="singleForm.remark" type="textarea" :rows="2" placeholder="请输入备注信息" />
+            <el-input v-model="singleForm.remark" type="textarea" :rows="2" placeholder="请输入备注信息" data-cy="inbound-device-single-form.remark-input" />
           </el-form-item>
         </el-form>
 
         <div class="form-actions">
-          <el-button type="primary" :icon="Plus" @click="handleAddSingleDevice"> 添加到清单 </el-button>
-          <el-button @click="resetSingleForm">重置</el-button>
+          <el-button type="primary" :icon="Plus" @click="handleAddSingleDevice" data-cy="inbound-add-single-btn"> 添加到清单 </el-button>
+          <el-button @click="resetSingleForm" data-cy="inbound-reset-single-btn">重置</el-button>
         </div>
       </el-card>
 
@@ -427,7 +432,7 @@
           </div>
         </template>
 
-        <el-table :data="deviceList" border size="small">
+        <el-table :data="deviceList" border size="small" data-cy="inbound-device-list-table">
           <el-table-column type="index" label="序号" width="50" align="center" />
           <el-table-column label="设备编号" width="150" prop="previewCode" />
           <el-table-column label="设备名称" min-width="150" prop="deviceName" />
@@ -443,7 +448,7 @@
           </el-table-column>
           <el-table-column label="操作" width="80" align="center" fixed="right">
             <template #default="{ $index }">
-              <el-button type="danger" link :icon="Delete" @click="handleRemoveDevice($index)" />
+              <el-button type="danger" link :icon="Delete" @click="handleRemoveDevice($index)" data-cy="inbound-single-remove-btn" />
             </template>
           </el-table-column>
         </el-table>
@@ -464,7 +469,7 @@
     </div>
 
     <!-- 图片预览对话框 -->
-    <el-dialog v-model="previewVisible" title="图片预览" width="600px">
+    <el-dialog v-model="previewVisible" title="图片预览" width="600px" data-cy="inbound-device-preview-dialog">
       <img :src="previewImageUrl" style="width: 100%" />
     </el-dialog>
   </div>

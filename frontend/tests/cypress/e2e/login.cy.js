@@ -22,7 +22,7 @@ describe('登录功能测试', () => {
 
     it('应该能够输入用户名和密码', () => {
       cy.get('[data-cy="login-username-input"]').clear().type('admin').should('have.value', 'admin')
-      cy.get('[data-cy="login-password-input"]').clear().type('Admin@123456').should('have.value', 'Admin@123456')
+      cy.get('[data-cy="login-password-input"]').clear().type('123456').should('have.value', '123456')
     })
 
     it('应该显示记住我复选框', () => {
@@ -40,9 +40,9 @@ describe('登录功能测试', () => {
   describe('使用真实用户数据登录', () => {
     it('应该能够使用管理员账号成功登录', () => {
       cy.get('[data-cy="login-username-input"]').clear().type('admin')
-      cy.get('[data-cy="login-password-input"]').clear().type('Admin@123456')
+      cy.get('[data-cy="login-password-input"]').clear().type('123456')
       cy.get('[data-cy="login-submit-button"]').click()
-      
+
       cy.url({ timeout: 20000 }).should('not.include', '/login')
       cy.url().should('include', '/dashboard')
       
@@ -94,7 +94,7 @@ describe('登录功能测试', () => {
 
   describe('登录状态持久化', () => {
     it('应该保持登录状态在页面刷新后', () => {
-      cy.login('admin', 'Admin@123456')
+      cy.login('admin', '123456')
       cy.reload()
       cy.url().should('not.include', '/login')
       cy.contains('数据仪表盘', { timeout: 10000 }).should('be.visible')

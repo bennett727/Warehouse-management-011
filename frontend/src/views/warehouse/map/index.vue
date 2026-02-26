@@ -1,12 +1,12 @@
 <template>
   <PageLayout title="仓库地图" description="在地图上查看所有仓库的地理位置分布" data-cy="warehouse-map-page">
     <template #headerActions>
-      <el-radio-group v-model="viewMode" size="default">
-        <el-radio-button label="map">
+      <el-radio-group v-model="viewMode" size="default" data-cy="warehouse-view-mode-group">
+        <el-radio-button label="map" data-cy="warehouse-view-map-btn">
           <el-icon><MapLocation /></el-icon>
           地图视图
         </el-radio-button>
-        <el-radio-button label="list">
+        <el-radio-button label="list" data-cy="warehouse-view-list-btn">
           <el-icon><List /></el-icon>
           列表视图
         </el-radio-button>
@@ -82,12 +82,13 @@
                 clearable
                 style="width: 200px"
                 @keyup.enter="handleSearch"
+                data-cy="warehouse-map-search-input"
               >
                 <template #prefix>
                   <el-icon><Search /></el-icon>
                 </template>
               </el-input>
-              <el-button type="primary" :icon="Refresh" @click="refreshData"> 刷新 </el-button>
+              <el-button type="primary" :icon="Refresh" @click="refreshData" data-cy="warehouse-map-refresh-btn"> 刷新 </el-button>
             </div>
           </div>
         </template>
@@ -159,17 +160,18 @@
                 clearable
                 style="width: 200px"
                 @keyup.enter="handleSearch"
+                data-cy="warehouse-list-search-input"
               >
                 <template #prefix>
                   <el-icon><Search /></el-icon>
                 </template>
               </el-input>
-              <el-button type="primary" :icon="Refresh" @click="refreshData"> 刷新 </el-button>
+              <el-button type="primary" :icon="Refresh" @click="refreshData" data-cy="warehouse-list-refresh-btn"> 刷新 </el-button>
             </div>
           </div>
         </template>
 
-        <el-table :data="filteredWarehouses" stripe border v-loading="loading">
+        <el-table :data="filteredWarehouses" stripe border v-loading="loading" data-cy="warehouse-map-table">
           <el-table-column type="index" label="序号" width="60" align="center" />
           <el-table-column prop="warehouseName" label="仓库名称" min-width="150" />
           <el-table-column label="地址" min-width="250">
@@ -196,8 +198,8 @@
           </el-table-column>
           <el-table-column label="操作" width="150" fixed="right">
             <template #default="{ row }">
-              <el-button type="primary" link :icon="View" @click="viewWarehouse(row)"> 查看 </el-button>
-              <el-button type="primary" link :icon="Edit" @click="editWarehouse(row)"> 编辑 </el-button>
+              <el-button type="primary" link :icon="View" @click="viewWarehouse(row)" data-cy="warehouse-list-view-btn"> 查看 </el-button>
+              <el-button type="primary" link :icon="Edit" @click="editWarehouse(row)" data-cy="warehouse-list-edit-btn"> 编辑 </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -205,7 +207,7 @@
     </template>
 
     <!-- 仓库详情弹窗 -->
-    <el-dialog v-model="detailDialogVisible" title="仓库详情" width="700px" destroy-on-close>
+    <el-dialog v-model="detailDialogVisible" title="仓库详情" width="700px" destroy-on-close data-cy="warehouse-detail-dialog">
       <el-descriptions :column="2" border v-if="selectedWarehouse">
         <el-descriptions-item label="仓库名称" :span="2">
           {{ selectedWarehouse.warehouseName }}
@@ -252,8 +254,8 @@
       </div>
 
       <template #footer>
-        <el-button @click="detailDialogVisible = false">关闭</el-button>
-        <el-button type="primary" @click="editWarehouse(selectedWarehouse)"> 编辑仓库 </el-button>
+        <el-button @click="detailDialogVisible = false" data-cy="warehouse-detail-close-btn">关闭</el-button>
+        <el-button type="primary" @click="editWarehouse(selectedWarehouse)" data-cy="warehouse-detail-edit-btn"> 编辑仓库 </el-button>
       </template>
     </el-dialog>
   </PageLayout>

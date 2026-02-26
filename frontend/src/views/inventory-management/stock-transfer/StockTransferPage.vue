@@ -38,27 +38,28 @@
       :loading="loading"
       :current-page="pagination.current"
       :page-size="pagination.pageSize"
+      data-cy="stock-transfer-table"
       @page-change="handlePageChange"
       @size-change="handleSizeChange"
     >
-      <el-table-column type="index" label="序号" width="60" />
-      <el-table-column prop="transferNo" label="调拨单号" width="180" />
-      <el-table-column prop="fromWarehouse" label="调出仓库" width="150" />
-      <el-table-column prop="toWarehouse" label="调入仓库" width="150" />
-      <el-table-column prop="deviceCode" label="设备编号" width="150" />
-      <el-table-column prop="deviceName" label="设备名称" min-width="180" />
-      <el-table-column prop="quantity" label="数量" width="100" />
-      <el-table-column prop="transferDate" label="调拨日期" width="120" />
-      <el-table-column prop="operator" label="操作人" width="120" />
-      <el-table-column prop="status" label="状态" width="100">
+      <el-table-column type="index" label="序号" width="60" data-cy="stock-transfer-index-column" />
+      <el-table-column prop="transferNo" label="调拨单号" width="180" data-cy="stock-transfer-no-column" />
+      <el-table-column prop="fromWarehouse" label="调出仓库" width="150" data-cy="stock-transfer-from-column" />
+      <el-table-column prop="toWarehouse" label="调入仓库" width="150" data-cy="stock-transfer-to-column" />
+      <el-table-column prop="deviceCode" label="设备编号" width="150" data-cy="stock-transfer-device-code-column" />
+      <el-table-column prop="deviceName" label="设备名称" min-width="180" data-cy="stock-transfer-device-name-column" />
+      <el-table-column prop="quantity" label="数量" width="100" data-cy="stock-transfer-quantity-column" />
+      <el-table-column prop="transferDate" label="调拨日期" width="120" data-cy="stock-transfer-date-column" />
+      <el-table-column prop="operator" label="操作人" width="120" data-cy="stock-transfer-operator-column" />
+      <el-table-column prop="status" label="状态" width="100" data-cy="stock-transfer-status-column">
         <template #default="{ row }">
-          <el-tag :type="getStatusType(row.status)">{{ getStatusText(row.status) }}</el-tag>
+          <el-tag :type="getStatusType(row.status)" :data-cy="`stock-transfer-status-tag-${row.transferNo}`">{{ getStatusText(row.status) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="150" fixed="right">
+      <el-table-column label="操作" width="150" fixed="right" data-cy="stock-transfer-action-column">
         <template #default="{ row }">
-          <el-button link type="primary" @click="handleView(row)">查看</el-button>
-          <el-button link type="primary" @click="handleEdit(row)">编辑</el-button>
+          <el-button link type="primary" @click="handleView(row)" :data-cy="`stock-transfer-view-btn-${row.transferNo}`">查看</el-button>
+          <el-button link type="primary" @click="handleEdit(row)" :data-cy="`stock-transfer-edit-btn-${row.transferNo}`">编辑</el-button>
         </template>
       </el-table-column>
     </DataTable>

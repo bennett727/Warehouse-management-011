@@ -13,7 +13,7 @@
         <span>货位管理</span>
       </div>
       <div class="header-actions">
-        <el-button type="primary" size="small" :icon="Plus" @click="handleAdd">添加货位</el-button>
+        <el-button type="primary" size="small" :icon="Plus" @click="handleAdd" data-cy="bin-panel-add-btn">添加货位</el-button>
       </div>
     </div>
 
@@ -52,6 +52,7 @@
         layout="total, prev, pager, next"
         small
         background
+        data-cy="bin-panel-pagination"
       />
     </div>
   </div>

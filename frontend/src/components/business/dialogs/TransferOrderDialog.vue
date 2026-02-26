@@ -14,6 +14,7 @@
     destroy-on-close
     :close-on-click-modal="false"
     class="transfer-order-dialog"
+    data-cy="transfer-order-dialog"
   >
     <div class="dialog-container">
       <!-- 上半部分：调拨单基本信息区域 -->
@@ -23,30 +24,31 @@
           <span>调拨单基本信息</span>
         </div>
 
-        <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px" class="order-form">
+        <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px" class="order-form" data-cy="transfer-order-form">
           <el-row :gutter="20">
             <el-col :span="8">
-              <el-form-item label="调拨单号" prop="orderNo">
-                <el-input v-model="formData.orderNo" placeholder="系统自动生成" disabled />
+              <el-form-item label="调拨单号" prop="orderNo" data-cy="transfer-order-no-form-item">
+                <el-input v-model="formData.orderNo" placeholder="系统自动生成" disabled data-cy="transfer-order-no-input" />
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="调拨日期" prop="transferDate">
+              <el-form-item label="调拨日期" prop="transferDate" data-cy="transfer-order-date-form-item">
                 <el-date-picker
                   v-model="formData.transferDate"
                   type="date"
                   placeholder="选择日期"
                   value-format="YYYY-MM-DD"
                   style="width: 100%"
+                  data-cy="transfer-order-date-picker"
                 />
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="调拨类型" prop="transferType">
-                <el-select v-model="formData.transferType" placeholder="请选择调拨类型" style="width: 100%">
-                  <el-option label="仓库间调拨" :value="0" />
-                  <el-option label="部门间调拨" :value="1" />
-                  <el-option label="门店间调拨" :value="2" />
+              <el-form-item label="调拨类型" prop="transferType" data-cy="transfer-order-type-form-item">
+                <el-select v-model="formData.transferType" placeholder="请选择调拨类型" style="width: 100%" data-cy="transfer-order-type-select">
+                  <el-option label="仓库间调拨" :value="0" data-cy="transfer-type-warehouse" />
+                  <el-option label="部门间调拨" :value="1" data-cy="transfer-type-department" />
+                  <el-option label="门店间调拨" :value="2" data-cy="transfer-type-store" />
                 </el-select>
               </el-form-item>
             </el-col>
@@ -54,13 +56,14 @@
 
           <el-row :gutter="20">
             <el-col :span="8">
-              <el-form-item label="调出仓库" prop="fromWarehouseId">
+              <el-form-item label="调出仓库" prop="fromWarehouseId" data-cy="transfer-from-warehouse-form-item">
                 <el-select
                   v-model="formData.fromWarehouseId"
                   placeholder="请选择调出仓库"
                   filterable
                   style="width: 100%"
                   @change="handleFromWarehouseChange"
+                  data-cy="transfer-from-warehouse-select"
                 >
                   <el-option
                     v-for="warehouse in warehouseOptions"
@@ -72,13 +75,14 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="调入仓库" prop="toWarehouseId">
+              <el-form-item label="调入仓库" prop="toWarehouseId" data-cy="transfer-to-warehouse-form-item">
                 <el-select
                   v-model="formData.toWarehouseId"
                   placeholder="请选择调入仓库"
                   filterable
                   style="width: 100%"
                   @change="handleToWarehouseChange"
+                  data-cy="transfer-to-warehouse-select"
                 >
                   <el-option
                     v-for="warehouse in toWarehouseOptions"
@@ -97,13 +101,14 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="经办人" prop="operatorName">
+              <el-form-item label="经办人" prop="operatorName" data-cy="transfer-operator-form-item">
                 <el-select
                   v-model="formData.operatorId"
                   placeholder="请选择经办人"
                   filterable
                   style="width: 100%"
                   @change="handleOperatorChange"
+                  data-cy="transfer-operator-select"
                 >
                   <el-option
                     v-for="user in userOptions"
@@ -116,7 +121,7 @@
             </el-col>
           </el-row>
 
-          <el-form-item label="调拨原因" prop="transferReason">
+          <el-form-item label="调拨原因" prop="transferReason" data-cy="transfer-reason-form-item">
             <el-input
               v-model="formData.transferReason"
               type="textarea"
@@ -124,10 +129,11 @@
               placeholder="请输入调拨原因"
               maxlength="500"
               show-word-limit
+              data-cy="transfer-reason-input"
             />
           </el-form-item>
 
-          <el-form-item label="备注" prop="remark">
+          <el-form-item label="备注" prop="remark" data-cy="transfer-remark-form-item">
             <el-input
               v-model="formData.remark"
               type="textarea"
@@ -135,6 +141,7 @@
               placeholder="请输入备注信息"
               maxlength="500"
               show-word-limit
+              data-cy="transfer-remark-input"
             />
           </el-form-item>
         </el-form>
@@ -152,7 +159,7 @@
 
         <!-- 设备列表工具栏 -->
         <div class="device-toolbar">
-          <el-button type="primary" :icon="Plus" @click="handleAddItem" :disabled="!formData.fromWarehouseId">
+          <el-button type="primary" :icon="Plus" @click="handleAddItem" :disabled="!formData.fromWarehouseId" data-cy="transfer-add-item-btn">
             添加设备
           </el-button>
           <el-alert
@@ -176,9 +183,10 @@
           height="300px"
           class="device-table"
           empty-text="请选择调出仓库后添加设备"
+          data-cy="transfer-device-table"
         >
-          <el-table-column type="index" label="序号" width="50" align="center" />
-          <el-table-column label="设备" min-width="200">
+          <el-table-column type="index" label="序号" width="50" align="center" data-cy="transfer-device-table-index-column" />
+          <el-table-column label="设备" min-width="200" data-cy="transfer-device-table-device-column">
             <template #default="{ row, $index }">
               <el-select
                 v-model="row.deviceId"
@@ -188,6 +196,7 @@
                 :remote-method="(query) => searchDevices(query, $index)"
                 :loading="deviceSearchLoading"
                 style="width: 100%"
+                :data-cy="`transfer-device-select-${$index}`"
                 @change="(val) => handleDeviceChange(val, $index)"
               >
                 <el-option
@@ -207,36 +216,36 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column label="规格型号" width="120">
+          <el-table-column label="规格型号" width="120" data-cy="transfer-device-table-spec-column">
             <template #default="{ row }">
               {{ row.specification || '-' }}
             </template>
           </el-table-column>
-          <el-table-column label="调出货位" width="120">
+          <el-table-column label="调出货位" width="120" data-cy="transfer-device-table-from-bin-column">
             <template #default="{ row }">
               {{ row.fromBinCode || '-' }}
             </template>
           </el-table-column>
-          <el-table-column label="调入货位" width="150">
-            <template #default="{ row }">
-              <el-select v-model="row.toBinId" placeholder="选择货位" style="width: 100%">
+          <el-table-column label="调入货位" width="150" data-cy="transfer-device-table-to-bin-column">
+            <template #default="{ row, $index }">
+              <el-select v-model="row.toBinId" placeholder="选择货位" style="width: 100%" :data-cy="`transfer-to-bin-select-${$index}`">
                 <el-option v-for="bin in toBinOptions" :key="bin.id" :label="bin.code" :value="bin.id" />
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column label="数量" width="100">
-            <template #default="{ row }">
-              <el-input-number v-model="row.quantity" :min="1" :max="row.maxQuantity || 9999" style="width: 100%" />
+          <el-table-column label="数量" width="100" data-cy="transfer-device-table-quantity-column">
+            <template #default="{ row, $index }">
+              <el-input-number v-model="row.quantity" :min="1" :max="row.maxQuantity || 9999" style="width: 100%" :data-cy="`transfer-quantity-input-${$index}`" />
             </template>
           </el-table-column>
-          <el-table-column label="备注" min-width="120">
-            <template #default="{ row }">
-              <el-input v-model="row.remark" placeholder="备注" size="small" />
+          <el-table-column label="备注" min-width="120" data-cy="transfer-device-table-remark-column">
+            <template #default="{ row, $index }">
+              <el-input v-model="row.remark" placeholder="备注" size="small" :data-cy="`transfer-remark-input-${$index}`" />
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="70" fixed="right">
+          <el-table-column label="操作" width="70" fixed="right" data-cy="transfer-device-table-action-column">
             <template #default="{ $index }">
-              <el-button link type="danger" size="small" @click="handleRemoveItem($index)">删除</el-button>
+              <el-button link type="danger" size="small" @click="handleRemoveItem($index)" :data-cy="`transfer-remove-item-btn-${$index}`">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -244,9 +253,9 @@
     </div>
 
     <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleSubmit"> 确定 </el-button>
+      <div class="dialog-footer" data-cy="transfer-order-footer">
+        <el-button @click="dialogVisible = false" data-cy="transfer-order-cancel-btn">取消</el-button>
+        <el-button type="primary" :loading="submitLoading" @click="handleSubmit" data-cy="transfer-order-submit-btn"> 确定 </el-button>
       </div>
     </template>
   </el-dialog>

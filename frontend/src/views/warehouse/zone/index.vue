@@ -67,7 +67,7 @@
 
     <!-- 数据表格 -->
     <el-card class="table-card" shadow="never">
-      <el-table v-loading="loading" :data="zoneList" stripe border @sort-change="handleSortChange">
+      <el-table v-loading="loading" :data="zoneList" stripe border @sort-change="handleSortChange" data-cy="zone-table">
         <el-table-column type="index" label="序号" width="60" align="center" />
         <el-table-column prop="code" label="编码" width="120" sortable />
         <el-table-column prop="name" label="名称" min-width="150" sortable />
@@ -120,8 +120,8 @@
         </el-table-column>
         <el-table-column label="操作" width="180" fixed="right" align="center">
           <template #default="{ row }">
-            <el-button type="primary" link :icon="Edit" @click="handleEdit(row)">编辑</el-button>
-            <el-button type="danger" link :icon="Delete" @click="handleDelete(row)">删除</el-button>
+            <el-button type="primary" link :icon="Edit" @click="handleEdit(row)" data-cy="warehouse-zone-edit-btn">编辑</el-button>
+            <el-button type="danger" link :icon="Delete" @click="handleDelete(row)" data-cy="warehouse-zone-delete-btn">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -136,6 +136,7 @@
           layout="total, sizes, prev, pager, next, jumper"
           @size-change="handleSizeChange"
           @current-change="handlePageChange"
+          data-cy="warehouse-zone-pagination"
         />
       </div>
     </el-card>
@@ -154,17 +155,17 @@
     />
 
     <!-- 新增/编辑对话框 -->
-    <el-dialog v-model="dialogVisible" :title="isEdit ? '编辑功能区' : '添加功能区'" width="600px" destroy-on-close>
-      <el-form ref="formRef" :model="form" :rules="rules" label-width="100px">
+    <el-dialog v-model="dialogVisible" :title="isEdit ? '编辑功能区' : '添加功能区'" width="600px" destroy-on-close data-cy="warehouse-zone-dialog">
+      <el-form ref="formRef" :model="form" :rules="rules" label-width="100px" data-cy="warehouse-zone-form">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="编码" prop="code">
-              <el-input v-model="form.code" placeholder="请输入编码" :disabled="isEdit" />
+              <el-input v-model="form.code" placeholder="请输入编码" :disabled="isEdit" data-cy="warehouse-zone-code-input" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入名称" />
+              <el-input v-model="form.name" placeholder="请输入名称" data-cy="warehouse-zone-name-input" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -172,7 +173,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="所属仓库" prop="warehouseId">
-              <el-select v-model="form.warehouseId" placeholder="选择仓库" style="width: 100%">
+              <el-select v-model="form.warehouseId" placeholder="选择仓库" style="width: 100%" data-cy="warehouse-zone-warehouse-select">
                 <el-option
                   v-for="warehouse in warehouseList"
                   :key="warehouse.warehouseId"
@@ -184,7 +185,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="功能区类型" prop="zoneTypeId">
-              <el-select v-model="form.zoneTypeId" placeholder="选择类型" style="width: 100%">
+              <el-select v-model="form.zoneTypeId" placeholder="选择类型" style="width: 100%" data-cy="warehouse-zone-type-select">
                 <el-option v-for="type in zoneTypeList" :key="type.id" :label="type.name" :value="type.id" />
               </el-select>
             </el-form-item>
@@ -205,7 +206,7 @@
         </el-row>
 
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" :rows="3" placeholder="请输入备注" />
+          <el-input v-model="form.remark" type="textarea" :rows="3" placeholder="请输入备注" data-cy="warehouse-zone-remark-input" />
         </el-form-item>
 
         <el-form-item label="状态" prop="status">
@@ -217,8 +218,8 @@
       </el-form>
 
       <template #footer>
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleSubmit" :loading="submitLoading">确定</el-button>
+        <el-button @click="dialogVisible = false" data-cy="warehouse-zone-cancel-btn">取消</el-button>
+        <el-button type="primary" @click="handleSubmit" :loading="submitLoading" data-cy="warehouse-zone-submit-btn">确定</el-button>
       </template>
     </el-dialog>
   </PageLayout>

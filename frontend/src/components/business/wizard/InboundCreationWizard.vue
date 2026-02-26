@@ -22,6 +22,7 @@
     :close-on-press-escape="false"
     destroy-on-close
     class="inbound-wizard-dialog"
+    data-cy="inbound-creation-wizard"
     @close="handleDialogClose"
   >
     <div class="wizard-container">
@@ -114,11 +115,12 @@
               label-width="120px"
               label-position="right"
               class="wizard-form"
+              data-cy="inbound-basic-form"
             >
               <el-row :gutter="24">
                 <el-col :span="12">
-                  <el-form-item label="入库单号" prop="orderNo">
-                    <el-input v-model="formData.basic.orderNo" placeholder="系统自动生成" disabled>
+                  <el-form-item label="入库单号" prop="orderNo" data-cy="inbound-order-no-form-item">
+                    <el-input v-model="formData.basic.orderNo" placeholder="系统自动生成" disabled data-cy="inbound-order-no-input">
                       <template #prefix>
                         <el-icon><Tickets /></el-icon>
                       </template>
@@ -147,6 +149,7 @@
                       placeholder="请选择入库类型"
                       style="width: 100%"
                       @change="handleInboundTypeChange"
+                      data-cy="inbound-type-select"
                     >
                       <el-option label="采购入库" value="purchase">
                         <el-icon><ShoppingCart /></el-icon> 采购入库
@@ -170,6 +173,7 @@
                       placeholder="请选择入库仓库"
                       style="width: 100%"
                       filterable
+                      data-cy="inbound-warehouse-select"
                     >
                       <el-option v-for="wh in warehouseList" :key="wh.id" :label="wh.name" :value="wh.id">
                         <span>{{ wh.name }}</span>
@@ -190,6 +194,7 @@
                       placeholder="请选择经办人"
                       style="width: 100%"
                       filterable
+                      data-cy="inbound-operator-select"
                     >
                       <el-option v-for="user in userList" :key="user.id" :label="user.name" :value="user.id">
                         <span>{{ user.name }}</span>
@@ -202,7 +207,7 @@
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="入库原因" prop="reason">
-                    <el-input v-model="formData.basic.reason" placeholder="请输入入库原因" />
+                    <el-input v-model="formData.basic.reason" placeholder="请输入入库原因" data-cy="inbound-reason-input" />
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -215,6 +220,7 @@
                   placeholder="请输入备注信息（选填）"
                   maxlength="300"
                   show-word-limit
+                  data-cy="inbound-remark-input"
                 />
               </el-form-item>
             </el-form>
@@ -321,7 +327,7 @@
                   </template>
                   <!-- 批量模式显示 -->
                   <template v-if="formData.devices.mode === 'batch' && formData.devices.batchList.length > 0">
-                    <el-table :data="formData.devices.batchList" size="small" border max-height="200">
+                    <el-table :data="formData.devices.batchList" size="small" border max-height="200" data-cy="inbound-batch-device-table">
                       <el-table-column type="index" label="序号" width="50" align="center" />
                       <el-table-column label="设备类型" min-width="120">
                         <template #default="{ row }">
@@ -347,7 +353,7 @@
                   </template>
                   <!-- 单个模式显示 -->
                   <template v-else-if="formData.devices.mode === 'single' && formData.devices.singleList.length > 0">
-                    <el-table :data="formData.devices.singleList" size="small" border max-height="200">
+                    <el-table :data="formData.devices.singleList" size="small" border max-height="200" data-cy="inbound-single-device-table">
                       <el-table-column type="index" label="序号" width="50" align="center" />
                       <el-table-column label="设备编号" width="120">
                         <template #default="{ row }">
@@ -489,28 +495,43 @@
     </div>
 
     <template #footer>
-      <div class="wizard-footer">
-        <div class="footer-left">
-          <el-button link @click="handleSaveDraft" :loading="savingDraft">
+      <div class="wizard-footer" data-cy="inbound-wizard-footer">
+        <div class="footer-left" data-cy="inbound-wizard-footer-left">
+          <el-button link data-cy="inbound-wizard-save-draft-btn" @click="handleSaveDraft" :loading="savingDraft">
             <el-icon><Document /></el-icon>
             保存草稿
           </el-button>
-          <span v-if="lastSaveTime" class="last-save-time"> 上次保存: {{ lastSaveTime }} </span>
+          <span v-if="lastSaveTime" class="last-save-time" data-cy="inbound-wizard-last-save-time">
+            上次保存: {{ lastSaveTime }}
+          </span>
         </div>
-        <div class="footer-right">
-          <el-button v-if="currentStep > 0" @click="handlePrev">
+        <div class="footer-right" data-cy="inbound-wizard-footer-right">
+          <el-button v-if="currentStep > 0" data-cy="inbound-wizard-prev-btn" @click="handlePrev">
             <el-icon><ArrowLeft /></el-icon>
             上一步
           </el-button>
-          <el-button v-if="currentStep < 3" type="primary" @click="handleNext" :disabled="!canProceedToNext">
+          <el-button
+            v-if="currentStep < 3"
+            data-cy="inbound-wizard-next-btn"
+            type="primary"
+            @click="handleNext"
+            :disabled="!canProceedToNext"
+          >
             下一步
             <el-icon><ArrowRight /></el-icon>
           </el-button>
-          <el-button v-else type="success" :loading="submitting" :disabled="!confirmed" @click="handleSubmit">
+          <el-button
+            v-else
+            data-cy="inbound-wizard-submit-btn"
+            type="success"
+            :loading="submitting"
+            :disabled="!confirmed"
+            @click="handleSubmit"
+          >
             <el-icon><Check /></el-icon>
             提交审批
           </el-button>
-          <el-button @click="handleCancel">取消</el-button>
+          <el-button data-cy="inbound-wizard-cancel-btn" @click="handleCancel">取消</el-button>
         </div>
       </div>
     </template>

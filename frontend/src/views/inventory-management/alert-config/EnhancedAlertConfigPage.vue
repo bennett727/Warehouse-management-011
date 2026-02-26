@@ -8,7 +8,7 @@
 <template>
   <PageLayout title="预警配置" description="配置库存预警规则">
     <template #headerActions>
-      <el-button type="primary" :icon="Plus" @click="handleCreate">新增配置</el-button>
+      <el-button type="primary" :icon="Plus" @click="handleCreate" data-cy="alert-config-create-btn">新增配置</el-button>
     </template>
 
     <UnifiedFilterBar
@@ -31,43 +31,43 @@
       height="500px"
       @page-change="handlePageChange"
     >
-      <el-table-column type="index" label="序号" width="60" align="center" />
-      <el-table-column prop="name" label="配置名称" min-width="150" />
-      <el-table-column prop="type" label="预警类型" min-width="120">
+      <el-table-column type="index" label="序号" width="60" align="center" data-cy="alert-config-index-column" />
+      <el-table-column prop="name" label="配置名称" min-width="150" data-cy="alert-config-name-column" />
+      <el-table-column prop="type" label="预警类型" min-width="120" data-cy="alert-config-type-column">
         <template #default="{ row }">
-          <el-tag>{{ row.typeText }}</el-tag>
+          <el-tag :data-cy="`alert-config-type-tag-${row.id}`">{{ row.typeText }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="threshold" label="阈值" width="100" align="center" />
-      <el-table-column prop="status" label="状态" width="100" align="center">
+      <el-table-column prop="threshold" label="阈值" width="100" align="center" data-cy="alert-config-threshold-column" />
+      <el-table-column prop="status" label="状态" width="100" align="center" data-cy="alert-config-status-column">
         <template #default="{ row }">
-          <el-switch v-model="row.status" :active-value="1" :inactive-value="0" @change="handleStatusChange(row)" />
+          <el-switch v-model="row.status" :active-value="1" :inactive-value="0" @change="handleStatusChange(row)" :data-cy="`alert-config-status-switch-${row.id}`" />
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建时间" min-width="180" />
-      <el-table-column label="操作" width="200" fixed="right">
+      <el-table-column prop="createTime" label="创建时间" min-width="180" data-cy="alert-config-create-time-column" />
+      <el-table-column label="操作" width="200" fixed="right" data-cy="alert-config-actions-column">
         <template #default="{ row }">
-          <el-button type="primary" link @click="handleEdit(row)">编辑</el-button>
-          <el-button type="danger" link @click="handleDelete(row)">删除</el-button>
+          <el-button type="primary" link @click="handleEdit(row)" data-cy="alert-config-edit-btn">编辑</el-button>
+          <el-button type="danger" link @click="handleDelete(row)" data-cy="alert-config-delete-btn">删除</el-button>
         </template>
       </el-table-column>
     </DataTable>
 
     <!-- 新增/编辑对话框 -->
-    <el-dialog v-model="dialogVisible" :title="dialogTitle" width="600px">
-      <el-form :model="form" label-width="100px" :rules="rules" ref="formRef">
+    <el-dialog v-model="dialogVisible" :title="dialogTitle" width="600px" data-cy="alert-config-dialog">
+      <el-form :model="form" label-width="100px" :rules="rules" ref="formRef" data-cy="alert-config-form">
         <el-form-item label="配置名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入配置名称" />
+          <el-input v-model="form.name" placeholder="请输入配置名称" data-cy="alert-config-name-input" />
         </el-form-item>
         <el-form-item label="预警类型" prop="type">
-          <el-select v-model="form.type" placeholder="请选择预警类型" style="width: 100%">
+          <el-select v-model="form.type" placeholder="请选择预警类型" style="width: 100%" data-cy="alert-config-type-select">
             <el-option label="库存不足" value="low_stock" />
             <el-option label="库存积压" value="over_stock" />
             <el-option label="过期预警" value="expire" />
           </el-select>
         </el-form-item>
         <el-form-item label="阈值" prop="threshold">
-          <el-input-number v-model="form.threshold" :min="0" style="width: 100%" />
+          <el-input-number v-model="form.threshold" :min="0" style="width: 100%" data-cy="alert-config-threshold-input" />
         </el-form-item>
         <el-form-item label="通知方式">
           <el-checkbox-group v-model="form.notifyMethods">
@@ -77,12 +77,12 @@
           </el-checkbox-group>
         </el-form-item>
         <el-form-item label="备注">
-          <el-input v-model="form.remark" type="textarea" rows="3" placeholder="请输入备注" />
+          <el-input v-model="form.remark" type="textarea" rows="3" placeholder="请输入备注" data-cy="alert-config-remark-input" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleSubmit">确定</el-button>
+        <el-button @click="dialogVisible = false" data-cy="alert-config-dialog-cancel-btn">取消</el-button>
+        <el-button type="primary" @click="handleSubmit" data-cy="alert-config-dialog-confirm-btn">确定</el-button>
       </template>
     </el-dialog>
   </PageLayout>
@@ -91,14 +91,14 @@
 <script setup>
 import { Plus } from '@element-plus/icons-vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { ref, reactive, computed, onMounted } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 
 import {
-  getAlertConfigList,
-  createAlertConfig,
-  updateAlertConfig,
-  deleteAlertConfig,
   batchUpdateAlertConfig,
+  createAlertConfig,
+  deleteAlertConfig,
+  getAlertConfigList,
+  updateAlertConfig,
 } from '@/api/inventory/alertConfig';
 import DataTable from '@/components/base/DataTable.vue';
 import PageLayout from '@/components/base/PageLayout.vue';

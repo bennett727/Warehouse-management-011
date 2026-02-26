@@ -181,3 +181,105 @@ export function formatRelativeTime(date) {
   }
   return '刚刚';
 }
+
+/**
+ * 添加天数
+ * @param {Date|string|number} date - 日期对象、日期字符串或时间戳
+ * @param {number} days - 要添加的天数
+ * @returns {Date} 新的日期对象
+ */
+export function addDays(date, days) {
+  const d = new Date(date);
+  d.setDate(d.getDate() + days);
+  return d;
+}
+
+/**
+ * 减去天数
+ * @param {Date|string|number} date - 日期对象、日期字符串或时间戳
+ * @param {number} days - 要减去的天数
+ * @returns {Date} 新的日期对象
+ */
+export function subtractDays(date, days) {
+  return addDays(date, -days);
+}
+
+/**
+ * 获取一天的开始时间
+ * @param {Date|string|number} date - 日期对象、日期字符串或时间戳
+ * @returns {Date} 一天开始的日期对象 (00:00:00)
+ */
+export function getStartOfDay(date) {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+/**
+ * 获取一天的结束时间
+ * @param {Date|string|number} date - 日期对象、日期字符串或时间戳
+ * @returns {Date} 一天结束的日期对象 (23:59:59)
+ */
+export function getEndOfDay(date) {
+  const d = new Date(date);
+  d.setHours(23, 59, 59, 999);
+  return d;
+}
+
+/**
+ * 获取周数
+ * @param {Date|string|number} date - 日期对象、日期字符串或时间戳
+ * @returns {number} 周数 (1-53)
+ */
+export function getWeekNumber(date) {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+  const yearStart = new Date(d.getFullYear(), 0, 1);
+  return Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
+}
+
+/**
+ * 获取月份名称
+ * @param {number} month - 月份 (0-11)
+ * @returns {string} 月份名称
+ */
+export function getMonthName(month) {
+  const monthNames = [
+    '一月',
+    '二月',
+    '三月',
+    '四月',
+    '五月',
+    '六月',
+    '七月',
+    '八月',
+    '九月',
+    '十月',
+    '十一月',
+    '十二月',
+  ];
+  return monthNames[month] || '';
+}
+
+/**
+ * 判断是否为周末
+ * @param {Date|string|number} date - 日期对象、日期字符串或时间戳
+ * @returns {boolean} 是否为周末
+ */
+export function isWeekend(date) {
+  const d = new Date(date);
+  const day = d.getDay();
+  return day === 0 || day === 6;
+}
+
+/**
+ * 获取季度
+ * @param {Date|string|number} date - 日期对象、日期字符串或时间戳
+ * @returns {number} 季度 (1-4)
+ */
+export function getQuarter(date) {
+  const d = new Date(date);
+  const month = d.getMonth();
+  return Math.floor(month / 3) + 1;
+}

@@ -15,6 +15,7 @@
     role="status"
     :aria-live="loading ? 'polite' : 'off'"
     :aria-label="loading ? loadingText : description || '空状态'"
+    :data-cy="loading ? 'empty-state-loading' : 'empty-state'"
   >
     <el-empty v-if="!loading" :image="image" :image-size="imageSize" :description="description">
       <template #image>
@@ -27,7 +28,7 @@
 
       <template #description>
         <slot name="description">
-          <div class="empty-description">{{ description }}</div>
+          <div class="empty-description" data-cy="empty-state-description">{{ description }}</div>
         </slot>
       </template>
 
@@ -38,6 +39,7 @@
             :type="actionType"
             :icon="actionIcon"
             :aria-label="actionText"
+            data-cy="empty-state-action-btn"
             @click="handleAction"
           >
             {{ actionText }}
@@ -46,11 +48,11 @@
       </template>
     </el-empty>
 
-    <div v-if="loading" class="empty-loading" role="status" aria-live="polite">
+    <div v-if="loading" class="empty-loading" role="status" aria-live="polite" data-cy="empty-state-loading-container">
       <el-icon class="is-loading" :size="40" aria-hidden="true">
         <Loading />
       </el-icon>
-      <div class="loading-text">{{ loadingText }}</div>
+      <div class="loading-text" data-cy="empty-state-loading-text">{{ loadingText }}</div>
     </div>
   </div>
 </template>

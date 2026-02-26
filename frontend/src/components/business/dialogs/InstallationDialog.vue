@@ -24,12 +24,12 @@
     @open="handleOpen"
   >
     <template #form>
-      <el-form-item label="设备名称" prop="deviceId">
-        <el-input v-model="deviceName" disabled />
+      <el-form-item label="设备名称" prop="deviceId" data-cy="installation-device-form-item">
+        <el-input v-model="deviceName" disabled data-cy="installation-device-input" />
       </el-form-item>
 
       <!-- 使用统一的行政区划级联选择器 -->
-      <el-form-item label="安装地址" prop="installationDivision">
+      <el-form-item label="安装地址" prop="installationDivision" data-cy="installation-division-form-item">
         <AdministrativeDivisionCascader
           v-model="selectedDivision"
           placeholder="请选择省/市/区"
@@ -39,20 +39,22 @@
           :show-recent="true"
           recent-key="installation_division_recent"
           @change="handleDivisionChange"
+          data-cy="installation-division-cascader"
         />
       </el-form-item>
 
-      <el-form-item label="详细地址" prop="location">
+      <el-form-item label="详细地址" prop="location" data-cy="installation-location-form-item">
         <el-input
           v-model="formData.location"
           placeholder="请输入详细安装地址（街道、门牌号等）"
           :maxlength="200"
           show-word-limit
+          data-cy="installation-location-input"
         />
       </el-form-item>
 
-      <el-form-item label="安装状态" prop="status">
-        <el-select v-model="formData.status" placeholder="请选择安装状态" style="width: 100%">
+      <el-form-item label="安装状态" prop="status" data-cy="installation-status-form-item">
+        <el-select v-model="formData.status" placeholder="请选择安装状态" style="width: 100%" data-cy="installation-status-select">
           <el-option label="待安装" value="pending" />
           <el-option label="安装中" value="installing" />
           <el-option label="已完成" value="completed" />
@@ -60,11 +62,11 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="安装人员" prop="installer">
-        <el-input v-model="formData.installer" placeholder="请输入安装人员姓名" :maxlength="50" />
+      <el-form-item label="安装人员" prop="installer" data-cy="installation-installer-form-item">
+        <el-input v-model="formData.installer" placeholder="请输入安装人员姓名" :maxlength="50" data-cy="installation-installer-input" />
       </el-form-item>
 
-      <el-form-item label="安装日期" prop="installDate">
+      <el-form-item label="安装日期" prop="installDate" data-cy="installation-date-form-item">
         <el-date-picker
           v-model="formData.installDate"
           type="date"
@@ -72,35 +74,38 @@
           format="YYYY-MM-DD"
           value-format="YYYY-MM-DD"
           style="width: 100%"
+          data-cy="installation-date-picker"
         />
       </el-form-item>
 
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="开始时间" prop="startTime">
+          <el-form-item label="开始时间" prop="startTime" data-cy="installation-start-time-form-item">
             <el-time-picker
               v-model="formData.startTime"
               placeholder="开始时间"
               format="HH:mm:ss"
               value-format="HH:mm:ss"
               style="width: 100%"
+              data-cy="installation-start-time-picker"
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="结束时间" prop="endTime">
+          <el-form-item label="结束时间" prop="endTime" data-cy="installation-end-time-form-item">
             <el-time-picker
               v-model="formData.endTime"
               placeholder="结束时间"
               format="HH:mm:ss"
               value-format="HH:mm:ss"
               style="width: 100%"
+              data-cy="installation-end-time-picker"
             />
           </el-form-item>
         </el-col>
       </el-row>
 
-      <el-form-item label="备注" prop="remark">
+      <el-form-item label="备注" prop="remark" data-cy="installation-remark-form-item">
         <el-input
           v-model="formData.remark"
           type="textarea"
@@ -108,6 +113,7 @@
           :rows="3"
           :maxlength="500"
           show-word-limit
+          data-cy="installation-remark-input"
         />
       </el-form-item>
     </template>

@@ -114,6 +114,7 @@ declare module 'vue' {
     ElUpload: typeof import('element-plus/es')['ElUpload']
     EnhancedAlertConfigPage: typeof import('./views/inventory-management/alert-config/EnhancedAlertConfigPage.vue')['default']
     ErrorBoundary: typeof import('./components/base/ErrorBoundary.vue')['default']
+    ExcelExport: typeof import('./components/ExcelExport/index.vue')['default']
     FilterBarFooter: typeof import('./components/base/UnifiedFilterBar/FilterBarFooter.vue')['default']
     FilterBarForm: typeof import('./components/base/UnifiedFilterBar/FilterBarForm.vue')['default']
     FilterBarHeader: typeof import('./components/base/UnifiedFilterBar/FilterBarHeader.vue')['default']

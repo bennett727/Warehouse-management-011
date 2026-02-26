@@ -45,7 +45,7 @@
       </template>
 
       <div class="tabs-container">
-        <el-tabs v-model="activeTab" @tab-change="handleTabChange" class="custom-tabs">
+        <el-tabs v-model="activeTab" @tab-change="handleTabChange" class="custom-tabs" data-cy="inventory-tabs">
           <el-tab-pane name="summary">
             <template #label>
               <div class="tab-label">

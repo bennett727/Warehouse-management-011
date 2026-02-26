@@ -13,6 +13,7 @@
     :label-position="labelPosition"
     :label-width="labelWidth"
     class="unified-device-form"
+    data-cy="unified-device-form"
   >
     <div v-if="showHeaderTip" class="form-header-tip">
       <el-icon class="tip-icon"><InfoFilled /></el-icon>
@@ -42,7 +43,7 @@
               :md="field.md || 12"
               :lg="field.lg || 8"
             >
-              <el-form-item :label="field.label" :prop="field.key" :class="{ 'form-item-highlight': field.highlight }">
+              <el-form-item :label="field.label" :prop="field.key" :class="{ 'form-item-highlight': field.highlight }" :data-cy="`unified-device-form-item-${field.key}`">
                 <template v-if="field.key === 'deviceType'">
                   <div class="device-type-select-wrapper">
                     <DeviceTypeSelect
@@ -80,6 +81,7 @@
                     :clearable="field.clearable !== false"
                     :filterable="field.filterable"
                     style="width: 100%"
+                    :data-cy="`device-form-select-${field.key}`"
                   >
                     <el-option
                       v-for="option in field.options"
@@ -110,6 +112,7 @@
                     :precision="field.precision"
                     :step="field.step"
                     style="width: 100%"
+                    :data-cy="`device-form-number-${field.key}`"
                   />
                 </template>
                 <template v-else-if="field.type === 'textarea'">
@@ -122,6 +125,7 @@
                     :rows="field.rows || 3"
                     show-word-limit
                     resize="none"
+                    :data-cy="`device-form-textarea-${field.key}`"
                   />
                 </template>
                 <template v-else>
@@ -132,6 +136,7 @@
                     :maxlength="field.maxlength"
                     :show-word-limit="field.showWordLimit"
                     :type="field.inputType || 'text'"
+                    :data-cy="`device-form-input-${field.key}`"
                   >
                     <template v-if="field.prefixIcon" #prefix>
                       <el-icon><component :is="field.prefixIcon" /></el-icon>

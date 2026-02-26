@@ -223,8 +223,7 @@ class Logger {
         ...logEntry,
         timestamp: Date.now(),
         isoTimestamp: logEntry.timestamp,
-      }).catch((e) => {
-        console.error('Failed to save logs to IndexedDB:', e);
+      }).catch(() => {
         this._logToLocalStorage(logEntry);
       });
     } else {
@@ -247,7 +246,7 @@ class Logger {
 
       localStorage.setItem(LogConfig.storageKey, JSON.stringify(logs));
     } catch (e) {
-      console.error('Failed to save logs to localStorage:', e);
+      // 静默处理localStorage保存失败
     }
   }
 
@@ -260,7 +259,6 @@ class Logger {
       const logs = localStorage.getItem(LogConfig.storageKey);
       return logs ? JSON.parse(logs) : [];
     } catch (e) {
-      console.error('Failed to retrieve logs from storage:', e);
       return [];
     }
   }
@@ -279,7 +277,7 @@ class Logger {
         body: JSON.stringify(logEntry),
       });
     } catch (e) {
-      console.error('Failed to send logs to remote:', e);
+      // 静默处理远程日志发送失败
     }
   }
 }
@@ -315,7 +313,6 @@ export const getAllLogs = async (options = {}) => {
     const logs = localStorage.getItem(LogConfig.storageKey);
     return logs ? JSON.parse(logs) : [];
   } catch (e) {
-    console.error('Failed to retrieve logs:', e);
     return [];
   }
 };
@@ -332,7 +329,6 @@ export const clearLogs = async () => {
     localStorage.removeItem(LogConfig.storageKey);
     return true;
   } catch (e) {
-    console.error('Failed to clear logs:', e);
     return false;
   }
 };

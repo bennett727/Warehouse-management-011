@@ -25,8 +25,8 @@
       <el-icon :size="48" color="#F56C6C"><WarningFilled /></el-icon>
       <p>{{ error }}</p>
       <div class="error-actions">
-        <el-button type="primary" @click="initMap">重新加载</el-button>
-        <el-button @click="enableFallback">使用列表视图</el-button>
+        <el-button type="primary" @click="initMap" data-cy="map-reload-btn">重新加载</el-button>
+        <el-button @click="enableFallback" data-cy="map-fallback-btn">使用列表视图</el-button>
       </div>
     </div>
   </div>

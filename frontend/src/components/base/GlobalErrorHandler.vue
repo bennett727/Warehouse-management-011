@@ -14,6 +14,7 @@
       :close-on-click-modal="false"
       :show-close="true"
       @close="handleClose"
+      data-cy="global-error-handler-dialog"
     >
       <div class="error-content">
         <el-icon class="error-icon" :size="48" :color="errorIconColor">
@@ -28,9 +29,9 @@
       </div>
       <template #footer>
         <div class="dialog-footer">
-          <el-button v-if="showRetry" @click="handleRetry">重试</el-button>
-          <el-button v-if="showReload" type="warning" @click="handleReload">刷新页面</el-button>
-          <el-button type="primary" @click="handleClose">关闭</el-button>
+          <el-button v-if="showRetry" @click="handleRetry" data-cy="global-error-handler-retry-btn">重试</el-button>
+          <el-button v-if="showReload" type="warning" @click="handleReload" data-cy="global-error-handler-reload-btn">刷新页面</el-button>
+          <el-button type="primary" @click="handleClose" data-cy="global-error-handler-close-btn">关闭</el-button>
         </div>
       </template>
     </el-dialog>

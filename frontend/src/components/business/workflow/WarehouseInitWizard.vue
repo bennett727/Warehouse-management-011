@@ -25,6 +25,7 @@
                     link
                     size="small"
                     @click="removeZone(form, index)"
+                    data-cy="warehouse-init-zone-delete-btn"
                   >
                     <el-icon><Delete /></el-icon>
                     删除
@@ -35,7 +36,7 @@
               <el-row :gutter="16">
                 <el-col :span="8">
                   <el-form-item :label="`功能区名称`" required>
-                    <el-input v-model="zone.name" placeholder="如：收货区" maxlength="20" />
+                    <el-input v-model="zone.name" placeholder="如：收货区" maxlength="20" data-cy="warehouse-init-zone-name-input" />
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -45,12 +46,13 @@
                       placeholder="如：RECEIVE"
                       maxlength="10"
                       @blur="formatZoneCode(zone)"
+                      data-cy="warehouse-init-zone-code-input"
                     />
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item :label="`功能区类型`" required>
-                    <el-select v-model="zone.type" placeholder="选择类型" style="width: 100%">
+                    <el-select v-model="zone.type" placeholder="选择类型" style="width: 100%" data-cy="warehouse-init-zone-type-select">
                       <el-option v-for="type in zoneTypes" :key="type.value" :label="type.label" :value="type.value" />
                     </el-select>
                   </el-form-item>
@@ -78,13 +80,14 @@
                   placeholder="描述该区域的主要功能"
                   maxlength="200"
                   show-word-limit
+                  data-cy="warehouse-init-zone-desc-input"
                 />
               </el-form-item>
             </el-card>
           </div>
         </div>
 
-        <el-button type="primary" plain class="add-zone-btn" @click="addZone(form)">
+        <el-button type="primary" plain class="add-zone-btn" @click="addZone(form)" data-cy="warehouse-init-add-zone-btn">
           <el-icon><Plus /></el-icon>
           添加功能区
         </el-button>
@@ -97,6 +100,7 @@
             :key="template.name"
             size="small"
             @click="applyZoneTemplate(form, template)"
+            :data-cy="`warehouse-init-template-${template.name}-btn`"
           >
             {{ template.name }}
           </el-button>
@@ -193,7 +197,7 @@
 
         <div class="summary-section">
           <div class="summary-title">功能区规划（{{ form.zones.length }}个）</div>
-          <el-table :data="form.zones" size="small" border>
+          <el-table :data="form.zones" size="small" border data-cy="warehouse-init-zones-table">
             <el-table-column prop="name" label="名称" width="120" />
             <el-table-column prop="code" label="编码" width="100" />
             <el-table-column prop="type" label="类型" width="100">
@@ -222,16 +226,16 @@
 </template>
 
 <script setup>
-import { Plus, Delete } from '@element-plus/icons-vue';
+import { Delete, Plus } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
-import { ref, computed, watch } from 'vue';
+import { computed, ref } from 'vue';
 
 import { batchCreateBins } from '@/api/inventory/bin';
 import { addWarehouse as createWarehouse } from '@/api/inventory/warehouse';
 import { createWarehouseZone as createZone } from '@/api/warehouse/zone';
 import WorkflowGuide from '@/components/business/workflow/WorkflowGuide.vue';
 import { createLogger } from '@/utils/logger';
-import { warehouseRules, commonRules } from '@/utils/validation/formValidation';
+import { commonRules, warehouseRules } from '@/utils/validation/formValidation';
 
 const logger = createLogger('WarehouseInitWizard');
 

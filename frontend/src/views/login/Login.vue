@@ -32,7 +32,7 @@
       </div>
 
       <OptimizedForm ref="loginFormRef" v-model="loginForm" :rules="loginRules" data-cy="login-form">
-        <el-form-item prop="username" label="用户名">
+        <el-form-item prop="username" label="用户名" data-cy="login-username-form-item">
           <el-input
             v-model="loginForm.username"
             placeholder="请输入用户名"
@@ -48,7 +48,7 @@
           </el-input>
         </el-form-item>
 
-        <el-form-item prop="password" label="密码">
+        <el-form-item prop="password" label="密码" data-cy="login-password-form-item">
           <el-input
             v-model="loginForm.password"
             type="password"
@@ -196,9 +196,20 @@ const handleLogin = async () => {
       // 确保用户信息已正确存储到 localStorage
       await new Promise((resolve) => setTimeout(resolve, 100));
 
+      // 验证token和用户信息是否正确存储
+      const storedToken = localStorage.getItem('access_token');
+      const storedUserInfo = localStorage.getItem('user_info');
+      logger.info('存储的token:', storedToken ? '存在' : '不存在');
+      logger.info('存储的userInfo:', storedUserInfo ? '存在' : '不存在');
+
       logger.info('开始路由跳转...');
+      
+      // 获取重定向路径（如果有）
+      const redirectPath = router.currentRoute.value.query.redirect || '/dashboard';
+      logger.info('重定向路径:', redirectPath);
+      
       router
-        .push('/dashboard')
+        .push(redirectPath)
         .then(() => {
           logger.info('跳转成功');
           logger.info('当前路由:', router.currentRoute.value);

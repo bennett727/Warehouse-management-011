@@ -21,6 +21,7 @@
       :inline-message="inlineMessage"
       :status-icon="statusIcon"
       @validate="handleValidate"
+      data-cy="optimized-form"
     >
       <slot></slot>
     </el-form>

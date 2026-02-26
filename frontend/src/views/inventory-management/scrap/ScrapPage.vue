@@ -11,8 +11,8 @@
 <template>
   <PageLayout title="报废记录查询" description="查看设备报废记录（由出库流程自动生成）">
     <template #headerActions>
-      <el-button type="info" :icon="QuestionFilled" @click="handleShowOperationGuide">操作指引</el-button>
-      <el-button type="success" :icon="Download" @click="handleExport" :loading="exportLoading">导出数据</el-button>
+      <el-button type="info" :icon="QuestionFilled" @click="handleShowOperationGuide" data-cy="scrap-guide-btn">操作指引</el-button>
+      <el-button type="success" :icon="Download" @click="handleExport" :loading="exportLoading" data-cy="scrap-export-btn">导出数据</el-button>
     </template>
 
     <el-alert title="业务流程说明" type="info" :closable="false" show-icon style="margin-bottom: 16px">
@@ -89,36 +89,36 @@
       height="500px"
       @page-change="handlePageChange"
     >
-      <el-table-column type="index" label="序号" width="60" />
-      <el-table-column prop="scrapNo" label="报废单号" width="150" />
-      <el-table-column prop="sourceOutboundNo" label="来源出库单" width="140">
+      <el-table-column type="index" label="序号" width="60" data-cy="scrap-index-column" />
+      <el-table-column prop="scrapNo" label="报废单号" width="150" data-cy="scrap-no-column" />
+      <el-table-column prop="sourceOutboundNo" label="来源出库单" width="140" data-cy="scrap-source-outbound-column">
         <template #default="{ row }">
-          <span v-if="row.sourceOutboundNo" class="source-link" @click="handleViewOutbound(row)">
+          <span v-if="row.sourceOutboundNo" class="source-link" @click="handleViewOutbound(row)" :data-cy="`scrap-source-outbound-link-${row.id}`">
             {{ row.sourceOutboundNo }}
           </span>
-          <el-tag v-else type="info" size="small">手动创建</el-tag>
+          <el-tag v-else type="info" size="small" :data-cy="`scrap-manual-tag-${row.id}`">手动创建</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="deviceCode" label="设备编号" width="140" />
-      <el-table-column prop="deviceName" label="设备名称" min-width="150" show-overflow-tooltip />
-      <el-table-column prop="deviceModel" label="规格型号" width="120" />
-      <el-table-column prop="scrapReason" label="报废原因" min-width="150" show-overflow-tooltip />
-      <el-table-column prop="status" label="状态" width="100" align="center">
+      <el-table-column prop="deviceCode" label="设备编号" width="140" data-cy="scrap-device-code-column" />
+      <el-table-column prop="deviceName" label="设备名称" min-width="150" show-overflow-tooltip data-cy="scrap-device-name-column" />
+      <el-table-column prop="deviceModel" label="规格型号" width="120" data-cy="scrap-device-model-column" />
+      <el-table-column prop="scrapReason" label="报废原因" min-width="150" show-overflow-tooltip data-cy="scrap-reason-column" />
+      <el-table-column prop="status" label="状态" width="100" align="center" data-cy="scrap-status-column">
         <template #default="{ row }">
-          <el-tag :type="getStatusType(row.status)" size="small">
+          <el-tag :type="getStatusType(row.status)" size="small" :data-cy="`scrap-status-tag-${row.id}`">
             {{ getStatusText(row.status) }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建时间" width="160" />
-      <el-table-column label="操作" width="120" fixed="right">
+      <el-table-column prop="createTime" label="创建时间" width="160" data-cy="scrap-create-time-column" />
+      <el-table-column label="操作" width="120" fixed="right" data-cy="scrap-actions-column">
         <template #default="{ row }">
-          <el-button link type="primary" :icon="View" @click="handleView(row)">查看</el-button>
+          <el-button link type="primary" :icon="View" @click="handleView(row)" data-cy="scrap-view-btn">查看</el-button>
         </template>
       </el-table-column>
     </DataTable>
 
-    <el-dialog v-model="detailDialogVisible" title="报废记录详情" width="800px" destroy-on-close>
+    <el-dialog v-model="detailDialogVisible" title="报废记录详情" width="800px" destroy-on-close data-cy="scrap-detail-dialog">
       <el-descriptions :column="2" border>
         <el-descriptions-item label="报废单号">{{ currentRow?.scrapNo }}</el-descriptions-item>
         <el-descriptions-item label="来源出库单">{{ currentRow?.sourceOutboundNo || '出库生成' }}</el-descriptions-item>
@@ -138,7 +138,7 @@
         <el-descriptions-item label="备注" :span="2">{{ currentRow?.remark || '-' }}</el-descriptions-item>
       </el-descriptions>
       <template #footer>
-        <el-button @click="detailDialogVisible = false">关闭</el-button>
+        <el-button @click="detailDialogVisible = false" data-cy="scrap-detail-close-btn">关闭</el-button>
       </template>
     </el-dialog>
 

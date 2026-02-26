@@ -12,8 +12,8 @@
 <template>
   <PageLayout title="安装记录查询" description="查看设备安装记录（由出库流程自动生成）">
     <template #headerActions>
-      <el-button type="info" :icon="QuestionFilled" @click="handleShowOperationGuide">操作指引</el-button>
-      <el-button type="success" :icon="Download" @click="handleExport" :loading="exportLoading">导出数据</el-button>
+      <el-button type="info" :icon="QuestionFilled" @click="handleShowOperationGuide" data-cy="installation-guide-btn">操作指引</el-button>
+      <el-button type="success" :icon="Download" @click="handleExport" :loading="exportLoading" data-cy="installation-export-btn">导出数据</el-button>
     </template>
 
     <el-alert title="业务流程说明" type="info" :closable="false" show-icon style="margin-bottom: 16px">
@@ -49,35 +49,35 @@
       height="500px"
       @page-change="handlePageChange"
     >
-      <el-table-column type="index" label="序号" width="60" align="center" />
-      <el-table-column prop="installationNo" label="安装单号" width="180" />
-      <el-table-column prop="sourceOutboundNo" label="来源出库单" width="140">
+      <el-table-column type="index" label="序号" width="60" align="center" data-cy="installation-index-column" />
+      <el-table-column prop="installationNo" label="安装单号" width="180" data-cy="installation-no-column" />
+      <el-table-column prop="sourceOutboundNo" label="来源出库单" width="140" data-cy="installation-source-outbound-column">
         <template #default="{ row }">
-          <span v-if="row.sourceOutboundNo" class="source-link" @click="handleViewOutbound(row)">
+          <span v-if="row.sourceOutboundNo" class="source-link" @click="handleViewOutbound(row)" :data-cy="`installation-source-outbound-link-${row.id}`">
             {{ row.sourceOutboundNo }}
           </span>
-          <el-tag v-else type="info" size="small">手动创建</el-tag>
+          <el-tag v-else type="info" size="small" :data-cy="`installation-manual-tag-${row.id}`">手动创建</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="deviceCode" label="设备编号" width="150" />
-      <el-table-column prop="deviceName" label="设备名称" min-width="180" />
-      <el-table-column prop="installationDate" label="安装日期" width="120" />
-      <el-table-column prop="installer" label="安装人员" width="120" />
-      <el-table-column prop="location" label="安装位置" width="150" />
-      <el-table-column prop="status" label="状态" width="100">
+      <el-table-column prop="deviceCode" label="设备编号" width="150" data-cy="installation-device-code-column" />
+      <el-table-column prop="deviceName" label="设备名称" min-width="180" data-cy="installation-device-name-column" />
+      <el-table-column prop="installationDate" label="安装日期" width="120" data-cy="installation-date-column" />
+      <el-table-column prop="installer" label="安装人员" width="120" data-cy="installation-installer-column" />
+      <el-table-column prop="location" label="安装位置" width="150" data-cy="installation-location-column" />
+      <el-table-column prop="status" label="状态" width="100" data-cy="installation-status-column">
         <template #default="{ row }">
-          <el-tag :type="getStatusType(row.status)">{{ getStatusText(row.status) }}</el-tag>
+          <el-tag :type="getStatusType(row.status)" :data-cy="`installation-status-tag-${row.id}`">{{ getStatusText(row.status) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="120" fixed="right">
+      <el-table-column label="操作" width="120" fixed="right" data-cy="installation-actions-column">
         <template #default="{ row }">
-          <el-button link type="primary" :icon="View" @click="handleView(row)">查看</el-button>
+          <el-button link type="primary" :icon="View" @click="handleView(row)" data-cy="installation-view-btn">查看</el-button>
         </template>
       </el-table-column>
     </DataTable>
 
     <!-- 安装记录详情对话框 -->
-    <el-dialog v-model="detailDialogVisible" title="安装记录详情" width="900px" destroy-on-close>
+    <el-dialog v-model="detailDialogVisible" title="安装记录详情" width="900px" destroy-on-close data-cy="installation-detail-dialog">
       <el-descriptions :column="3" border>
         <el-descriptions-item label="安装单号" :span="1">{{ currentRow?.installationNo }}</el-descriptions-item>
         <el-descriptions-item label="来源" :span="1">
@@ -128,15 +128,15 @@
       </div>
 
       <template #footer>
-        <el-button @click="detailDialogVisible = false">关闭</el-button>
-        <el-button type="primary" @click="handlePrint" v-if="currentRow?.status === 'completed'">
+        <el-button @click="detailDialogVisible = false" data-cy="installation-detail-close-btn">关闭</el-button>
+        <el-button type="primary" @click="handlePrint" v-if="currentRow?.status === 'completed'" data-cy="installation-print-btn">
           打印安装单
         </el-button>
       </template>
     </el-dialog>
 
     <!-- 操作指引对话框 -->
-    <el-dialog v-model="guideDialogVisible" title="操作指引" width="900px" :close-on-click-modal="false">
+    <el-dialog v-model="guideDialogVisible" title="操作指引" width="900px" :close-on-click-modal="false" data-cy="installation-guide-dialog">
       <div class="operation-guide">
         <el-steps :active="currentStep" finish-status="success" align-center>
           <el-step title="创建设备出库" />
@@ -192,9 +192,9 @@
           </div>
         </div>
         <div class="guide-actions">
-          <el-button v-if="currentStep > 0" @click="currentStep--">上一步</el-button>
-          <el-button v-if="currentStep < 3" type="primary" @click="currentStep++">下一步</el-button>
-          <el-button v-else type="primary" @click="handleGuideFinish">完成</el-button>
+          <el-button v-if="currentStep > 0" @click="currentStep--" data-cy="installation-guide-prev-btn">上一步</el-button>
+          <el-button v-if="currentStep < 3" type="primary" @click="currentStep++" data-cy="installation-guide-next-btn">下一步</el-button>
+          <el-button v-else type="primary" @click="handleGuideFinish" data-cy="installation-guide-finish-btn">完成</el-button>
         </div>
       </div>
     </el-dialog>

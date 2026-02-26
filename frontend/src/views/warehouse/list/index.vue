@@ -4,7 +4,7 @@
       <el-button data-cy="warehouse-add-btn" type="primary" :icon="Plus" @click="handleAdd" :loading="addLoading">
         添加仓库
       </el-button>
-      <el-button type="success" :icon="MagicStick" @click="wizardVisible = true"> 快速初始化 </el-button>
+      <el-button type="success" :icon="MagicStick" @click="wizardVisible = true" data-cy="warehouse-wizard-btn"> 快速初始化 </el-button>
       <el-button data-cy="warehouse-import-btn" :icon="Upload" @click="handleImport"> 导入 </el-button>
       <el-button data-cy="warehouse-export-btn" :icon="Download" @click="handleExport"> 导出 </el-button>
     </template>
@@ -99,7 +99,7 @@
               </el-tag>
             </div>
             <el-dropdown @command="(cmd) => handleCommand(cmd, warehouse)">
-              <el-button link>
+              <el-button link data-cy="warehouse-more-btn">
                 <el-icon><More /></el-icon>
               </el-button>
               <template #dropdown>
@@ -181,13 +181,13 @@
           </div>
 
           <div class="warehouse-actions">
-            <el-button type="primary" link @click="handleViewDetail(warehouse)">
+            <el-button type="primary" link @click="handleViewDetail(warehouse)" data-cy="warehouse-view-detail-btn">
               <el-icon><View /></el-icon>查看详情
             </el-button>
-            <el-button type="success" link @click="handleManageZones(warehouse)">
+            <el-button type="success" link @click="handleManageZones(warehouse)" data-cy="warehouse-manage-zones-btn">
               <el-icon><OfficeBuilding /></el-icon>功能区
             </el-button>
-            <el-button type="warning" link @click="handleManageBins(warehouse)">
+            <el-button type="warning" link @click="handleManageBins(warehouse)" data-cy="warehouse-manage-bins-btn">
               <el-icon><Grid /></el-icon>货位
             </el-button>
           </div>
@@ -207,6 +207,7 @@
           layout="total, sizes, prev, pager, next, jumper"
           @size-change="handleSizeChange"
           @current-change="handlePageChange"
+          data-cy="warehouse-list-pagination"
         />
       </div>
     </el-card>
@@ -224,12 +225,12 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="仓库编码" prop="warehouseCode">
-              <el-input v-model="form.warehouseCode" placeholder="请输入仓库编码" clearable :disabled="isEdit" />
+              <el-input v-model="form.warehouseCode" placeholder="请输入仓库编码" clearable :disabled="isEdit" data-cy="warehouse-code-input" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="仓库名称" prop="warehouseName">
-              <el-input v-model="form.warehouseName" placeholder="请输入仓库名称" clearable />
+              <el-input v-model="form.warehouseName" placeholder="请输入仓库名称" clearable data-cy="warehouse-name-input" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -237,7 +238,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="仓库类型" prop="warehouseType">
-              <el-select v-model="form.warehouseType" placeholder="请选择仓库类型" style="width: 100%">
+              <el-select v-model="form.warehouseType" placeholder="请选择仓库类型" style="width: 100%" data-cy="warehouse-type-select">
                 <el-option label="主仓库" :value="1" />
                 <el-option label="分仓库" :value="2" />
                 <el-option label="临时仓库" :value="3" />
@@ -318,12 +319,12 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="联系人" prop="contactPerson">
-              <el-input v-model="form.contactPerson" placeholder="请输入联系人" clearable />
+              <el-input v-model="form.contactPerson" placeholder="请输入联系人" clearable data-cy="warehouse-contact-person-input" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="联系电话" prop="contactPhone">
-              <el-input v-model="form.contactPhone" placeholder="请输入联系电话" clearable />
+              <el-input v-model="form.contactPhone" placeholder="请输入联系电话" clearable data-cy="warehouse-contact-phone-input" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -345,13 +346,13 @@
       </el-form>
 
       <template #footer>
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleSubmit" :loading="submitLoading">确定</el-button>
+        <el-button @click="dialogVisible = false" data-cy="warehouse-dialog-cancel-btn">取消</el-button>
+        <el-button type="primary" @click="handleSubmit" :loading="submitLoading" data-cy="warehouse-dialog-submit-btn">确定</el-button>
       </template>
     </el-dialog>
 
     <!-- 地址管理对话框 -->
-    <el-dialog v-model="addressDialogVisible" title="地址管理" width="600px" destroy-on-close>
+    <el-dialog v-model="addressDialogVisible" title="地址管理" width="600px" destroy-on-close data-cy="warehouse-address-dialog">
       <div v-if="selectedWarehouse" class="address-info">
         <el-descriptions :column="1" border>
           <el-descriptions-item label="当前地址">
@@ -390,8 +391,8 @@
       </div>
 
       <template #footer>
-        <el-button @click="addressDialogVisible = false">关闭</el-button>
-        <el-button type="primary" @click="handleEditAddress">编辑地址</el-button>
+        <el-button @click="addressDialogVisible = false" data-cy="warehouse-address-dialog-close-btn">关闭</el-button>
+        <el-button type="primary" @click="handleEditAddress" data-cy="warehouse-address-dialog-edit-btn">编辑地址</el-button>
       </template>
     </el-dialog>
 

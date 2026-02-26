@@ -18,7 +18,9 @@
     data-cy="inbound-management-page"
   >
     <template #headerActions>
-      <el-button type="info" :icon="QuestionFilled" @click="handleShowOperationGuide">操作指引</el-button>
+      <el-button type="info" :icon="QuestionFilled" @click="handleShowOperationGuide" data-cy="inbound-guide-btn"
+        >操作指引</el-button
+      >
       <el-button type="primary" :icon="Plus" @click="handleCreate" data-cy="inbound-create-btn">新建入库单</el-button>
       <el-button
         type="success"
@@ -31,10 +33,17 @@
     </template>
 
     <!-- 批量操作工具栏 -->
-    <el-card v-if="selectedRows.length > 0" class="batch-operation-bar" shadow="never">
+    <el-card
+      v-if="selectedRows.length > 0"
+      class="batch-operation-bar"
+      shadow="never"
+      data-cy="inbound-batch-operation-bar"
+    >
       <div class="batch-info">
-        <el-checkbox v-model="selectAll" @change="handleSelectAllChange">全选</el-checkbox>
-        <span class="selected-count"
+        <el-checkbox v-model="selectAll" @change="handleSelectAllChange" data-cy="inbound-select-all-checkbox"
+          >全选</el-checkbox
+        >
+        <span class="selected-count" data-cy="inbound-selected-count"
           >已选择 <strong>{{ selectedRows.length }}</strong> 项</span
         >
       </div>
@@ -46,10 +55,13 @@
           :icon="op.icon"
           size="small"
           @click="handleBatchOperation(op.key)"
+          :data-cy="`inbound-batch-${op.key}-btn`"
         >
           {{ op.label }}
         </el-button>
-        <el-button type="info" size="small" @click="clearSelection">取消选择</el-button>
+        <el-button type="info" size="small" @click="clearSelection" data-cy="inbound-clear-selection-btn"
+          >取消选择</el-button
+        >
       </div>
     </el-card>
 
@@ -87,33 +99,33 @@
       height="500px"
       @page-change="handlePageChange"
     >
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column type="index" label="序号" width="60" align="center" />
-      <el-table-column prop="orderNo" label="入库单号" width="180" sortable />
-      <el-table-column prop="inboundType" label="入库类型" width="100">
+      <el-table-column type="selection" width="55" align="center" data-cy="inbound-selection-column" />
+      <el-table-column type="index" label="序号" width="60" align="center" data-cy="inbound-index-column" />
+      <el-table-column prop="orderNo" label="入库单号" width="180" sortable data-cy="inbound-order-no-column" />
+      <el-table-column prop="inboundType" label="入库类型" width="100" data-cy="inbound-type-column">
         <template #default="{ row }">
-          <el-tag :type="getInboundTypeType(row.inboundType)">
+          <el-tag :type="getInboundTypeType(row.inboundType)" :data-cy="`inbound-type-tag-${row.id}`">
             {{ getInboundTypeText(row.inboundType) }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="orderDate" label="入库日期" width="120" sortable />
-      <el-table-column prop="supplier" label="供应商" width="150" show-overflow-tooltip />
-      <el-table-column prop="warehouseName" label="入库仓库" width="120" />
-      <el-table-column prop="operatorName" label="经办人" width="100" />
-      <el-table-column prop="totalQuantity" label="总数量" width="80" align="center" />
-      <el-table-column prop="totalAmount" label="总金额" width="120" align="right">
+      <el-table-column prop="orderDate" label="入库日期" width="120" sortable data-cy="inbound-date-column" />
+      <el-table-column prop="supplier" label="供应商" width="150" show-overflow-tooltip data-cy="inbound-supplier-column" />
+      <el-table-column prop="warehouseName" label="入库仓库" width="120" data-cy="inbound-warehouse-column" />
+      <el-table-column prop="operatorName" label="经办人" width="100" data-cy="inbound-operator-column" />
+      <el-table-column prop="totalQuantity" label="总数量" width="80" align="center" data-cy="inbound-total-qty-column" />
+      <el-table-column prop="totalAmount" label="总金额" width="120" align="right" data-cy="inbound-total-amount-column">
         <template #default="{ row }">
           {{ row.totalAmount ? '¥' + row.totalAmount.toFixed(2) : '-' }}
         </template>
       </el-table-column>
-      <el-table-column prop="status" label="状态" width="100">
+      <el-table-column prop="status" label="状态" width="100" data-cy="inbound-status-column">
         <template #default="{ row }">
-          <el-tag :type="getInboundStatusType(row.status)">{{ getInboundStatusText(row.status) }}</el-tag>
+          <el-tag :type="getInboundStatusType(row.status)" :data-cy="`inbound-status-tag-${row.id}`">{{ getInboundStatusText(row.status) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="remark" label="备注" min-width="150" show-overflow-tooltip />
-      <el-table-column label="操作" width="320" fixed="right">
+      <el-table-column prop="remark" label="备注" min-width="150" show-overflow-tooltip data-cy="inbound-remark-column" />
+      <el-table-column label="操作" width="320" fixed="right" data-cy="inbound-actions-column">
         <template #default="{ row }">
           <!-- 查看按钮 - 所有状态都显示 -->
           <el-button link type="primary" :icon="View" @click="handleView(row)" data-cy="inbound-view-btn"
@@ -229,7 +241,7 @@
     />
 
     <!-- 入库单详情对话框 - 增加流程可视化 -->
-    <el-dialog v-model="detailDialogVisible" title="入库单详情" width="1000px" destroy-on-close>
+    <el-dialog v-model="detailDialogVisible" title="入库单详情" width="1000px" destroy-on-close data-cy="inbound-detail-dialog">
       <!-- 流程进度展示 -->
       <div class="flow-progress" v-if="currentRow">
         <el-steps :active="getFlowStep(currentRow.status)" finish-status="success" align-center>
@@ -277,31 +289,31 @@
           <el-icon><List /></el-icon>
           <span>入库明细</span>
         </div>
-        <el-table :data="orderItems" border size="small">
-          <el-table-column type="index" label="序号" width="50" align="center" />
-          <el-table-column prop="deviceCode" label="设备编号" width="120" />
-          <el-table-column prop="deviceName" label="设备名称" min-width="150" />
-          <el-table-column prop="specification" label="规格型号" width="120" />
-          <el-table-column prop="binCode" label="货位" width="100" />
-          <el-table-column prop="quantity" label="数量" width="80" align="center" />
-          <el-table-column prop="unitPrice" label="单价" width="100" align="right">
+        <el-table :data="orderItems" border size="small" data-cy="inbound-detail-table">
+          <el-table-column type="index" label="序号" width="50" align="center" data-cy="detail-index-column" />
+          <el-table-column prop="deviceCode" label="设备编号" width="120" data-cy="detail-device-code-column" />
+          <el-table-column prop="deviceName" label="设备名称" min-width="150" data-cy="detail-device-name-column" />
+          <el-table-column prop="specification" label="规格型号" width="120" data-cy="detail-spec-column" />
+          <el-table-column prop="binCode" label="货位" width="100" data-cy="detail-bin-code-column" />
+          <el-table-column prop="quantity" label="数量" width="80" align="center" data-cy="detail-quantity-column" />
+          <el-table-column prop="unitPrice" label="单价" width="100" align="right" data-cy="detail-unit-price-column">
             <template #default="{ row }">
               {{ row.unitPrice ? '¥' + row.unitPrice.toFixed(2) : '-' }}
             </template>
           </el-table-column>
-          <el-table-column prop="totalPrice" label="金额" width="100" align="right">
+          <el-table-column prop="totalPrice" label="金额" width="100" align="right" data-cy="detail-total-price-column">
             <template #default="{ row }">
               {{ row.totalPrice ? '¥' + row.totalPrice.toFixed(2) : '-' }}
             </template>
           </el-table-column>
-          <el-table-column prop="batchNo" label="批次号" width="120" />
-          <el-table-column prop="remark" label="备注" min-width="120" show-overflow-tooltip />
+          <el-table-column prop="batchNo" label="批次号" width="120" data-cy="detail-batch-no-column" />
+          <el-table-column prop="remark" label="备注" min-width="120" show-overflow-tooltip data-cy="detail-remark-column" />
         </el-table>
       </div>
 
       <template #footer>
-        <el-button @click="detailDialogVisible = false">关闭</el-button>
-        <el-button type="primary" @click="handleExportDetail" v-if="orderItems.length > 0"> 导出明细 </el-button>
+        <el-button @click="detailDialogVisible = false" data-cy="inbound-detail-close-btn">关闭</el-button>
+        <el-button type="primary" @click="handleExportDetail" v-if="orderItems.length > 0" data-cy="inbound-detail-export-btn"> 导出明细 </el-button>
         <!-- 执行入库按钮（在详情页也可执行） -->
         <el-button
           v-if="currentRow && isOperationAllowed(currentRow.status, 'execute')"
@@ -310,6 +322,7 @@
             handleExecute(currentRow);
             detailDialogVisible = false;
           "
+          data-cy="inbound-detail-execute-btn"
         >
           执行入库
         </el-button>
@@ -317,7 +330,7 @@
     </el-dialog>
 
     <!-- 审核对话框 -->
-    <el-dialog v-model="auditDialogVisible" title="审核入库单" width="500px" destroy-on-close>
+    <el-dialog v-model="auditDialogVisible" title="审核入库单" width="500px" destroy-on-close data-cy="inbound-audit-dialog">
       <el-alert
         v-if="auditForm.approved"
         title="审批通过后，入库单状态将变为'已审核'，需要手动执行入库操作"
@@ -332,7 +345,7 @@
         :closable="false"
         style="margin-bottom: 16px"
       />
-      <el-form ref="auditFormRef" :model="auditForm" label-width="100px">
+      <el-form ref="auditFormRef" :model="auditForm" label-width="100px" data-cy="inbound-audit-form">
         <el-form-item label="审核结果">
           <el-radio-group v-model="auditForm.approved">
             <el-radio :label="true">通过</el-radio>
@@ -340,17 +353,17 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="审核意见">
-          <el-input v-model="auditForm.remark" type="textarea" :rows="3" placeholder="请输入审核意见" />
+          <el-input v-model="auditForm.remark" type="textarea" :rows="3" placeholder="请输入审核意见" data-cy="inbound-audit-remark-input" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="auditDialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="auditLoading" @click="handleAuditSubmit">确定</el-button>
+        <el-button @click="auditDialogVisible = false" data-cy="inbound-audit-cancel-btn">取消</el-button>
+        <el-button type="primary" :loading="auditLoading" @click="handleAuditSubmit" data-cy="inbound-audit-confirm-btn">确定</el-button>
       </template>
     </el-dialog>
 
     <!-- 执行入库对话框（新增） -->
-    <el-dialog v-model="executeDialogVisible" title="执行入库" width="500px" destroy-on-close>
+    <el-dialog v-model="executeDialogVisible" title="执行入库" width="500px" destroy-on-close data-cy="inbound-execute-dialog">
       <el-alert
         title="执行入库后，设备将正式入库并变为'在库'状态，此操作不可撤销！"
         type="warning"
@@ -364,14 +377,14 @@
         <el-descriptions-item label="总数量">{{ currentRow.totalQuantity }}</el-descriptions-item>
         <el-descriptions-item label="入库仓库">{{ currentRow.warehouseName }}</el-descriptions-item>
       </el-descriptions>
-      <el-form :model="executeForm" label-width="100px" style="margin-top: 16px">
+      <el-form :model="executeForm" label-width="100px" style="margin-top: 16px" data-cy="inbound-execute-form">
         <el-form-item label="执行备注">
-          <el-input v-model="executeForm.remark" type="textarea" :rows="2" placeholder="请输入执行备注（可选）" />
+          <el-input v-model="executeForm.remark" type="textarea" :rows="2" placeholder="请输入执行备注（可选）" data-cy="inbound-execute-remark-input" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="executeDialogVisible = false">取消</el-button>
-        <el-button type="warning" :loading="executeLoading" @click="handleExecuteSubmit">确认执行入库</el-button>
+        <el-button @click="executeDialogVisible = false" data-cy="inbound-execute-cancel-btn">取消</el-button>
+        <el-button type="warning" :loading="executeLoading" @click="handleExecuteSubmit" data-cy="inbound-execute-confirm-btn">确认执行入库</el-button>
       </template>
     </el-dialog>
 
@@ -382,6 +395,7 @@
       width="500px"
       :close-on-click-modal="false"
       :show-close="!batchProcessing"
+      data-cy="inbound-batch-progress-dialog"
     >
       <div class="batch-progress-content">
         <el-progress :percentage="batchProgress.percentage" :status="batchProgress.status" />
@@ -410,14 +424,14 @@
         </div>
       </div>
       <template #footer>
-        <el-button v-if="!batchProcessing" @click="batchProgressVisible = false">
+        <el-button v-if="!batchProcessing" @click="batchProgressVisible = false" data-cy="inbound-batch-close-btn">
           {{ batchProgress.failed > 0 ? '关闭' : '完成' }}
         </el-button>
       </template>
     </el-dialog>
 
     <!-- 操作指引对话框 -->
-    <el-dialog v-model="guideDialogVisible" title="操作指引" width="900px" :close-on-click-modal="false">
+    <el-dialog v-model="guideDialogVisible" title="操作指引" width="900px" :close-on-click-modal="false" data-cy="inbound-guide-dialog">
       <div class="operation-guide">
         <el-steps :active="currentStep" finish-status="success" align-center>
           <el-step title="新建入库单" />
@@ -471,9 +485,9 @@
           </div>
         </div>
         <div class="guide-actions">
-          <el-button v-if="currentStep > 0" @click="currentStep--">上一步</el-button>
-          <el-button v-if="currentStep < 3" type="primary" @click="currentStep++">下一步</el-button>
-          <el-button v-else type="primary" @click="handleGuideFinish">完成</el-button>
+          <el-button v-if="currentStep > 0" @click="currentStep--" data-cy="inbound-guide-prev-btn">上一步</el-button>
+          <el-button v-if="currentStep < 3" type="primary" @click="currentStep++" data-cy="inbound-guide-next-btn">下一步</el-button>
+          <el-button v-else type="primary" @click="handleGuideFinish" data-cy="inbound-guide-finish-btn">完成</el-button>
         </div>
       </div>
     </el-dialog>

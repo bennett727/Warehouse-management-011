@@ -123,6 +123,23 @@ jobs:
           sleep 60
           curl -f http://localhost:8080/api/actuator/health || exit 1
 
+      - name: 验证测试环境
+        run: |
+          echo "🔍 开始验证测试环境..."
+          # 验证后端服务
+          curl -f http://localhost:8080/api/actuator/health || (echo "❌ 后端服务健康检查失败" && exit 1)
+          echo "✅ 后端服务健康检查通过"
+          
+          # 验证数据库连接
+          curl -f http://localhost:8080/api/actuator/info || (echo "❌ 数据库连接检查失败" && exit 1)
+          echo "✅ 数据库连接检查通过"
+          
+          # 验证API端点
+          curl -f http://localhost:8080/api/auth/login -X POST -H "Content-Type: application/json" -d '{"username":"admin","password":"123456"}' || (echo "❌ API登录端点检查失败" && exit 1)
+          echo "✅ API登录端点检查通过"
+          
+          echo "🎉 测试环境验证完成"
+
       - name: 运行E2E测试
         run: npm run test:e2e
 

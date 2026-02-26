@@ -11,7 +11,7 @@
 <template>
   <PageLayout title="库存盘点管理" description="管理库存盘点流程，支持全盘、抽盘和循环盘点" data-cy="stock-count-page">
     <template #headerActions>
-      <el-button type="info" :icon="QuestionFilled" @click="handleShowOperationGuide">操作指引</el-button>
+      <el-button type="info" :icon="QuestionFilled" @click="handleShowOperationGuide" data-cy="stock-count-guide-btn">操作指引</el-button>
       <el-button type="primary" :icon="Plus" @click="handleCreate" data-cy="stock-count-create-btn"
         >新建盘点单</el-button
       >
@@ -45,37 +45,37 @@
       height="500px"
       @page-change="handlePageChange"
     >
-      <el-table-column type="index" label="序号" width="60" align="center" />
-      <el-table-column prop="countNo" label="盘点单号" width="180" sortable />
-      <el-table-column prop="countType" label="盘点类型" width="100">
+      <el-table-column type="index" label="序号" width="60" align="center" data-cy="stock-count-index-column" />
+      <el-table-column prop="countNo" label="盘点单号" width="180" sortable data-cy="stock-count-no-column" />
+      <el-table-column prop="countType" label="盘点类型" width="100" data-cy="stock-count-type-column">
         <template #default="{ row }">
-          <el-tag :type="getCountTypeType(row.countType)">
+          <el-tag :type="getCountTypeType(row.countType)" :data-cy="`stock-count-type-tag-${row.id}`">
             {{ getCountTypeText(row.countType) }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="countDate" label="盘点日期" width="120" sortable />
-      <el-table-column prop="warehouseName" label="盘点仓库" width="150" />
-      <el-table-column prop="zoneName" label="盘点区域" width="120" show-overflow-tooltip />
-      <el-table-column prop="operatorName" label="盘点人员" width="120" />
-      <el-table-column prop="totalItems" label="盘点项数" width="90" align="center" />
-      <el-table-column prop="diffItems" label="差异项数" width="90" align="center">
+      <el-table-column prop="countDate" label="盘点日期" width="120" sortable data-cy="stock-count-date-column" />
+      <el-table-column prop="warehouseName" label="盘点仓库" width="150" data-cy="stock-count-warehouse-column" />
+      <el-table-column prop="zoneName" label="盘点区域" width="120" show-overflow-tooltip data-cy="stock-count-zone-column" />
+      <el-table-column prop="operatorName" label="盘点人员" width="120" data-cy="stock-count-operator-column" />
+      <el-table-column prop="totalItems" label="盘点项数" width="90" align="center" data-cy="stock-count-total-items-column" />
+      <el-table-column prop="diffItems" label="差异项数" width="90" align="center" data-cy="stock-count-diff-items-column">
         <template #default="{ row }">
-          <el-tag :type="row.diffItems > 0 ? 'danger' : 'success'" size="small">
+          <el-tag :type="row.diffItems > 0 ? 'danger' : 'success'" size="small" :data-cy="`stock-count-diff-tag-${row.id}`">
             {{ row.diffItems || 0 }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="status" label="状态" width="100">
+      <el-table-column prop="status" label="状态" width="100" data-cy="stock-count-status-column">
         <template #default="{ row }">
-          <el-tag :type="getStatusType(row.status)">{{ getStatusText(row.status) }}</el-tag>
+          <el-tag :type="getStatusType(row.status)" :data-cy="`stock-count-status-tag-${row.id}`">{{ getStatusText(row.status) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="remark" label="备注" min-width="150" show-overflow-tooltip />
-      <el-table-column label="操作" width="300" fixed="right">
+      <el-table-column prop="remark" label="备注" min-width="150" show-overflow-tooltip data-cy="stock-count-remark-column" />
+      <el-table-column label="操作" width="300" fixed="right" data-cy="stock-count-actions-column">
         <template #default="{ row }">
-          <el-button link type="primary" :icon="View" @click="handleView(row)">查看</el-button>
-          <el-button link type="primary" :icon="Edit" @click="handleEdit(row)" :disabled="row.status === 'completed'"
+          <el-button link type="primary" :icon="View" @click="handleView(row)" data-cy="stock-count-view-btn">查看</el-button>
+          <el-button link type="primary" :icon="Edit" @click="handleEdit(row)" :disabled="row.status === 'completed'" data-cy="stock-count-edit-btn"
             >编辑</el-button
           >
           <el-button
@@ -84,12 +84,13 @@
             :icon="CircleCheck"
             @click="handleStartCount(row)"
             v-if="row.status === 'pending'"
+            data-cy="stock-count-start-btn"
             >开始盘点</el-button
           >
-          <el-button link type="success" :icon="Check" @click="handleComplete(row)" v-if="row.status === 'counting'"
+          <el-button link type="success" :icon="Check" @click="handleComplete(row)" v-if="row.status === 'counting'" data-cy="stock-count-complete-btn"
             >完成盘点</el-button
           >
-          <el-button link type="danger" :icon="Delete" @click="handleDelete(row)" :disabled="row.status === 'completed'"
+          <el-button link type="danger" :icon="Delete" @click="handleDelete(row)" :disabled="row.status === 'completed'" data-cy="stock-count-delete-btn"
             >删除</el-button
           >
         </template>
@@ -105,7 +106,7 @@
     />
 
     <!-- 盘点单详情对话框 -->
-    <el-dialog v-model="detailDialogVisible" title="盘点单详情" width="1000px" destroy-on-close>
+    <el-dialog v-model="detailDialogVisible" title="盘点单详情" width="1000px" destroy-on-close data-cy="stock-count-detail-dialog">
       <el-descriptions :column="3" border>
         <el-descriptions-item label="盘点单号" :span="1">{{ currentRow?.countNo }}</el-descriptions-item>
         <el-descriptions-item label="盘点类型" :span="1">
@@ -135,36 +136,36 @@
           <el-icon><List /></el-icon>
           <span>盘点明细</span>
         </div>
-        <el-table :data="currentRow.items" stripe border size="small">
-          <el-table-column type="index" label="序号" width="50" align="center" />
-          <el-table-column prop="deviceCode" label="设备编号" width="120" />
-          <el-table-column prop="deviceName" label="设备名称" width="150" />
-          <el-table-column prop="specification" label="规格型号" width="120" />
-          <el-table-column prop="binCode" label="货位" width="100" />
-          <el-table-column prop="bookQuantity" label="账面数量" width="90" align="center" />
-          <el-table-column prop="actualQuantity" label="实盘数量" width="90" align="center" />
-          <el-table-column label="差异数量" width="90" align="center">
+        <el-table :data="currentRow.items" stripe border size="small" data-cy="stock-count-detail-table">
+          <el-table-column type="index" label="序号" width="50" align="center" data-cy="detail-index-column" />
+          <el-table-column prop="deviceCode" label="设备编号" width="120" data-cy="detail-device-code-column" />
+          <el-table-column prop="deviceName" label="设备名称" width="150" data-cy="detail-device-name-column" />
+          <el-table-column prop="specification" label="规格型号" width="120" data-cy="detail-spec-column" />
+          <el-table-column prop="binCode" label="货位" width="100" data-cy="detail-bin-code-column" />
+          <el-table-column prop="bookQuantity" label="账面数量" width="90" align="center" data-cy="detail-book-qty-column" />
+          <el-table-column prop="actualQuantity" label="实盘数量" width="90" align="center" data-cy="detail-actual-qty-column" />
+          <el-table-column label="差异数量" width="90" align="center" data-cy="detail-diff-qty-column">
             <template #default="{ row }">
-              <span :class="getDiffClass(row)">
+              <span :class="getDiffClass(row)" :data-cy="`detail-diff-value-${row.id}`">
                 {{ (row.actualQuantity || 0) - (row.bookQuantity || 0) }}
               </span>
             </template>
           </el-table-column>
-          <el-table-column prop="diffReason" label="差异原因" min-width="120" show-overflow-tooltip />
-          <el-table-column prop="remark" label="备注" min-width="120" show-overflow-tooltip />
+          <el-table-column prop="diffReason" label="差异原因" min-width="120" show-overflow-tooltip data-cy="detail-diff-reason-column" />
+          <el-table-column prop="remark" label="备注" min-width="120" show-overflow-tooltip data-cy="detail-remark-column" />
         </el-table>
       </div>
 
       <template #footer>
-        <el-button @click="detailDialogVisible = false">关闭</el-button>
-        <el-button type="primary" @click="handleExportDetail" v-if="currentRow?.items?.length > 0">
+        <el-button @click="detailDialogVisible = false" data-cy="stock-count-detail-close-btn">关闭</el-button>
+        <el-button type="primary" @click="handleExportDetail" v-if="currentRow?.items?.length > 0" data-cy="stock-count-detail-export-btn">
           导出明细
         </el-button>
       </template>
     </el-dialog>
 
     <!-- 操作指引对话框 -->
-    <el-dialog v-model="guideDialogVisible" title="操作指引" width="900px" :close-on-click-modal="false">
+    <el-dialog v-model="guideDialogVisible" title="操作指引" width="900px" :close-on-click-modal="false" data-cy="stock-count-guide-dialog">
       <div class="operation-guide">
         <el-steps :active="currentStep" finish-status="success" align-center>
           <el-step title="新建盘点单" />
@@ -227,9 +228,9 @@
           </div>
         </div>
         <div class="guide-actions">
-          <el-button v-if="currentStep > 0" @click="currentStep--">上一步</el-button>
-          <el-button v-if="currentStep < 3" type="primary" @click="currentStep++">下一步</el-button>
-          <el-button v-else type="primary" @click="handleGuideFinish">完成</el-button>
+          <el-button v-if="currentStep > 0" @click="currentStep--" data-cy="stock-count-guide-prev-btn">上一步</el-button>
+          <el-button v-if="currentStep < 3" type="primary" @click="currentStep++" data-cy="stock-count-guide-next-btn">下一步</el-button>
+          <el-button v-else type="primary" @click="handleGuideFinish" data-cy="stock-count-guide-finish-btn">完成</el-button>
         </div>
       </div>
     </el-dialog>

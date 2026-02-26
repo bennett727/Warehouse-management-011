@@ -8,7 +8,7 @@
 <template>
   <PageLayout title="查询管理" description="按区域查询设备信息，支持多维度筛选和导出">
     <template #headerActions>
-      <el-button type="primary" :icon="Download" @click="handleExport" :loading="exportLoading">导出数据</el-button>
+      <el-button type="primary" :icon="Download" @click="handleExport" :loading="exportLoading" data-cy="query-export-btn">导出数据</el-button>
     </template>
 
     <el-row :gutter="20">
@@ -17,7 +17,7 @@
           <template #header>
             <div class="card-header">
               <span>区域列表</span>
-              <el-button type="default" :icon="Refresh" @click="loadAreaTree" :loading="areaTreeLoading"
+              <el-button type="default" :icon="Refresh" @click="loadAreaTree" :loading="areaTreeLoading" data-cy="query-area-refresh-btn"
                 >刷新</el-button
               >
             </div>
@@ -33,17 +33,17 @@
               <span>区域信息</span>
               <div class="header-actions">
                 <el-tooltip content="手动刷新当前区域数据" placement="top">
-                  <el-button type="default" :icon="Refresh" :loading="refreshing" @click="handleRefresh"
+                  <el-button type="default" :icon="Refresh" :loading="refreshing" @click="handleRefresh" data-cy="query-refresh-btn"
                     >刷新</el-button
                   >
                 </el-tooltip>
                 <el-tooltip :content="autoRefreshEnabled ? '关闭自动刷新' : '开启自动刷新'" placement="top">
-                  <el-button type="default" :icon="Clock" @click="toggleAutoRefresh">{{
+                  <el-button type="default" :icon="Clock" @click="toggleAutoRefresh" data-cy="query-auto-refresh-btn">{{
                     autoRefreshEnabled ? '关闭自动刷新' : '开启自动刷新'
                   }}</el-button>
                 </el-tooltip>
                 <el-tooltip content="根据筛选条件查询设备" placement="top">
-                  <el-button type="primary" :icon="Search" @click="handleSearch">查询</el-button>
+                  <el-button type="primary" :icon="Search" @click="handleSearch" data-cy="query-search-btn">查询</el-button>
                 </el-tooltip>
               </div>
             </div>
@@ -57,8 +57,8 @@
             <div class="card-header">
               <span>设备列表</span>
               <div class="header-actions">
-                <el-button type="primary" :icon="Search" @click="handleSearch">查询</el-button>
-                <el-button :icon="Refresh" @click="handleReset">重置</el-button>
+                <el-button type="primary" :icon="Search" @click="handleSearch" data-cy="query-list-search-btn">查询</el-button>
+                <el-button :icon="Refresh" @click="handleReset" data-cy="query-list-reset-btn">重置</el-button>
               </div>
             </div>
           </template>
@@ -82,31 +82,32 @@
             :page-size="pagination.pageSize"
             :show-actions="true"
             height="600px"
+            data-cy="query-device-table"
             @page-change="handlePageChange"
             @size-change="handlePageSizeChange"
             @row-dblclick="handleViewDetail"
           >
             <template #empty>
               <el-empty v-if="!deviceListLoading" description="暂无设备数据">
-                <el-button type="primary" @click="handleReset">重置筛选条件</el-button>
+                <el-button type="primary" @click="handleReset" data-cy="query-empty-reset-btn">重置筛选条件</el-button>
               </el-empty>
               <el-skeleton v-else :rows="5" animated />
             </template>
-            <el-table-column prop="deviceCode" label="设备编号" width="120" />
-            <el-table-column prop="deviceName" label="设备名称" width="150" />
-            <el-table-column prop="deviceTypeName" label="设备类型" width="120" />
-            <el-table-column prop="areaName" label="区域" width="100" />
-            <el-table-column prop="binName" label="货位" width="120" />
-            <el-table-column label="状态" width="100">
+            <el-table-column prop="deviceCode" label="设备编号" width="120" data-cy="query-device-code-column" />
+            <el-table-column prop="deviceName" label="设备名称" width="150" data-cy="query-device-name-column" />
+            <el-table-column prop="deviceTypeName" label="设备类型" width="120" data-cy="query-device-type-column" />
+            <el-table-column prop="areaName" label="区域" width="100" data-cy="query-device-area-column" />
+            <el-table-column prop="binName" label="货位" width="120" data-cy="query-device-bin-column" />
+            <el-table-column label="状态" width="100" data-cy="query-device-status-column">
               <template #default="{ row }">
-                <el-tag :type="getStatusTagType(row.status)">{{ getStatusText(row.status) }}</el-tag>
+                <el-tag :type="getStatusTagType(row.status)" :data-cy="`query-device-status-tag-${row.id}`">{{ getStatusText(row.status) }}</el-tag>
               </template>
             </el-table-column>
-            <el-table-column prop="currentStock" label="当前库存" width="100" align="center" />
-            <el-table-column prop="createTime" label="创建时间" width="180" />
-            <el-table-column label="操作" width="100" fixed="right">
+            <el-table-column prop="currentStock" label="当前库存" width="100" align="center" data-cy="query-device-stock-column" />
+            <el-table-column prop="createTime" label="创建时间" width="180" data-cy="query-device-time-column" />
+            <el-table-column label="操作" width="100" fixed="right" data-cy="query-device-action-column">
               <template #default="{ row }">
-                <el-button link type="primary" @click="handleViewDetail(row)">查看详情</el-button>
+                <el-button link type="primary" @click="handleViewDetail(row)" :data-cy="`query-device-view-btn-${row.id}`">查看详情</el-button>
               </template>
             </el-table-column>
           </DataTable>

@@ -15,12 +15,14 @@
         aria-modal="true"
         :aria-labelledby="titleId"
         :aria-describedby="subtitleId"
+        data-cy="dialog-overlay"
         @click.self="handleOverlayClick"
       >
         <div
           class="dialog-container"
           :class="[`dialog--${size}`, { 'dialog--fullscreen': fullscreen }]"
           :style="dialogStyles"
+          data-cy="dialog-container"
         >
           <!-- 对话框头部 -->
           <div class="dialog-header" :class="{ 'dialog-header--divided': showDividers }">
@@ -40,6 +42,7 @@
               class="dialog-header__close"
               type="button"
               aria-label="关闭对话框"
+              data-cy="dialog-close-btn"
               @click="handleClose"
             >
               <el-icon :size="18" aria-hidden="true"><Close /></el-icon>
@@ -56,6 +59,7 @@
               :label-width="labelWidth"
               :label-position="labelPosition"
               class="dialog-form"
+              data-cy="dialog-form"
             >
               <slot name="form" />
             </el-form>
@@ -72,6 +76,7 @@
                   :size="buttonSize"
                   class="dialog-btn dialog-btn--cancel"
                   :aria-label="cancelText"
+                  data-cy="dialog-cancel-button"
                 >
                   <el-icon v-if="cancelIcon" aria-hidden="true"><component :is="cancelIcon" /></el-icon>
                   {{ cancelText }}
@@ -85,6 +90,7 @@
                   :size="buttonSize"
                   class="dialog-btn dialog-btn--confirm"
                   :aria-label="confirmText"
+                  data-cy="dialog-confirm-button"
                 >
                   <el-icon v-if="confirmIcon && !confirmLoading" aria-hidden="true"
                     ><component :is="confirmIcon"

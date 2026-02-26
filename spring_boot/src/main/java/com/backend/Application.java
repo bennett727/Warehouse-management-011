@@ -1,6 +1,5 @@
 package com.backend;
 
-import org.redisson.spring.starter.RedissonAutoConfigurationV2;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
@@ -18,8 +17,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @since 2026-02-08
  */
 @SpringBootApplication(exclude = {
-        RedisAutoConfiguration.class,
-        RedissonAutoConfigurationV2.class
+        RedisAutoConfiguration.class
 })
 @EntityScan(basePackages = "com.backend.entity")
 @EnableCaching(proxyTargetClass = true)

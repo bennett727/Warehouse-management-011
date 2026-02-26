@@ -105,19 +105,19 @@
         </div>
       </template>
       <div class="quick-actions">
-        <el-button type="primary" @click="handleNavigate('warehouse')">
+        <el-button type="primary" @click="handleNavigate('warehouse')" data-cy="data-overview-warehouse-btn">
           <el-icon><House /></el-icon>
           管理仓库
         </el-button>
-        <el-button type="success" :disabled="!selectedWarehouse" @click="handleNavigate('zone')">
+        <el-button type="success" :disabled="!selectedWarehouse" @click="handleNavigate('zone')" data-cy="data-overview-zone-btn">
           <el-icon><OfficeBuilding /></el-icon>
           管理功能区
         </el-button>
-        <el-button type="warning" :disabled="!selectedWarehouse" @click="handleNavigate('bin')">
+        <el-button type="warning" :disabled="!selectedWarehouse" @click="handleNavigate('bin')" data-cy="data-overview-bin-btn">
           <el-icon><Grid /></el-icon>
           管理货位
         </el-button>
-        <el-button type="info" @click="handleNavigate('map')">
+        <el-button type="info" @click="handleNavigate('map')" data-cy="data-overview-map-btn">
           <el-icon><MapLocation /></el-icon>
           查看地图
         </el-button>
@@ -129,7 +129,7 @@
       <template #header>
         <div class="card-header">
           <span>最近活动</span>
-          <el-button type="primary" link @click="refreshActivities">
+          <el-button type="primary" link @click="refreshActivities" data-cy="data-overview-refresh-btn">
             <el-icon><Refresh /></el-icon>
             刷新
           </el-button>

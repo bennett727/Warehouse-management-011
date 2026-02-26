@@ -215,7 +215,7 @@
     <template #footer>
       <slot name="footer" :data="inventoryData">
         <div class="detail-footer">
-          <el-button @click="handleCancel" size="default">
+          <el-button @click="handleCancel" size="default" data-cy="inventory-detail-close-btn">
             <el-icon><Close /></el-icon>
             关闭
           </el-button>

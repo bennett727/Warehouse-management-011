@@ -11,7 +11,7 @@ class TestDataManager {
       url: `${this.baseUrl}/auth/login`,
       body: {
         username: 'admin',
-        password: 'Admin@123456'
+        password: '123456'
       },
       failOnStatusCode: false
     })

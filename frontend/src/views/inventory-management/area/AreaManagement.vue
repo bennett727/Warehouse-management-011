@@ -120,10 +120,10 @@
 
             <!-- 快捷操作 -->
             <div class="quick-actions">
-              <el-button type="primary" @click="handleEditArea(selectedArea)">
+              <el-button type="primary" @click="handleEditArea(selectedArea)" data-cy="area-edit-btn">
                 <el-icon><Edit /></el-icon>编辑区域
               </el-button>
-              <el-button type="danger" plain @click="handleDeleteArea(selectedArea)">
+              <el-button type="danger" plain @click="handleDeleteArea(selectedArea)" data-cy="area-delete-btn">
                 <el-icon><Delete /></el-icon>删除区域
               </el-button>
             </div>
@@ -143,13 +143,13 @@
     >
       <el-form data-cy="area-form" ref="areaFormRef" :model="areaForm" :rules="areaRules" label-width="100px">
         <el-form-item label="区域名称" prop="name">
-          <el-input v-model="areaForm.name" placeholder="请输入区域名称" clearable />
+          <el-input v-model="areaForm.name" placeholder="请输入区域名称" clearable data-cy="area-name-input" />
         </el-form-item>
         <el-form-item label="区域编码" prop="code">
-          <el-input v-model="areaForm.code" placeholder="请输入区域编码" clearable />
+          <el-input v-model="areaForm.code" placeholder="请输入区域编码" clearable data-cy="area-code-input" />
         </el-form-item>
         <el-form-item label="所属仓库" prop="warehouseId">
-          <el-select v-model="areaForm.warehouseId" placeholder="请选择所属仓库" clearable style="width: 100%">
+          <el-select v-model="areaForm.warehouseId" placeholder="请选择所属仓库" clearable style="width: 100%" data-cy="area-warehouse-select">
             <el-option
               v-for="warehouse in warehouseList"
               :key="warehouse.id"
@@ -159,13 +159,13 @@
           </el-select>
         </el-form-item>
         <el-form-item label="省份" prop="province">
-          <el-input v-model="areaForm.province" placeholder="请输入省份" clearable />
+          <el-input v-model="areaForm.province" placeholder="请输入省份" clearable data-cy="area-province-input" />
         </el-form-item>
         <el-form-item label="城市" prop="city">
-          <el-input v-model="areaForm.city" placeholder="请输入城市" clearable />
+          <el-input v-model="areaForm.city" placeholder="请输入城市" clearable data-cy="area-city-input" />
         </el-form-item>
         <el-form-item label="区县" prop="district">
-          <el-input v-model="areaForm.district" placeholder="请输入区县" clearable />
+          <el-input v-model="areaForm.district" placeholder="请输入区县" clearable data-cy="area-district-input" />
         </el-form-item>
         <el-form-item label="区域状态" prop="status">
           <el-radio-group v-model="areaForm.status">
@@ -174,12 +174,12 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="areaForm.remark" type="textarea" placeholder="请输入备注信息" :rows="3" resize="none" />
+          <el-input v-model="areaForm.remark" type="textarea" placeholder="请输入备注信息" :rows="3" resize="none" data-cy="area-remark-input" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleFormSubmit" :loading="submitLoading">确定</el-button>
+        <el-button @click="dialogVisible = false" data-cy="area-dialog-cancel-btn">取消</el-button>
+        <el-button type="primary" @click="handleFormSubmit" :loading="submitLoading" data-cy="area-dialog-confirm-btn">确定</el-button>
       </template>
     </el-dialog>
   </PageLayout>
@@ -270,7 +270,6 @@ const areaTreeData = computed(() => buildTree(areaList.value));
 const buildTree = (list) => {
   // 确保list是数组
   if (!Array.isArray(list)) {
-    console.warn('[AreaManagement] buildTree: list不是数组:', list);
     return [];
   }
 

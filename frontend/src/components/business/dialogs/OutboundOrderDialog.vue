@@ -14,6 +14,7 @@
     destroy-on-close
     :close-on-click-modal="false"
     class="outbound-order-dialog"
+    data-cy="outbound-order-dialog"
   >
     <div class="dialog-container">
       <!-- 上半部分：出库单基本信息区域 -->
@@ -23,30 +24,32 @@
           <span>出库单基本信息</span>
         </div>
 
-        <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px" class="order-form">
+        <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px" class="order-form" data-cy="outbound-order-form">
           <el-row :gutter="20">
             <el-col :span="8">
-              <el-form-item label="出库单号" prop="orderNo">
-                <el-input v-model="formData.orderNo" placeholder="系统自动生成" disabled />
+              <el-form-item label="出库单号" prop="orderNo" data-cy="outbound-order-no-form-item">
+                <el-input v-model="formData.orderNo" placeholder="系统自动生成" disabled data-cy="outbound-order-no-input" />
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="出库日期" prop="orderDate">
+              <el-form-item label="出库日期" prop="orderDate" data-cy="outbound-order-date-form-item">
                 <el-date-picker
                   v-model="formData.orderDate"
                   type="date"
                   placeholder="选择日期"
                   value-format="YYYY-MM-DD"
                   style="width: 100%"
+                  data-cy="outbound-order-date-picker"
                 />
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="出库类型" prop="outboundType">
+              <el-form-item label="出库类型" prop="outboundType" data-cy="outbound-order-type-form-item">
                 <el-select
                   v-model="formData.outboundType"
                   placeholder="请选择出库类型"
                   style="width: 100%"
+                  data-cy="outbound-order-type-select"
                   @change="handleOutboundTypeChange"
                 >
                   <el-option label="普通出库" :value="0">
@@ -68,18 +71,19 @@
 
           <el-row :gutter="20">
             <el-col :span="8">
-              <el-form-item label="客户/单位" prop="customer">
-                <el-input v-model="formData.customer" placeholder="请输入客户或单位名称" />
+              <el-form-item label="客户/单位" prop="customer" data-cy="outbound-customer-form-item">
+                <el-input v-model="formData.customer" placeholder="请输入客户或单位名称" data-cy="outbound-customer-input" />
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="经办人" prop="operatorName">
+              <el-form-item label="经办人" prop="operatorName" data-cy="outbound-operator-form-item">
                 <el-select
                   v-model="formData.operatorId"
                   placeholder="请选择经办人"
                   filterable
                   style="width: 100%"
                   @change="handleOperatorChange"
+                  data-cy="outbound-operator-select"
                 >
                   <el-option
                     v-for="user in userOptions"
@@ -91,13 +95,13 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="联系电话" prop="contactPhone">
-                <el-input v-model="formData.contactPhone" placeholder="请输入联系电话" />
+              <el-form-item label="联系电话" prop="contactPhone" data-cy="outbound-contact-phone-form-item">
+                <el-input v-model="formData.contactPhone" placeholder="请输入联系电话" data-cy="outbound-contact-phone-input" />
               </el-form-item>
             </el-col>
           </el-row>
 
-          <el-form-item label="备注" prop="remark">
+          <el-form-item label="备注" prop="remark" data-cy="outbound-remark-form-item">
             <el-input
               v-model="formData.remark"
               type="textarea"
@@ -105,6 +109,7 @@
               placeholder="请输入备注信息"
               maxlength="500"
               show-word-limit
+              data-cy="outbound-remark-input"
             />
           </el-form-item>
         </el-form>
@@ -128,6 +133,7 @@
             clearable
             style="width: 300px"
             @input="handleDeviceSearch"
+            data-cy="outbound-device-search-input"
           >
             <template #prefix>
               <el-icon><Search /></el-icon>
@@ -140,6 +146,7 @@
             clearable
             style="width: 150px"
             @change="handleDeviceSearch"
+            data-cy="outbound-device-type-filter"
           >
             <el-option v-for="type in deviceTypeOptions" :key="type.id" :label="type.typeName" :value="type.id" />
           </el-select>
@@ -150,12 +157,13 @@
             clearable
             style="width: 150px"
             @change="handleDeviceSearch"
+            data-cy="outbound-stock-status-filter"
           >
             <el-option label="有库存" :value="1" />
             <el-option label="库存不足" :value="2" />
           </el-select>
 
-          <el-button type="primary" :icon="Refresh" @click="refreshDeviceList">刷新</el-button>
+          <el-button type="primary" :icon="Refresh" @click="refreshDeviceList" data-cy="outbound-refresh-device-list-btn">刷新</el-button>
         </div>
 
         <!-- 设备列表表格 -->
@@ -169,25 +177,26 @@
           @selection-change="handleSelectionChange"
           v-loading="deviceLoading"
           class="device-table"
+          data-cy="outbound-device-table"
         >
-          <el-table-column type="selection" width="50" align="center" />
-          <el-table-column prop="deviceCode" label="设备编号" width="120" />
-          <el-table-column prop="deviceName" label="设备名称" min-width="150" />
-          <el-table-column prop="deviceTypeName" label="设备类型" width="100" />
-          <el-table-column prop="specification" label="规格型号" width="150" />
-          <el-table-column prop="availableStock" label="可用库存" width="100" align="center">
+          <el-table-column type="selection" width="50" align="center" data-cy="outbound-device-table-selection-column" />
+          <el-table-column prop="deviceCode" label="设备编号" width="120" data-cy="outbound-device-table-code-column" />
+          <el-table-column prop="deviceName" label="设备名称" min-width="150" data-cy="outbound-device-table-name-column" />
+          <el-table-column prop="deviceTypeName" label="设备类型" width="100" data-cy="outbound-device-table-type-column" />
+          <el-table-column prop="specification" label="规格型号" width="150" data-cy="outbound-device-table-spec-column" />
+          <el-table-column prop="availableStock" label="可用库存" width="100" align="center" data-cy="outbound-device-table-stock-column">
             <template #default="{ row }">
               <el-tag :type="row.availableStock > 0 ? 'success' : 'danger'">
                 {{ row.availableStock }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="unitPrice" label="单价" width="100" align="right">
+          <el-table-column prop="unitPrice" label="单价" width="100" align="right" data-cy="outbound-device-table-price-column">
             <template #default="{ row }">
               {{ row.unitPrice ? '¥' + row.unitPrice : '-' }}
             </template>
           </el-table-column>
-          <el-table-column prop="storageLocation" label="存放位置" width="150" />
+          <el-table-column prop="storageLocation" label="存放位置" width="150" data-cy="outbound-device-table-location-column" />
         </el-table>
 
         <!-- 分页 -->
@@ -198,6 +207,7 @@
           :page-sizes="[10, 20, 50, 100]"
           layout="total, sizes, prev, pager, next, jumper"
           class="device-pagination"
+          data-cy="outbound-device-pagination"
           @size-change="handleDevicePageSizeChange"
           @current-change="handleDevicePageChange"
         />
@@ -206,7 +216,7 @@
         <div v-if="selectedDevices.length > 0" class="selected-devices-preview">
           <div class="preview-header">
             <span>已选设备预览</span>
-            <el-button link type="primary" @click="clearAllSelection">清空全部</el-button>
+            <el-button link type="primary" @click="clearAllSelection" data-cy="outbound-clear-selection-btn">清空全部</el-button>
           </div>
           <el-scrollbar height="100px">
             <div class="selected-tags">
@@ -226,9 +236,9 @@
     </div>
 
     <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" :loading="submitLoading" @click="handleNextStep">
+      <div class="dialog-footer" data-cy="outbound-order-footer">
+        <el-button data-cy="outbound-order-cancel-btn" @click="dialogVisible = false">取消</el-button>
+        <el-button data-cy="outbound-order-next-btn" type="primary" :loading="submitLoading" @click="handleNextStep">
           下一步 <el-icon class="el-icon--right"><ArrowRight /></el-icon>
         </el-button>
       </div>

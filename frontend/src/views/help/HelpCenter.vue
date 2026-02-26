@@ -97,7 +97,7 @@
               </div>
             </div>
             <el-empty data-cy="empty-0" v-else description="未找到相关内容">
-              <el-button type="primary" @click="clearSearch">清除搜索</el-button>
+              <el-button type="primary" @click="clearSearch" data-cy="help-clear-search-btn">清除搜索</el-button>
             </el-empty>
           </div>
 

@@ -9,6 +9,7 @@
       :close-on-press-escape="false"
       destroy-on-close
       class="workflow-guide-dialog"
+      data-cy="workflow-guide-dialog"
     >
       <!-- 步骤条 -->
       <div class="workflow-steps">
@@ -35,9 +36,10 @@
               :rules="currentStepData.rules"
               label-width="120px"
               class="workflow-form"
+              data-cy="workflow-form"
             >
               <template v-for="field in currentStepData.form" :key="field.prop">
-                <el-form-item :label="field.label" :prop="field.prop">
+                <el-form-item :label="field.label" :prop="field.prop" :data-cy="`workflow-form-item-${field.prop}`">
                   <!-- 输入框 -->
                   <el-input
                     v-if="field.type === 'input'"
@@ -46,6 +48,7 @@
                     :maxlength="field.maxlength"
                     :show-word-limit="field.showWordLimit"
                     clearable
+                    :data-cy="`workflow-input-${field.prop}`"
                   />
 
                   <!-- 文本域 -->
@@ -57,6 +60,7 @@
                     :placeholder="field.placeholder"
                     :maxlength="field.maxlength"
                     :show-word-limit="field.showWordLimit"
+                    :data-cy="`workflow-textarea-${field.prop}`"
                   />
 
                   <!-- 数字输入 -->
@@ -68,6 +72,7 @@
                     :precision="field.precision"
                     :step="field.step"
                     style="width: 100%"
+                    :data-cy="`workflow-number-${field.prop}`"
                   />
 
                   <!-- 选择器 -->
@@ -79,6 +84,7 @@
                     :filterable="field.filterable"
                     clearable
                     style="width: 100%"
+                    :data-cy="`workflow-select-${field.prop}`"
                   >
                     <el-option
                       v-for="option in field.options"
@@ -108,15 +114,15 @@
                   />
 
                   <!-- 单选框 -->
-                  <el-radio-group v-else-if="field.type === 'radio'" v-model="formData[field.prop]">
-                    <el-radio v-for="option in field.options" :key="option.value" :label="option.value">
+                  <el-radio-group v-else-if="field.type === 'radio'" v-model="formData[field.prop]" :data-cy="`workflow-radio-group-${field.prop}`">
+                    <el-radio v-for="option in field.options" :key="option.value" :label="option.value" :data-cy="`workflow-radio-${field.prop}-${option.value}`">
                       {{ option.label }}
                     </el-radio>
                   </el-radio-group>
 
                   <!-- 复选框 -->
-                  <el-checkbox-group v-else-if="field.type === 'checkbox'" v-model="formData[field.prop]">
-                    <el-checkbox v-for="option in field.options" :key="option.value" :label="option.value">
+                  <el-checkbox-group v-else-if="field.type === 'checkbox'" v-model="formData[field.prop]" :data-cy="`workflow-checkbox-group-${field.prop}`">
+                    <el-checkbox v-for="option in field.options" :key="option.value" :label="option.value" :data-cy="`workflow-checkbox-${field.prop}-${option.value}`">
                       {{ option.label }}
                     </el-checkbox>
                   </el-checkbox-group>
@@ -127,6 +133,7 @@
                     v-model="formData[field.prop]"
                     :active-text="field.activeText"
                     :inactive-text="field.inactiveText"
+                    :data-cy="`workflow-switch-${field.prop}`"
                   />
 
                   <!-- 日期选择 -->
@@ -136,6 +143,7 @@
                     type="date"
                     :placeholder="field.placeholder"
                     style="width: 100%"
+                    :data-cy="`workflow-date-picker-${field.prop}`"
                   />
 
                   <!-- 提示信息 -->
@@ -168,37 +176,37 @@
       <template #footer>
         <div class="workflow-footer">
           <div class="footer-left">
-            <el-button v-if="showSaveDraft" link @click="handleSaveDraft">
+            <el-button v-if="showSaveDraft" link @click="handleSaveDraft" data-cy="workflow-save-draft-btn">
               <el-icon><Document /></el-icon>
               保存草稿
             </el-button>
-            <el-button v-if="showSkip" link @click="handleSkip"> 跳过此步骤 </el-button>
+            <el-button v-if="showSkip" link @click="handleSkip" data-cy="workflow-skip-btn"> 跳过此步骤 </el-button>
           </div>
           <div class="footer-right">
-            <el-button v-if="currentStep > 0" @click="handlePrev">
+            <el-button v-if="currentStep > 0" @click="handlePrev" data-cy="workflow-prev-btn">
               <el-icon><ArrowLeft /></el-icon>
               上一步
             </el-button>
-            <el-button v-if="currentStep < steps.length - 1" type="primary" :loading="loading" @click="handleNext">
+            <el-button v-if="currentStep < steps.length - 1" type="primary" :loading="loading" @click="handleNext" data-cy="workflow-next-btn">
               下一步
               <el-icon><ArrowRight /></el-icon>
             </el-button>
-            <el-button v-else type="success" :loading="loading" @click="handleComplete">
+            <el-button v-else type="success" :loading="loading" @click="handleComplete" data-cy="workflow-complete-btn">
               <el-icon><Check /></el-icon>
               完成
             </el-button>
-            <el-button v-if="showCancel" @click="handleCancel">取消</el-button>
+            <el-button v-if="showCancel" @click="handleCancel" data-cy="workflow-cancel-btn">取消</el-button>
           </div>
         </div>
       </template>
     </el-dialog>
 
     <!-- 进度保存提示 -->
-    <el-dialog v-model="restoreDialogVisible" title="恢复进度" width="400px">
+    <el-dialog v-model="restoreDialogVisible" title="恢复进度" width="400px" data-cy="workflow-restore-dialog">
       <p>检测到您有未完成的{{ title }}，是否恢复上次进度？</p>
       <template #footer>
-        <el-button @click="handleStartNew">重新开始</el-button>
-        <el-button type="primary" @click="handleRestore">恢复进度</el-button>
+        <el-button @click="handleStartNew" data-cy="workflow-restart-btn">重新开始</el-button>
+        <el-button type="primary" @click="handleRestore" data-cy="workflow-restore-confirm-btn">恢复进度</el-button>
       </template>
     </el-dialog>
   </div>

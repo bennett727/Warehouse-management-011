@@ -6,8 +6,8 @@
   @version: 1.0
 -->
 <template>
-  <el-dialog v-model="dialogVisible" :title="dialogTitle" width="700px" destroy-on-close :close-on-click-modal="false">
-    <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px">
+  <el-dialog v-model="dialogVisible" :title="dialogTitle" width="700px" destroy-on-close :close-on-click-modal="false" data-cy="outbound-info-dialog">
+    <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px" data-cy="outbound-info-form">
       <!-- 设备信息展示 -->
       <el-divider content-position="left">设备信息</el-divider>
       <div class="device-summary">
@@ -23,12 +23,13 @@
       </div>
 
       <!-- 出库类型 -->
-      <el-form-item label="出库类型" prop="outboundType">
+      <el-form-item label="出库类型" prop="outboundType" data-cy="outbound-info-type">
         <el-select
           v-model="formData.outboundType"
           placeholder="请选择出库类型"
           style="width: 100%"
           @change="handleTypeChange"
+          data-cy="outbound-info-type-select"
         >
           <el-option v-for="type in outboundTypes" :key="type.value" :label="type.label" :value="type.value">
             <div class="type-option">
@@ -43,11 +44,12 @@
       </el-form-item>
 
       <!-- 出库数量 -->
-      <el-form-item label="出库数量" prop="quantity">
+      <el-form-item label="出库数量" prop="quantity" data-cy="outbound-info-quantity">
         <el-input-number
           v-model="formData.quantity"
           :min="1"
           :max="maxQuantity"
+          data-cy="outbound-info-quantity-input"
           :precision="0"
           style="width: 100%"
           placeholder="请输入出库数量"
@@ -56,8 +58,8 @@
       </el-form-item>
 
       <!-- 出库人员 -->
-      <el-form-item label="出库人员" prop="operatorId">
-        <el-select v-model="formData.operatorId" placeholder="请选择出库人员" filterable style="width: 100%">
+      <el-form-item label="出库人员" prop="operatorId" data-cy="outbound-info-operator">
+        <el-select v-model="formData.operatorId" placeholder="请选择出库人员" filterable style="width: 100%" data-cy="outbound-info-operator-select">
           <el-option
             v-for="user in userOptions"
             :key="user.id"
@@ -77,7 +79,7 @@
 
       <!-- 安装位置（仅安装出库显示） -->
       <template v-if="formData.outboundType === 'INSTALLATION'">
-        <el-form-item label="安装位置" prop="installationLocation">
+        <el-form-item label="安装位置" prop="installationLocation" data-cy="outbound-info-location">
           <el-cascader
             v-model="formData.installationLocation"
             :options="locationOptions"
@@ -85,23 +87,24 @@
             placeholder="请选择安装位置"
             style="width: 100%"
             clearable
+            data-cy="outbound-info-location-cascader"
           />
         </el-form-item>
-        <el-form-item label="详细地址" prop="installationAddress">
-          <el-input v-model="formData.installationAddress" type="textarea" :rows="2" placeholder="请输入详细安装地址" />
+        <el-form-item label="详细地址" prop="installationAddress" data-cy="outbound-info-address">
+          <el-input v-model="formData.installationAddress" type="textarea" :rows="2" placeholder="请输入详细安装地址" data-cy="outbound-info-address-input" />
         </el-form-item>
-        <el-form-item label="客户名称" prop="customerName">
-          <el-input v-model="formData.customerName" placeholder="请输入客户名称" />
+        <el-form-item label="客户名称" prop="customerName" data-cy="outbound-info-customer">
+          <el-input v-model="formData.customerName" placeholder="请输入客户名称" data-cy="outbound-info-customer-input" />
         </el-form-item>
-        <el-form-item label="联系电话" prop="contactPhone">
-          <el-input v-model="formData.contactPhone" placeholder="请输入联系电话" />
+        <el-form-item label="联系电话" prop="contactPhone" data-cy="outbound-info-phone">
+          <el-input v-model="formData.contactPhone" placeholder="请输入联系电话" data-cy="outbound-info-phone-input" />
         </el-form-item>
       </template>
 
       <!-- 修复信息（仅修复出库显示） -->
       <template v-if="formData.outboundType === 'REPAIR'">
-        <el-form-item label="修复人员" prop="repairPersonId">
-          <el-select v-model="formData.repairPersonId" placeholder="请选择修复人员" filterable style="width: 100%">
+        <el-form-item label="修复人员" prop="repairPersonId" data-cy="outbound-info-repair-person">
+          <el-select v-model="formData.repairPersonId" placeholder="请选择修复人员" filterable style="width: 100%" data-cy="outbound-info-repair-person-select">
             <el-option
               v-for="user in repairUserOptions"
               :key="user.id"
@@ -110,35 +113,36 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="故障描述" prop="faultDescription">
-          <el-input v-model="formData.faultDescription" type="textarea" :rows="3" placeholder="请描述设备故障情况" />
+        <el-form-item label="故障描述" prop="faultDescription" data-cy="outbound-info-fault-desc">
+          <el-input v-model="formData.faultDescription" type="textarea" :rows="3" placeholder="请描述设备故障情况" data-cy="outbound-info-fault-desc-input" />
         </el-form-item>
-        <el-form-item label="预计周期" prop="estimatedDays">
+        <el-form-item label="预计周期" prop="estimatedDays" data-cy="outbound-info-est-days">
           <el-input-number
             v-model="formData.estimatedDays"
             :min="1"
             :max="365"
             style="width: 100%"
             placeholder="预计修复天数"
+            data-cy="outbound-info-est-days-input"
           >
             <template #append>天</template>
           </el-input-number>
         </el-form-item>
-        <el-form-item label="修复地点" prop="repairLocation">
-          <el-radio-group v-model="formData.repairLocation">
-            <el-radio label="INTERNAL">内部维修</el-radio>
-            <el-radio label="EXTERNAL">外部维修</el-radio>
+        <el-form-item label="修复地点" prop="repairLocation" data-cy="outbound-info-repair-location">
+          <el-radio-group v-model="formData.repairLocation" data-cy="outbound-info-repair-location-group">
+            <el-radio label="INTERNAL" data-cy="outbound-info-repair-location-internal">内部维修</el-radio>
+            <el-radio label="EXTERNAL" data-cy="outbound-info-repair-location-external">外部维修</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item v-if="formData.repairLocation === 'EXTERNAL'" label="维修单位" prop="repairVendor">
-          <el-input v-model="formData.repairVendor" placeholder="请输入外部维修单位" />
+        <el-form-item v-if="formData.repairLocation === 'EXTERNAL'" label="维修单位" prop="repairVendor" data-cy="outbound-info-repair-vendor">
+          <el-input v-model="formData.repairVendor" placeholder="请输入外部维修单位" data-cy="outbound-info-repair-vendor-input" />
         </el-form-item>
       </template>
 
       <!-- 调拨信息（仅调拨出库显示） -->
       <template v-if="formData.outboundType === 'TRANSFER'">
-        <el-form-item label="目标仓库" prop="targetWarehouseId">
-          <el-select v-model="formData.targetWarehouseId" placeholder="请选择目标仓库" style="width: 100%">
+        <el-form-item label="目标仓库" prop="targetWarehouseId" data-cy="outbound-info-target-warehouse">
+          <el-select v-model="formData.targetWarehouseId" placeholder="请选择目标仓库" style="width: 100%" data-cy="outbound-info-target-warehouse-select">
             <el-option
               v-for="warehouse in warehouseOptions"
               :key="warehouse.id"
@@ -147,8 +151,8 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="目标区域" prop="targetAreaId">
-          <el-select v-model="formData.targetAreaId" placeholder="请选择目标区域" style="width: 100%">
+        <el-form-item label="目标区域" prop="targetAreaId" data-cy="outbound-info-target-area">
+          <el-select v-model="formData.targetAreaId" placeholder="请选择目标区域" style="width: 100%" data-cy="outbound-info-target-area-select">
             <el-option v-for="area in targetAreaOptions" :key="area.id" :label="area.areaName" :value="area.id" />
           </el-select>
         </el-form-item>
@@ -156,28 +160,28 @@
 
       <!-- 报废信息（仅报废出库显示） -->
       <template v-if="formData.outboundType === 'SCRAP'">
-        <el-form-item label="报废原因" prop="scrapReason">
-          <el-select v-model="formData.scrapReason" placeholder="请选择报废原因" style="width: 100%">
-            <el-option label="达到使用年限" value="EXPIRED" />
-            <el-option label="严重损坏无法修复" value="DAMAGED" />
-            <el-option label="技术淘汰" value="OBSOLETE" />
-            <el-option label="其他原因" value="OTHER" />
+        <el-form-item label="报废原因" prop="scrapReason" data-cy="outbound-info-scrap-reason">
+          <el-select v-model="formData.scrapReason" placeholder="请选择报废原因" style="width: 100%" data-cy="outbound-info-scrap-reason-select">
+            <el-option label="达到使用年限" value="EXPIRED" data-cy="outbound-info-scrap-reason-expired" />
+            <el-option label="严重损坏无法修复" value="DAMAGED" data-cy="outbound-info-scrap-reason-damaged" />
+            <el-option label="技术淘汰" value="OBSOLETE" data-cy="outbound-info-scrap-reason-obsolete" />
+            <el-option label="其他原因" value="OTHER" data-cy="outbound-info-scrap-reason-other" />
           </el-select>
         </el-form-item>
-        <el-form-item label="报废说明" prop="scrapDescription">
-          <el-input v-model="formData.scrapDescription" type="textarea" :rows="3" placeholder="请详细说明报废原因" />
+        <el-form-item label="报废说明" prop="scrapDescription" data-cy="outbound-info-scrap-desc">
+          <el-input v-model="formData.scrapDescription" type="textarea" :rows="3" placeholder="请详细说明报废原因" data-cy="outbound-info-scrap-desc-input" />
         </el-form-item>
       </template>
 
       <!-- 备注 -->
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="formData.remark" type="textarea" :rows="3" placeholder="请输入备注信息" />
+      <el-form-item label="备注" prop="remark" data-cy="outbound-info-remark">
+        <el-input v-model="formData.remark" type="textarea" :rows="3" placeholder="请输入备注信息" data-cy="outbound-info-remark-input" />
       </el-form-item>
     </el-form>
 
     <template #footer>
-      <el-button @click="handleCancel">取消</el-button>
-      <el-button type="primary" :loading="submitLoading" @click="handleSubmit">确定</el-button>
+      <el-button @click="handleCancel" data-cy="outbound-info-cancel-btn">取消</el-button>
+      <el-button type="primary" :loading="submitLoading" @click="handleSubmit" data-cy="outbound-info-submit-btn">确定</el-button>
     </template>
   </el-dialog>
 </template>

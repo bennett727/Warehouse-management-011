@@ -199,13 +199,13 @@
 
             <!-- 快捷操作 -->
             <div class="quick-actions">
-              <el-button type="primary" @click="handleEdit(selectedDivision)">
+              <el-button type="primary" @click="handleEdit(selectedDivision)" data-cy="division-detail-edit-btn">
                 <el-icon><Edit /></el-icon>编辑区划
               </el-button>
-              <el-button v-if="selectedDivision.level < 3" type="success" @click="handleAddChild(selectedDivision)">
+              <el-button v-if="selectedDivision.level < 3" type="success" @click="handleAddChild(selectedDivision)" data-cy="division-detail-add-child-btn">
                 <el-icon><Plus /></el-icon>添加下级
               </el-button>
-              <el-button type="danger" plain @click="handleDelete(selectedDivision)">
+              <el-button type="danger" plain @click="handleDelete(selectedDivision)" data-cy="division-detail-delete-btn">
                 <el-icon><Delete /></el-icon>删除区划
               </el-button>
             </div>
@@ -225,10 +225,10 @@
     >
       <el-form data-cy="division-form" ref="formRef" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="区划名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入区划名称" clearable />
+          <el-input v-model="form.name" placeholder="请输入区划名称" clearable data-cy="division-name-input" />
         </el-form-item>
         <el-form-item label="区划编码" prop="code">
-          <el-input v-model="form.code" placeholder="请输入区划编码" clearable :disabled="isEdit" />
+          <el-input v-model="form.code" placeholder="请输入区划编码" clearable :disabled="isEdit" data-cy="division-code-input" />
           <div class="form-tip">编码规则：省(2位) + 市(2位) + 区(2位)，如440106</div>
         </el-form-item>
         <el-form-item label="区划级别" prop="level">
@@ -260,13 +260,13 @@
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleSubmit" :loading="submitLoading">确定</el-button>
+        <el-button @click="dialogVisible = false" data-cy="division-dialog-cancel-btn">取消</el-button>
+        <el-button type="primary" @click="handleSubmit" :loading="submitLoading" data-cy="division-dialog-confirm-btn">确定</el-button>
       </template>
     </el-dialog>
 
     <!-- 导入对话框 -->
-    <el-dialog v-model="importDialogVisible" title="批量导入行政区划" width="700px">
+    <el-dialog v-model="importDialogVisible" title="批量导入行政区划" width="700px" data-cy="division-import-dialog">
       <el-alert title="导入说明" type="info" :closable="false" style="margin-bottom: 20px">
         <template #default>
           <div>1. 支持导入 JSON 或 Excel 格式文件</div>
@@ -279,8 +279,8 @@
         <div class="el-upload__text">拖拽文件到此处或 <em>点击上传</em></div>
       </el-upload>
       <template #footer>
-        <el-button @click="importDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleImportSubmit" :loading="importLoading">开始导入</el-button>
+        <el-button @click="importDialogVisible = false" data-cy="division-import-cancel-btn">取消</el-button>
+        <el-button type="primary" @click="handleImportSubmit" :loading="importLoading" data-cy="division-import-confirm-btn">开始导入</el-button>
       </template>
     </el-dialog>
 

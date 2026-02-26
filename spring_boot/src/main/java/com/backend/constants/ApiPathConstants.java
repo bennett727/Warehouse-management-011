@@ -130,4 +130,11 @@ public class ApiPathConstants {
         public static final String ERROR_REPORT = "/error-report";
         public static final String PERFORMANCE_REPORT = "/performance-report";
     }
+
+    public static class ExcelApi {
+        public static final String BASE = API_PREFIX + "/excel";
+        public static final String DEVICE_EXPORT = BASE + "/devices/export";
+        public static final String INVENTORY_EXPORT = BASE + "/inventory/export";
+        public static final String COMPREHENSIVE_EXPORT = BASE + "/comprehensive/export";
+    }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="warehouse-data-center">
     <!-- 顶部导航标签 -->
-    <el-tabs v-model="activeTab" type="border-card" class="center-tabs">
+    <el-tabs v-model="activeTab" type="border-card" class="center-tabs" data-cy="warehouse-data-center-tabs">
       <el-tab-pane name="warehouse">
         <template #label>
           <span class="tab-label">
@@ -88,12 +88,12 @@
 
       <!-- 快捷操作 -->
       <div class="quick-actions">
-        <el-button v-if="activeTab !== 'warehouse'" type="primary" link @click="handleQuickAdd">
+        <el-button v-if="activeTab !== 'warehouse'" type="primary" link @click="handleQuickAdd" data-cy="warehouse-data-quick-add-btn">
           <el-icon><Plus /></el-icon>
           快速添加{{ getCurrentLevelName() }}
         </el-button>
         <el-divider direction="vertical" />
-        <el-button type="info" link @click="showDataOverview">
+        <el-button type="info" link @click="showDataOverview" data-cy="warehouse-data-overview-btn">
           <el-icon><DataLine /></el-icon>
           数据概览
         </el-button>

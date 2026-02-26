@@ -50,7 +50,6 @@ class SourceMapParser {
         filename: errorInfo.filename,
       };
     } catch (e) {
-      console.warn('[SourceMapParser] 解析错误位置失败:', e);
       return null;
     }
   }
@@ -82,7 +81,6 @@ class SourceMapParser {
       this.cache.set(`url_${scriptUrl}`, possibleMapUrl);
       return possibleMapUrl;
     } catch (e) {
-      console.warn('[SourceMapParser] 获取SourceMap URL失败:', e);
       return null;
     }
   }
@@ -107,7 +105,6 @@ class SourceMapParser {
       this.cache.set(`map_${sourceMapUrl}`, sourceMap);
       return sourceMap;
     } catch (e) {
-      console.warn('[SourceMapParser] 加载SourceMap失败:', e);
       return null;
     }
   }

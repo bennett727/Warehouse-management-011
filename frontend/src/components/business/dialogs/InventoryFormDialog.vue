@@ -30,7 +30,7 @@
             class="form-field-wrapper"
             :class="[`form-field--${field.type}`, { 'form-field--full': field.fullWidth }]"
           >
-            <el-form-item :label="field.label" :prop="field.prop" :class="{ 'is-required': field.required }">
+            <el-form-item :label="field.label" :prop="field.prop" :class="{ 'is-required': field.required }" :data-cy="`inventory-form-item-${field.prop}`">
               <!-- 文本输入 -->
               <el-input
                 v-if="field.type === 'input'"
@@ -45,6 +45,7 @@
                 :suffix-icon="field.suffixIcon"
                 @blur="handleFieldBlur(field.prop, $event)"
                 class="form-input"
+                :data-cy="`inventory-input-${field.prop}`"
               >
                 <template v-if="field.prefix" #prefix>
                   <el-icon><component :is="field.prefix" /></el-icon>
@@ -65,6 +66,7 @@
                 :disabled="field.disabled || loading"
                 :controls-position="field.controlsPosition || 'right'"
                 class="form-input-number"
+                :data-cy="`inventory-number-${field.prop}`"
               />
 
               <!-- 下拉选择 -->
@@ -79,6 +81,7 @@
                 :collapse-tags="field.collapseTags"
                 class="form-select"
                 @change="handleFieldChange(field.prop, $event)"
+                :data-cy="`inventory-select-${field.prop}`"
               >
                 <el-option
                   v-for="option in field.options"
@@ -204,6 +207,7 @@
                 :maxlength="field.maxlength"
                 :show-word-limit="field.showWordLimit"
                 class="form-textarea"
+                :data-cy="`inventory-textarea-${field.prop}`"
               />
 
               <!-- 文件上传 -->
@@ -217,12 +221,13 @@
                 :disabled="field.disabled || loading"
                 class="form-upload"
                 :class="{ 'upload--drag': field.drag }"
+                :data-cy="`inventory-upload-${field.prop}`"
               >
                 <template v-if="field.drag">
                   <el-icon :size="48"><UploadFilled /></el-icon>
                   <div class="el-upload__text">拖拽文件到此处或 <em>点击上传</em></div>
                 </template>
-                <el-button v-else type="primary">
+                <el-button v-else type="primary" :data-cy="`inventory-upload-btn-${field.prop}`">
                   <el-icon><UploadFilled /></el-icon>
                   点击上传
                 </el-button>

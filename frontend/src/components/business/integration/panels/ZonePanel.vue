@@ -13,7 +13,7 @@
         <span>区域管理</span>
       </div>
       <div class="header-actions">
-        <el-button type="primary" size="small" :icon="Plus" @click="handleAdd">添加区域</el-button>
+        <el-button type="primary" size="small" :icon="Plus" @click="handleAdd" data-cy="zone-panel-add-btn">添加区域</el-button>
       </div>
     </div>
 
@@ -61,6 +61,7 @@
         layout="total, prev, pager, next"
         small
         background
+        data-cy="zone-panel-pagination"
       />
     </div>
   </div>

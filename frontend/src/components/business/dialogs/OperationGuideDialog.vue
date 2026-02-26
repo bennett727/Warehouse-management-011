@@ -6,7 +6,7 @@
   @version: 1.0.0
 -->
 <template>
-  <el-dialog v-model="visible" :title="title" width="600px" :close-on-click-modal="true" :close-on-press-escape="true">
+  <el-dialog v-model="visible" :title="title" width="600px" :close-on-click-modal="true" :close-on-press-escape="true" data-cy="operation-guide-dialog">
     <div class="operation-guide-content">
       <el-steps :active="activeStep" direction="vertical">
         <el-step v-for="(step, index) in steps" :key="index" :title="step.title" :description="step.description">
@@ -21,8 +21,8 @@
     </div>
 
     <template #footer>
-      <el-button @click="handleClose">关闭</el-button>
-      <el-button type="primary" @click="handleStart">开始操作</el-button>
+      <el-button @click="handleClose" data-cy="operation-guide-close-btn">关闭</el-button>
+      <el-button type="primary" @click="handleStart" data-cy="operation-guide-start-btn">开始操作</el-button>
     </template>
   </el-dialog>
 </template>

@@ -95,109 +95,110 @@
           layout="total, sizes, prev, pager, next, jumper"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
+          data-cy="users-pagination"
         />
       </div>
     </el-card>
 
     <!-- 添加用户对话框 -->
-    <el-dialog v-model="addDialogVisible" title="添加用户" width="600px" :close-on-click-modal="false">
-      <el-form ref="addFormRef" :model="addForm" :rules="addRules" label-width="100px">
+    <el-dialog v-model="addDialogVisible" title="添加用户" width="600px" :close-on-click-modal="false" data-cy="users-add-dialog">
+      <el-form ref="addFormRef" :model="addForm" :rules="addRules" label-width="100px" data-cy="users-add-form">
         <el-form-item prop="username" label="用户名">
-          <el-input v-model="addForm.username" placeholder="请输入用户名" clearable />
+          <el-input v-model="addForm.username" placeholder="请输入用户名" clearable data-cy="users-add-username-input" />
         </el-form-item>
         <el-form-item prop="password" label="密码">
-          <el-input v-model="addForm.password" type="password" placeholder="请输入密码" show-password />
+          <el-input v-model="addForm.password" type="password" placeholder="请输入密码" show-password data-cy="users-add-password-input" />
         </el-form-item>
         <el-form-item prop="realName" label="真实姓名">
-          <el-input v-model="addForm.realName" placeholder="请输入真实姓名" clearable />
+          <el-input v-model="addForm.realName" placeholder="请输入真实姓名" clearable data-cy="users-add-realname-input" />
         </el-form-item>
         <el-form-item prop="email" label="邮箱">
-          <el-input v-model="addForm.email" placeholder="请输入邮箱" clearable />
+          <el-input v-model="addForm.email" placeholder="请输入邮箱" clearable data-cy="users-add-email-input" />
         </el-form-item>
         <el-form-item prop="phone" label="手机号码">
-          <el-input v-model="addForm.phone" placeholder="请输入手机号码" clearable />
+          <el-input v-model="addForm.phone" placeholder="请输入手机号码" clearable data-cy="users-add-phone-input" />
         </el-form-item>
         <el-form-item prop="roleId" label="角色">
-          <el-select v-model="addForm.roleId" placeholder="请选择角色" style="width: 100%">
+          <el-select v-model="addForm.roleId" placeholder="请选择角色" style="width: 100%" data-cy="users-add-role-select">
             <el-option v-for="role in roles" :key="role.id" :label="role.roleName" :value="role.id" />
           </el-select>
         </el-form-item>
         <el-form-item prop="isActive" label="状态">
-          <el-radio-group v-model="addForm.isActive">
-            <el-radio :label="1">启用</el-radio>
-            <el-radio :label="0">禁用</el-radio>
+          <el-radio-group v-model="addForm.isActive" data-cy="users-add-status-radio-group">
+            <el-radio :label="1" data-cy="users-add-status-active-radio">启用</el-radio>
+            <el-radio :label="0" data-cy="users-add-status-inactive-radio">禁用</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item prop="remark" label="备注">
-          <el-input v-model="addForm.remark" type="textarea" placeholder="请输入备注信息" :rows="3" resize="none" />
+          <el-input v-model="addForm.remark" type="textarea" placeholder="请输入备注信息" :rows="3" resize="none" data-cy="users-add-remark-input" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="addDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleAddUser" :loading="addLoading">确定</el-button>
+        <el-button @click="addDialogVisible = false" data-cy="users-add-cancel-button">取消</el-button>
+        <el-button type="primary" @click="handleAddUser" :loading="addLoading" data-cy="users-add-submit-button">确定</el-button>
       </template>
     </el-dialog>
 
-    <el-dialog v-model="editDialogVisible" title="编辑用户" width="600px" :close-on-click-modal="false">
-      <el-form ref="editFormRef" :model="editForm" :rules="editRules" label-width="100px">
+    <el-dialog v-model="editDialogVisible" title="编辑用户" width="600px" :close-on-click-modal="false" data-cy="users-edit-dialog">
+      <el-form ref="editFormRef" :model="editForm" :rules="editRules" label-width="100px" data-cy="users-edit-form">
         <el-form-item prop="username" label="用户名">
-          <el-input v-model="editForm.username" placeholder="请输入用户名" clearable disabled />
+          <el-input v-model="editForm.username" placeholder="请输入用户名" clearable disabled data-cy="users-edit-username-input" />
         </el-form-item>
         <el-form-item prop="realName" label="真实姓名">
-          <el-input v-model="editForm.realName" placeholder="请输入真实姓名" clearable />
+          <el-input v-model="editForm.realName" placeholder="请输入真实姓名" clearable data-cy="users-edit-realname-input" />
         </el-form-item>
         <el-form-item prop="email" label="邮箱">
-          <el-input v-model="editForm.email" placeholder="请输入邮箱" clearable />
+          <el-input v-model="editForm.email" placeholder="请输入邮箱" clearable data-cy="users-edit-email-input" />
         </el-form-item>
         <el-form-item prop="phone" label="手机号码">
-          <el-input v-model="editForm.phone" placeholder="请输入手机号码" clearable />
+          <el-input v-model="editForm.phone" placeholder="请输入手机号码" clearable data-cy="users-edit-phone-input" />
         </el-form-item>
         <el-form-item prop="roleId" label="角色">
-          <el-select v-model="editForm.roleId" placeholder="请选择角色" style="width: 100%">
+          <el-select v-model="editForm.roleId" placeholder="请选择角色" style="width: 100%" data-cy="users-edit-role-select">
             <el-option v-for="role in roles" :key="role.id" :label="role.roleName" :value="role.id" />
           </el-select>
         </el-form-item>
         <el-form-item prop="isActive" label="状态">
-          <el-radio-group v-model="editForm.isActive">
-            <el-radio :label="1">启用</el-radio>
-            <el-radio :label="0">禁用</el-radio>
+          <el-radio-group v-model="editForm.isActive" data-cy="users-edit-status-radio-group">
+            <el-radio :label="1" data-cy="users-edit-status-active-radio">启用</el-radio>
+            <el-radio :label="0" data-cy="users-edit-status-inactive-radio">禁用</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item prop="remark" label="备注">
-          <el-input v-model="editForm.remark" type="textarea" placeholder="请输入备注信息" :rows="3" resize="none" />
+          <el-input v-model="editForm.remark" type="textarea" placeholder="请输入备注信息" :rows="3" resize="none" data-cy="users-edit-remark-input" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="editDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleEditUser" :loading="editLoading">确定</el-button>
+        <el-button @click="editDialogVisible = false" data-cy="users-edit-cancel-button">取消</el-button>
+        <el-button type="primary" @click="handleEditUser" :loading="editLoading" data-cy="users-edit-submit-button">确定</el-button>
       </template>
     </el-dialog>
 
-    <el-dialog v-model="detailDialogVisible" title="用户详情" width="600px">
-      <el-descriptions :column="2" border>
-        <el-descriptions-item label="ID">{{ currentUser.id }}</el-descriptions-item>
-        <el-descriptions-item label="用户名">{{ currentUser.username }}</el-descriptions-item>
-        <el-descriptions-item label="真实姓名">{{ currentUser.realName }}</el-descriptions-item>
-        <el-descriptions-item label="邮箱">{{ currentUser.email }}</el-descriptions-item>
-        <el-descriptions-item label="手机号码">{{ currentUser.phone }}</el-descriptions-item>
-        <el-descriptions-item label="角色">{{ currentUser.roleName }}</el-descriptions-item>
-        <el-descriptions-item label="状态">
+    <el-dialog v-model="detailDialogVisible" title="用户详情" width="600px" data-cy="users-detail-dialog">
+      <el-descriptions :column="2" border data-cy="users-detail-descriptions">
+        <el-descriptions-item label="ID" data-cy="users-detail-id">{{ currentUser.id }}</el-descriptions-item>
+        <el-descriptions-item label="用户名" data-cy="users-detail-username">{{ currentUser.username }}</el-descriptions-item>
+        <el-descriptions-item label="真实姓名" data-cy="users-detail-realname">{{ currentUser.realName }}</el-descriptions-item>
+        <el-descriptions-item label="邮箱" data-cy="users-detail-email">{{ currentUser.email }}</el-descriptions-item>
+        <el-descriptions-item label="手机号码" data-cy="users-detail-phone">{{ currentUser.phone }}</el-descriptions-item>
+        <el-descriptions-item label="角色" data-cy="users-detail-role">{{ currentUser.roleName }}</el-descriptions-item>
+        <el-descriptions-item label="状态" data-cy="users-detail-status">
           <el-tag :type="currentUser.isActive === 1 ? 'success' : 'info'">
             {{ currentUser.isActive === 1 ? '启用' : '禁用' }}
           </el-tag>
         </el-descriptions-item>
-        <el-descriptions-item label="创建时间">{{ formatCreateTime(currentUser.createTime) }}</el-descriptions-item>
-        <el-descriptions-item label="更新时间" :span="2">{{
+        <el-descriptions-item label="创建时间" data-cy="users-detail-create-time">{{ formatCreateTime(currentUser.createTime) }}</el-descriptions-item>
+        <el-descriptions-item label="更新时间" :span="2" data-cy="users-detail-update-time">{{
           formatCreateTime(currentUser.updateTime)
         }}</el-descriptions-item>
-        <el-descriptions-item label="备注" :span="2">{{ currentUser.remark || '-' }}</el-descriptions-item>
+        <el-descriptions-item label="备注" :span="2" data-cy="users-detail-remark">{{ currentUser.remark || '-' }}</el-descriptions-item>
       </el-descriptions>
       <template #footer>
-        <el-button @click="detailDialogVisible = false">关闭</el-button>
+        <el-button @click="detailDialogVisible = false" data-cy="users-detail-close-button">关闭</el-button>
       </template>
     </el-dialog>
 
-    <el-dialog v-model="guideDialogVisible" title="操作指引" width="900px" :close-on-click-modal="false">
+    <el-dialog v-model="guideDialogVisible" title="操作指引" width="900px" :close-on-click-modal="false" data-cy="users-guide-dialog">
       <div class="operation-guide">
         <el-steps :active="currentStep" finish-status="success" align-center>
           <el-step title="添加用户" />
@@ -275,9 +276,9 @@
           </div>
         </div>
         <div class="guide-actions">
-          <el-button v-if="currentStep > 0" @click="currentStep--">上一步</el-button>
-          <el-button v-if="currentStep < 3" type="primary" @click="currentStep++">下一步</el-button>
-          <el-button v-else type="primary" @click="handleGuideFinish">完成</el-button>
+          <el-button v-if="currentStep > 0" @click="currentStep--" data-cy="users-guide-prev-btn">上一步</el-button>
+          <el-button v-if="currentStep < 3" type="primary" @click="currentStep++" data-cy="users-guide-next-btn">下一步</el-button>
+          <el-button v-else type="primary" @click="handleGuideFinish" data-cy="users-guide-finish-btn">完成</el-button>
         </div>
       </div>
     </el-dialog>

@@ -36,24 +36,24 @@ public class PortCheckEnvironmentPostProcessor implements EnvironmentPostProcess
             try {
                 serverPort = Integer.parseInt(portProperty);
             } catch (NumberFormatException e) {
-                System.err.println("[端口检测] 无效的端口配置: " + portProperty + ", 使用默认端口 8080");
+                log.error("[端口检测] 无效的端口配置: {}, 使用默认端口 8080", portProperty);
             }
         }
 
-        System.out.println("[端口检测] 正在检测端口 " + serverPort + " 是否可用...");
+        log.info("[端口检测] 正在检测端口 {} 是否可用...", serverPort);
 
         if (isPortInUse(serverPort)) {
             String processInfo = getProcessUsingPort(serverPort);
 
-            System.err.println("[端口检测] 端口 " + serverPort + " 已被占用！");
+            log.error("[端口检测] 端口 {} 已被占用！", serverPort);
             if (processInfo != null) {
-                System.err.println("[端口检测] 占用进程信息: " + processInfo);
+                log.error("[端口检测] 占用进程信息: {}", processInfo);
             }
 
             // 尝试自动终止旧进程
-            System.out.println("[端口检测] 正在尝试自动终止旧进程...");
+            log.info("[端口检测] 正在尝试自动终止旧进程...");
             if (killProcessUsingPort(serverPort)) {
-                System.out.println("[端口检测] 旧进程已终止，等待端口释放...");
+                log.info("[端口检测] 旧进程已终止，等待端口释放...");
                 // 等待端口完全释放
                 try {
                     Thread.sleep(2000);
@@ -63,26 +63,26 @@ public class PortCheckEnvironmentPostProcessor implements EnvironmentPostProcess
 
                 // 再次检查端口
                 if (!isPortInUse(serverPort)) {
-                    System.out.println("[端口检测] 端口 " + serverPort + " 已释放，继续启动应用");
+                    log.info("[端口检测] 端口 {} 已释放，继续启动应用", serverPort);
                     return;
                 } else {
-                    System.err.println("[端口检测] 端口仍然被占用，无法自动释放");
+                    log.error("[端口检测] 端口仍然被占用，无法自动释放");
                 }
             } else {
-                System.err.println("[端口检测] 自动终止旧进程失败");
+                log.error("[端口检测] 自动终止旧进程失败");
             }
 
-            System.err.println("[端口检测] 解决方案:");
-            System.err.println("   1. 手动停止已运行的后端服务");
-            System.err.println("   2. 或者修改配置文件中的 server.port 为其他端口");
-            System.err.println("   3. 强制终止进程: taskkill /F /IM java.exe");
+            log.error("[端口检测] 解决方案:");
+            log.error("   1. 手动停止已运行的后端服务");
+            log.error("   2. 或者修改配置文件中的 server.port 为其他端口");
+            log.error("   3. 强制终止进程: taskkill /F /IM java.exe");
 
             // 抛出异常阻止应用启动
             throw new PortInUseException(
                     String.format("端口 %d 已被占用，请停止其他实例或更换端口", serverPort));
         }
 
-        System.out.println("[端口检测] 端口 " + serverPort + " 可用，继续启动应用");
+        log.info("[端口检测] 端口 {} 可用，继续启动应用", serverPort);
     }
 
     /**
@@ -218,7 +218,7 @@ public class PortCheckEnvironmentPostProcessor implements EnvironmentPostProcess
             process.waitFor();
 
             if (pid != null) {
-                System.out.println("[端口检测] 正在终止Java进程 (PID: " + pid + ")...");
+                log.info("[端口检测] 正在终止Java进程 (PID: {})...", pid);
                 // 终止进程
                 ProcessBuilder killPb = new ProcessBuilder(
                         "cmd.exe",
@@ -229,18 +229,18 @@ public class PortCheckEnvironmentPostProcessor implements EnvironmentPostProcess
                 int exitCode = killProcess.waitFor();
 
                 if (exitCode == 0) {
-                    System.out.println("[端口检测] 成功终止进程 (PID: " + pid + ")");
+                    log.info("[端口检测] 成功终止进程 (PID: {})", pid);
                     return true;
                 } else {
-                    System.err.println("[端口检测] 终止进程失败，退出码: " + exitCode);
+                    log.error("[端口检测] 终止进程失败，退出码: {}", exitCode);
                     return false;
                 }
             } else {
-                System.err.println("[端口检测] 未找到占用端口的Java进程");
+                log.error("[端口检测] 未找到占用端口的Java进程");
                 return false;
             }
         } catch (Exception e) {
-            System.err.println("[端口检测] 终止进程时发生错误: " + e.getMessage());
+            log.error("[端口检测] 终止进程时发生错误: {}", e.getMessage());
             return false;
         }
     }

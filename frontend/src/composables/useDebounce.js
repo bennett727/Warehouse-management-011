@@ -105,7 +105,6 @@ export function useSearchDebounce(searchFn, delay = 300) {
         const results = await searchFn(query);
         searchResults.value = results;
       } catch (error) {
-        console.error('搜索失败:', error);
         searchResults.value = [];
       } finally {
         isSearching.value = false;
@@ -135,7 +134,6 @@ export function useSearchDebounce(searchFn, delay = 300) {
       const results = await searchFn(query);
       searchResults.value = results;
     } catch (error) {
-      console.error('搜索失败:', error);
       searchResults.value = [];
     } finally {
       isSearching.value = false;

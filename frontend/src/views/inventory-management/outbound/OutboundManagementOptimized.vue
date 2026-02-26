@@ -18,9 +18,9 @@
     data-cy="outbound-management-page"
   >
     <template #headerActions>
-      <el-button type="info" :icon="QuestionFilled" @click="showOperationGuide = true">操作指引</el-button>
+      <el-button type="info" :icon="QuestionFilled" @click="showOperationGuide = true" data-cy="outbound-guide-btn">操作指引</el-button>
       <el-button type="primary" :icon="Plus" @click="handleCreate" data-cy="outbound-create-btn">新建出库单</el-button>
-      <el-button type="success" :icon="Download" @click="handleExport" :loading="exportLoading">导出</el-button>
+      <el-button type="success" :icon="Download" @click="handleExport" :loading="exportLoading" data-cy="outbound-export-btn">导出</el-button>
     </template>
 
     <!-- 统计信息卡片 -->
@@ -66,8 +66,8 @@
     </el-card>
 
     <!-- 批量操作栏 -->
-    <div v-if="selectedRows.length > 0" class="batch-operation-bar">
-      <span class="batch-info">已选择 {{ selectedRows.length }} 项</span>
+    <div v-if="selectedRows.length > 0" class="batch-operation-bar" data-cy="outbound-batch-operation-bar">
+      <span class="batch-info" data-cy="outbound-selected-count">已选择 {{ selectedRows.length }} 项</span>
       <el-button-group>
         <el-button
           v-for="op in availableBatchOperations"
@@ -75,11 +75,12 @@
           :type="op.type"
           :icon="getIcon(op.icon)"
           @click="handleBatchOperation(op)"
+          :data-cy="`outbound-batch-${op.key}-btn`"
         >
           {{ op.label }}
         </el-button>
       </el-button-group>
-      <el-button text @click="clearSelection">取消选择</el-button>
+      <el-button text @click="clearSelection" data-cy="outbound-clear-selection-btn">取消选择</el-button>
     </div>
 
     <!-- 数据表格 -->
@@ -94,31 +95,32 @@
       @page-change="handlePageChange"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection" width="55" />
-      <el-table-column prop="orderNo" label="出库单号" width="180" />
-      <el-table-column prop="orderDate" label="出库日期" width="120" />
-      <el-table-column prop="outboundType" label="出库类型" width="100">
+      <el-table-column type="selection" width="55" data-cy="outbound-selection-column" />
+      <el-table-column prop="orderNo" label="出库单号" width="180" data-cy="outbound-order-no-column" />
+      <el-table-column prop="orderDate" label="出库日期" width="120" data-cy="outbound-date-column" />
+      <el-table-column prop="outboundType" label="出库类型" width="100" data-cy="outbound-type-column">
         <template #default="{ row }">
-          <el-tag :type="getOutboundTypeType(row.outboundType)">{{ getOutboundTypeText(row.outboundType) }}</el-tag>
+          <el-tag :type="getOutboundTypeType(row.outboundType)" :data-cy="`outbound-type-tag-${row.id}`">{{ getOutboundTypeText(row.outboundType) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="customer" label="客户/单位" width="150" />
-      <el-table-column prop="operatorName" label="经办人" width="120" />
-      <el-table-column prop="totalQuantity" label="总数量" width="100" align="center" />
-      <el-table-column prop="status" label="状态" width="100">
+      <el-table-column prop="customer" label="客户/单位" width="150" data-cy="outbound-customer-column" />
+      <el-table-column prop="operatorName" label="经办人" width="120" data-cy="outbound-operator-column" />
+      <el-table-column prop="totalQuantity" label="总数量" width="100" align="center" data-cy="outbound-total-qty-column" />
+      <el-table-column prop="status" label="状态" width="100" data-cy="outbound-status-column">
         <template #default="{ row }">
-          <el-tag :type="getOutboundStatusType(row.status)">{{ getOutboundStatusText(row.status) }}</el-tag>
+          <el-tag :type="getOutboundStatusType(row.status)" :data-cy="`outbound-status-tag-${row.id}`">{{ getOutboundStatusText(row.status) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="350" fixed="right">
+      <el-table-column label="操作" width="350" fixed="right" data-cy="outbound-actions-column">
         <template #default="{ row }">
-          <el-button link type="primary" :icon="View" @click="handleView(row)">查看</el-button>
+          <el-button link type="primary" :icon="View" @click="handleView(row)" data-cy="outbound-view-btn">查看</el-button>
           <el-button
             v-if="checkOperationAllowed(row.status, 'edit')"
             link
             type="primary"
             :icon="Edit"
             @click="handleEdit(row)"
+            data-cy="outbound-edit-btn"
             >编辑</el-button
           >
           <el-button
@@ -127,15 +129,16 @@
             type="danger"
             :icon="Delete"
             @click="handleDelete(row)"
+            data-cy="outbound-delete-btn"
             >删除</el-button
           >
-          <el-button v-if="checkOperationAllowed(row.status, 'submit')" link type="success" @click="handleSubmit(row)"
+          <el-button v-if="checkOperationAllowed(row.status, 'submit')" link type="success" @click="handleSubmit(row)" data-cy="outbound-submit-btn"
             >提交审核</el-button
           >
-          <el-button v-if="checkOperationAllowed(row.status, 'audit')" link type="success" @click="handleAudit(row)"
+          <el-button v-if="checkOperationAllowed(row.status, 'audit')" link type="success" @click="handleAudit(row)" data-cy="outbound-audit-btn"
             >审核</el-button
           >
-          <el-button v-if="checkOperationAllowed(row.status, 'execute')" link type="warning" @click="handleExecute(row)"
+          <el-button v-if="checkOperationAllowed(row.status, 'execute')" link type="warning" @click="handleExecute(row)" data-cy="outbound-execute-btn"
             >执行出库</el-button
           >
           <el-button
@@ -143,6 +146,7 @@
             link
             type="success"
             @click="handleResubmit(row)"
+            data-cy="outbound-resubmit-btn"
             >重新提交</el-button
           >
         </template>
@@ -150,7 +154,7 @@
     </DataTable>
 
     <!-- 出库单详情对话框 -->
-    <el-dialog v-model="detailDialogVisible" title="出库单详情" width="1000px" destroy-on-close>
+    <el-dialog v-model="detailDialogVisible" title="出库单详情" width="1000px" destroy-on-close data-cy="outbound-detail-dialog">
       <!-- 流程进度条 -->
       <div class="flow-progress-section">
         <ProcessFlowProgress
@@ -182,28 +186,30 @@
       <!-- 设备清单 -->
       <div class="device-list-section">
         <h4>出库设备清单</h4>
-        <el-table :data="currentRow?.items || []" border size="small">
-          <el-table-column type="index" label="序号" width="60" />
-          <el-table-column prop="deviceCode" label="设备编号" width="150" />
-          <el-table-column prop="deviceName" label="设备名称" width="150" />
-          <el-table-column prop="model" label="规格型号" width="120" />
-          <el-table-column prop="quantity" label="数量" width="80" align="center" />
-          <el-table-column prop="location" label="货位" width="120" />
+        <el-table :data="currentRow?.items || []" border size="small" data-cy="outbound-detail-table">
+          <el-table-column type="index" label="序号" width="60" data-cy="detail-index-column" />
+          <el-table-column prop="deviceCode" label="设备编号" width="150" data-cy="detail-device-code-column" />
+          <el-table-column prop="deviceName" label="设备名称" width="150" data-cy="detail-device-name-column" />
+          <el-table-column prop="model" label="规格型号" width="120" data-cy="detail-model-column" />
+          <el-table-column prop="quantity" label="数量" width="80" align="center" data-cy="detail-quantity-column" />
+          <el-table-column prop="location" label="货位" width="120" data-cy="detail-location-column" />
         </el-table>
       </div>
 
       <template #footer>
-        <el-button @click="detailDialogVisible = false">关闭</el-button>
+        <el-button @click="detailDialogVisible = false" data-cy="outbound-detail-close-btn">关闭</el-button>
         <el-button
           v-if="checkOperationAllowed(currentRow?.status, 'execute')"
           type="primary"
           @click="handleExecute(currentRow)"
+          data-cy="outbound-detail-execute-btn"
           >执行出库</el-button
         >
         <el-button
           v-if="checkOperationAllowed(currentRow?.status, 'audit')"
           type="success"
           @click="handleAudit(currentRow)"
+          data-cy="outbound-detail-audit-btn"
           >审核通过</el-button
         >
       </template>

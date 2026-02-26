@@ -13,10 +13,10 @@
         <span>仓库地图</span>
       </div>
       <div class="header-actions">
-        <el-button-group size="small">
-          <el-button :icon="ZoomIn" @click="handleZoomIn" />
-          <el-button :icon="ZoomOut" @click="handleZoomOut" />
-          <el-button :icon="Refresh" @click="handleRefresh" />
+        <el-button-group size="small" data-cy="warehouse-map-zoom-group">
+          <el-button :icon="ZoomIn" @click="handleZoomIn" data-cy="warehouse-map-zoom-in-btn" />
+          <el-button :icon="ZoomOut" @click="handleZoomOut" data-cy="warehouse-map-zoom-out-btn" />
+          <el-button :icon="Refresh" @click="handleRefresh" data-cy="warehouse-map-refresh-btn" />
         </el-button-group>
       </div>
     </div>

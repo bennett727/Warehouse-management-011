@@ -1,10 +1,10 @@
 <template>
-  <PageLayout title="数据报表" description="查看和导出各类业务数据报表" data-cy="datareportspage-page">
+  <PageLayout title="数据报表" description="查看和导出各类业务数据报表" data-cy="data-reports-page">
     <template #headerActions>
-      <el-button data-cy="btn-0" type="info" :icon="QuestionFilled" @click="handleShowOperationGuide"
+      <el-button data-cy="data-reports-guide-btn" type="info" :icon="QuestionFilled" @click="handleShowOperationGuide"
         >操作指引</el-button
       >
-      <el-button data-cy="btn-3" type="primary" :icon="Download" @click="handleExport" :loading="loading.export"
+      <el-button data-cy="data-reports-export-btn" type="primary" :icon="Download" @click="handleExport" :loading="loading.export"
         >导出报表</el-button
       >
     </template>
@@ -20,7 +20,7 @@
       @reset="handleFilterReset"
     />
 
-    <el-card data-cy="card-1" class="summary-card" shadow="never">
+    <el-card data-cy="data-reports-summary-card" class="summary-card" shadow="never">
       <template #header>
         <div class="card-header">
           <span>数据汇总</span>
@@ -28,11 +28,11 @@
       </template>
 
       <div v-loading="loading.summary" class="summary-content">
-        <el-row data-cy="row-0" :gutter="20">
-          <el-col data-cy="col-0" :xs="12" :sm="12" :md="6" :lg="6" :xl="6">
-            <div class="summary-item summary-total">
+        <el-row :gutter="20">
+          <el-col :xs="12" :sm="12" :md="6" :lg="6" :xl="6">
+            <div class="summary-item summary-total" data-cy="data-reports-total-item">
               <div class="summary-icon">
-                <el-icon data-cy="icon-1" :size="32"><Box /></el-icon>
+                <el-icon :size="32"><Box /></el-icon>
               </div>
               <div class="summary-content">
                 <div class="summary-value">{{ summaryData.totalCount || 0 }}</div>
@@ -41,10 +41,10 @@
             </div>
           </el-col>
 
-          <el-col data-cy="col-1" :xs="12" :sm="12" :md="6" :lg="6" :xl="6">
-            <div class="summary-item summary-today">
+          <el-col :xs="12" :sm="12" :md="6" :lg="6" :xl="6">
+            <div class="summary-item summary-today" data-cy="data-reports-today-item">
               <div class="summary-icon">
-                <el-icon data-cy="icon-2" :size="32"><Calendar /></el-icon>
+                <el-icon :size="32"><Calendar /></el-icon>
               </div>
               <div class="summary-content">
                 <div class="summary-value">{{ summaryData.todayCount || 0 }}</div>
@@ -53,10 +53,10 @@
             </div>
           </el-col>
 
-          <el-col data-cy="col-2" :xs="12" :sm="12" :md="6" :lg="6" :xl="6">
-            <div class="summary-item summary-month">
+          <el-col :xs="12" :sm="12" :md="6" :lg="6" :xl="6">
+            <div class="summary-item summary-month" data-cy="data-reports-month-item">
               <div class="summary-icon">
-                <el-icon data-cy="icon-3" :size="32"><Calendar /></el-icon>
+                <el-icon :size="32"><Calendar /></el-icon>
               </div>
               <div class="summary-content">
                 <div class="summary-value">{{ summaryData.monthCount || 0 }}</div>
@@ -65,10 +65,10 @@
             </div>
           </el-col>
 
-          <el-col data-cy="col-3" :xs="12" :sm="12" :md="6" :lg="6" :xl="6">
-            <div class="summary-item summary-value">
+          <el-col :xs="12" :sm="12" :md="6" :lg="6" :xl="6">
+            <div class="summary-item summary-value" data-cy="data-reports-value-item">
               <div class="summary-icon">
-                <el-icon data-cy="icon-4" :size="32"><Coin /></el-icon>
+                <el-icon :size="32"><Coin /></el-icon>
               </div>
               <div class="summary-content">
                 <div class="summary-value">{{ formatCurrency(summaryData.totalValue) }}</div>
@@ -80,7 +80,7 @@
       </div>
     </el-card>
 
-    <el-card data-cy="card-2" class="chart-card" shadow="never">
+    <el-card data-cy="data-reports-chart-card" class="chart-card" shadow="never">
       <template #header>
         <div class="card-header">
           <span>{{ currentReportLabel }}趋势图</span>
@@ -89,15 +89,15 @@
 
       <div v-loading="loading[queryParams.reportType]" class="chart-container">
         <div v-if="!reportData[queryParams.reportType]" class="chart-placeholder">
-          <el-icon data-cy="icon-5" :size="64"><TrendCharts /></el-icon>
+          <el-icon :size="64"><TrendCharts /></el-icon>
           <p>暂无数据</p>
         </div>
         <div v-else class="chart-content">
           <div class="chart-tabs">
-            <el-radio-group data-cy="radio-0" v-model="chartType" size="small">
-              <el-radio-button data-cy="radio-1" label="line">折线图</el-radio-button>
-              <el-radio-button data-cy="radio-2" label="bar">柱状图</el-radio-button>
-              <el-radio-button data-cy="radio-3" label="pie">饼图</el-radio-button>
+            <el-radio-group data-cy="data-reports-chart-type-radio" v-model="chartType" size="small">
+              <el-radio-button label="line">折线图</el-radio-button>
+              <el-radio-button label="bar">柱状图</el-radio-button>
+              <el-radio-button label="pie">饼图</el-radio-button>
             </el-radio-group>
           </div>
           <div ref="chartRef" class="chart" style="width: 100%; height: 400px"></div>
@@ -105,19 +105,19 @@
       </div>
     </el-card>
 
-    <el-card data-cy="card-3" class="table-card" shadow="never">
+    <el-card data-cy="data-reports-table-card" class="table-card" shadow="never">
       <template #header>
         <div class="card-header">
           <span>{{ currentReportLabel }}详细数据</span>
-          <el-button data-cy="btn-4" type="primary" link size="small" @click="handleRefresh">
-            <el-icon data-cy="icon-6"><Refresh /></el-icon>
+          <el-button data-cy="data-reports-refresh-btn" type="primary" link size="small" @click="handleRefresh">
+            <el-icon><Refresh /></el-icon>
             刷新
           </el-button>
         </div>
       </template>
 
       <el-table
-        data-cy="table-0"
+        data-cy="data-reports-table"
         v-loading="loading[queryParams.reportType]"
         :data="tableData"
         border
@@ -125,26 +125,26 @@
         style="width: 100%"
         :default-sort="{ prop: 'date', order: 'descending' }"
       >
-        <el-table-column data-cy="table-1" prop="date" label="日期" width="120" sortable />
-        <el-table-column data-cy="table-2" prop="name" label="名称" width="180" />
-        <el-table-column data-cy="table-3" prop="code" label="编号" width="150" />
-        <el-table-column data-cy="table-4" prop="type" label="类型" width="120" />
-        <el-table-column data-cy="table-5" prop="count" label="数量" width="100" sortable />
-        <el-table-column data-cy="table-6" prop="value" label="价值" width="120" sortable>
+        <el-table-column prop="date" label="日期" width="120" sortable />
+        <el-table-column prop="name" label="名称" width="180" />
+        <el-table-column prop="code" label="编号" width="150" />
+        <el-table-column prop="type" label="类型" width="120" />
+        <el-table-column prop="count" label="数量" width="100" sortable />
+        <el-table-column prop="value" label="价值" width="120" sortable>
           <template #default="{ row }">
             {{ formatCurrency(row.value) }}
           </template>
         </el-table-column>
-        <el-table-column data-cy="table-7" prop="status" label="状态" width="100">
+        <el-table-column prop="status" label="状态" width="100">
           <template #default="{ row }">
-            <el-tag data-cy="tag-0" :type="getStatusType(row.status)">{{ getStatusText(row.status) }}</el-tag>
+            <el-tag :type="getStatusType(row.status)">{{ getStatusText(row.status) }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column data-cy="table-8" prop="remark" label="备注" min-width="200" show-overflow-tooltip />
+        <el-table-column prop="remark" label="备注" min-width="200" show-overflow-tooltip />
       </el-table>
 
       <el-pagination
-        data-cy="pagination-0"
+        data-cy="data-reports-pagination"
         v-model:current-page="pagination.page"
         v-model:page-size="pagination.pageSize"
         :page-sizes="[10, 20, 50, 100]"
@@ -156,18 +156,18 @@
     </el-card>
 
     <el-dialog
-      data-cy="dialog-0"
+      data-cy="data-reports-guide-dialog"
       v-model="guideDialogVisible"
       title="操作指引"
       width="900px"
       :close-on-click-modal="false"
     >
       <div class="operation-guide">
-        <el-steps data-cy="steps-0" :active="currentStep" finish-status="success" align-center>
-          <el-step data-cy="step-0" title="筛选查询" />
-          <el-step data-cy="step-1" title="数据汇总" />
-          <el-step data-cy="step-2" title="图表分析" />
-          <el-step data-cy="step-3" title="数据导出" />
+        <el-steps data-cy="data-reports-guide-steps" :active="currentStep" finish-status="success" align-center>
+          <el-step title="筛选查询" />
+          <el-step title="数据汇总" />
+          <el-step title="图表分析" />
+          <el-step title="数据导出" />
         </el-steps>
         <div class="guide-content">
           <div v-if="currentStep === 0" class="guide-item">
@@ -182,7 +182,7 @@
               <li><strong>查询操作</strong>：点击"查询"按钮应用筛选条件，"重置"按钮恢复默认设置</li>
             </ul>
             <div class="guide-tip">
-              <el-icon data-cy="icon-7"><WarningFilled /></el-icon>
+              <el-icon><WarningFilled /></el-icon>
               <span>提示：多个筛选条件可以组合使用，系统会同时满足所有条件的记录进行统计</span>
             </div>
           </div>
@@ -199,7 +199,7 @@
               <li><strong>实时更新</strong>：汇总数据会根据筛选条件实时更新</li>
             </ul>
             <div class="guide-tip">
-              <el-icon data-cy="icon-8"><WarningFilled /></el-icon>
+              <el-icon><WarningFilled /></el-icon>
               <span>提示：汇总数据基于当前筛选条件，调整筛选条件后需要点击"查询"按钮更新数据</span>
             </div>
           </div>
@@ -216,7 +216,7 @@
               <li><strong>响应式设计</strong>：图表会自动适应屏幕大小，支持移动端查看</li>
             </ul>
             <div class="guide-tip">
-              <el-icon data-cy="icon-9"><WarningFilled /></el-icon>
+              <el-icon><WarningFilled /></el-icon>
               <span>提示：不同报表类型可能适合不同的图表展示方式，建议根据分析目的选择合适的图表类型</span>
             </div>
           </div>
@@ -233,15 +233,15 @@
               <li><strong>刷新数据</strong>：点击"刷新"按钮重新加载最新数据</li>
             </ul>
             <div class="guide-tip">
-              <el-icon data-cy="icon-10"><WarningFilled /></el-icon>
+              <el-icon><WarningFilled /></el-icon>
               <span>提示：导出操作可能需要一定时间，请耐心等待。建议在非高峰期进行大数据量导出</span>
             </div>
           </div>
         </div>
         <div class="guide-actions">
-          <el-button data-cy="btn-5" v-if="currentStep > 0" @click="currentStep--">上一步</el-button>
-          <el-button data-cy="btn-6" v-if="currentStep < 3" type="primary" @click="currentStep++">下一步</el-button>
-          <el-button data-cy="btn-7" v-if="currentStep === 3" type="success" @click="guideDialogVisible = false"
+          <el-button data-cy="data-reports-guide-prev-btn" v-if="currentStep > 0" @click="currentStep--">上一步</el-button>
+          <el-button data-cy="data-reports-guide-next-btn" v-if="currentStep < 3" type="primary" @click="currentStep++">下一步</el-button>
+          <el-button data-cy="data-reports-guide-finish-btn" v-if="currentStep === 3" type="success" @click="guideDialogVisible = false"
             >完成</el-button
           >
         </div>

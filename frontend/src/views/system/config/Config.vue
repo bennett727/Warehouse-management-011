@@ -29,7 +29,7 @@
           </div>
         </template>
 
-        <el-tabs v-model="activeTab" class="config-tabs" tab-position="left">
+        <el-tabs v-model="activeTab" class="config-tabs" tab-position="left" data-cy="config-tabs">
           <el-tab-pane v-if="isAdmin" name="basic">
             <template #label>
               <div class="tab-label">
@@ -44,16 +44,17 @@
                 :rules="basicRules"
                 label-width="140px"
                 class="config-form"
+                data-cy="config-basic-form"
               >
                 <el-form-item label="系统名称" prop="systemName">
-                  <el-input v-model="basicFormData.systemName" placeholder="请输入系统名称" clearable>
+                  <el-input v-model="basicFormData.systemName" placeholder="请输入系统名称" clearable data-cy="config-system-name-input">
                     <template #prefix>
                       <el-icon><Monitor /></el-icon>
                     </template>
                   </el-input>
                 </el-form-item>
                 <el-form-item label="系统版本" prop="systemVersion">
-                  <el-input v-model="basicFormData.systemVersion" placeholder="请输入系统版本" clearable>
+                  <el-input v-model="basicFormData.systemVersion" placeholder="请输入系统版本" clearable data-cy="config-system-version-input">
                     <template #prefix>
                       <el-icon><PriceTag /></el-icon>
                     </template>
@@ -65,28 +66,29 @@
                     type="textarea"
                     :rows="4"
                     placeholder="请输入系统描述"
+                    data-cy="config-system-description-input"
                   />
                 </el-form-item>
                 <el-form-item label="维护联系人" prop="contactPerson">
-                  <el-input v-model="basicFormData.contactPerson" placeholder="请输入维护联系人" clearable>
+                  <el-input v-model="basicFormData.contactPerson" placeholder="请输入维护联系人" clearable data-cy="config-contact-person-input">
                     <template #prefix>
                       <el-icon><User /></el-icon>
                     </template>
                   </el-input>
                 </el-form-item>
                 <el-form-item label="联系电话" prop="contactPhone">
-                  <el-input v-model="basicFormData.contactPhone" placeholder="请输入联系电话" clearable>
+                  <el-input v-model="basicFormData.contactPhone" placeholder="请输入联系电话" clearable data-cy="config-contact-phone-input">
                     <template #prefix>
                       <el-icon><Phone /></el-icon>
                     </template>
                   </el-input>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="saveBasicConfig" :loading="buttonLoading.saveBasic" size="large">
+                  <el-button type="primary" @click="saveBasicConfig" :loading="buttonLoading.saveBasic" size="large" data-cy="config-save-basic-btn">
                     <el-icon><Check /></el-icon>
                     保存配置
                   </el-button>
-                  <el-button @click="resetBasicForm" :loading="buttonLoading.resetBasic" size="large">
+                  <el-button @click="resetBasicForm" :loading="buttonLoading.resetBasic" size="large" data-cy="config-reset-basic-btn">
                     <el-icon><RefreshLeft /></el-icon>
                     重置
                   </el-button>
@@ -109,19 +111,20 @@
                 :rules="emailRules"
                 label-width="140px"
                 class="config-form"
+                data-cy="config-email-form"
               >
                 <el-form-item label="SMTP服务器" prop="smtpServer">
-                  <el-input v-model="emailFormData.smtpServer" placeholder="请输入SMTP服务器地址" clearable>
+                  <el-input v-model="emailFormData.smtpServer" placeholder="请输入SMTP服务器地址" clearable data-cy="config-smtp-server-input">
                     <template #prefix>
                       <el-icon><Connection /></el-icon>
                     </template>
                   </el-input>
                 </el-form-item>
                 <el-form-item label="SMTP端口" prop="smtpPort">
-                  <el-input-number v-model="emailFormData.smtpPort" :min="1" :max="65535" :step="1" />
+                  <el-input-number v-model="emailFormData.smtpPort" :min="1" :max="65535" :step="1" data-cy="config-smtp-port-input" />
                 </el-form-item>
                 <el-form-item label="发件人邮箱" prop="senderEmail">
-                  <el-input v-model="emailFormData.senderEmail" placeholder="请输入发件人邮箱" clearable>
+                  <el-input v-model="emailFormData.senderEmail" placeholder="请输入发件人邮箱" clearable data-cy="config-sender-email-input">
                     <template #prefix>
                       <el-icon><Message /></el-icon>
                     </template>
@@ -133,6 +136,7 @@
                     type="password"
                     placeholder="请输入邮箱密码"
                     show-password
+                    data-cy="config-email-password-input"
                   >
                     <template #prefix>
                       <el-icon><Lock /></el-icon>
@@ -143,15 +147,15 @@
                   <el-switch v-model="emailFormData.enableSSL" active-text="启用" inactive-text="禁用" />
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="saveEmailConfig" :loading="buttonLoading.saveEmail" size="large">
+                  <el-button type="primary" @click="saveEmailConfig" :loading="buttonLoading.saveEmail" size="large" data-cy="config-save-email-btn">
                     <el-icon><Check /></el-icon>
                     保存配置
                   </el-button>
-                  <el-button @click="resetEmailForm" :loading="buttonLoading.resetEmail" size="large">
+                  <el-button @click="resetEmailForm" :loading="buttonLoading.resetEmail" size="large" data-cy="config-reset-email-btn">
                     <el-icon><RefreshLeft /></el-icon>
                     重置
                   </el-button>
-                  <el-button type="info" @click="testEmailConfig" :loading="buttonLoading.testEmail" size="large">
+                  <el-button type="info" @click="testEmailConfig" :loading="buttonLoading.testEmail" size="large" data-cy="config-test-email-btn">
                     <el-icon><Connection /></el-icon>
                     测试连接
                   </el-button>
@@ -168,9 +172,9 @@
               </div>
             </template>
             <div class="tab-content">
-              <el-form ref="smsForm" :model="smsFormData" :rules="smsRules" label-width="140px" class="config-form">
+              <el-form ref="smsForm" :model="smsFormData" :rules="smsRules" label-width="140px" class="config-form" data-cy="config-sms-form">
                 <el-form-item label="短信服务商" prop="smsProvider">
-                  <el-select v-model="smsFormData.smsProvider" placeholder="请选择短信服务商" style="width: 100%">
+                  <el-select v-model="smsFormData.smsProvider" placeholder="请选择短信服务商" style="width: 100%" data-cy="config-sms-provider-select">
                     <el-option label="阿里云短信" value="aliyun">
                       <el-icon><Platform /></el-icon>
                       <span>阿里云短信</span>
@@ -186,43 +190,43 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="API密钥" prop="apiKey">
-                  <el-input v-model="smsFormData.apiKey" placeholder="请输入API密钥" clearable>
+                  <el-input v-model="smsFormData.apiKey" placeholder="请输入API密钥" clearable data-cy="config-sms-api-key-input">
                     <template #prefix>
                       <el-icon><Key /></el-icon>
                     </template>
                   </el-input>
                 </el-form-item>
                 <el-form-item label="API密钥ID" prop="apiSecret">
-                  <el-input v-model="smsFormData.apiSecret" placeholder="请输入API密钥ID" clearable>
+                  <el-input v-model="smsFormData.apiSecret" placeholder="请输入API密钥ID" clearable data-cy="config-sms-api-secret-input">
                     <template #prefix>
                       <el-icon><Key /></el-icon>
                     </template>
                   </el-input>
                 </el-form-item>
                 <el-form-item label="签名" prop="signature">
-                  <el-input v-model="smsFormData.signature" placeholder="请输入短信签名" clearable>
+                  <el-input v-model="smsFormData.signature" placeholder="请输入短信签名" clearable data-cy="config-sms-signature-input">
                     <template #prefix>
                       <el-icon><EditPen /></el-icon>
                     </template>
                   </el-input>
                 </el-form-item>
                 <el-form-item label="模板ID" prop="templateId">
-                  <el-input v-model="smsFormData.templateId" placeholder="请输入模板ID" clearable>
+                  <el-input v-model="smsFormData.templateId" placeholder="请输入模板ID" clearable data-cy="config-sms-template-id-input">
                     <template #prefix>
                       <el-icon><Document /></el-icon>
                     </template>
                   </el-input>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="saveSmsConfig" :loading="buttonLoading.saveSms" size="large">
+                  <el-button type="primary" @click="saveSmsConfig" :loading="buttonLoading.saveSms" size="large" data-cy="config-save-sms-btn">
                     <el-icon><Check /></el-icon>
                     保存配置
                   </el-button>
-                  <el-button @click="resetSmsForm" :loading="buttonLoading.resetSms" size="large">
+                  <el-button @click="resetSmsForm" :loading="buttonLoading.resetSms" size="large" data-cy="config-reset-sms-btn">
                     <el-icon><RefreshLeft /></el-icon>
                     重置
                   </el-button>
-                  <el-button type="info" @click="testSmsConfig" :loading="buttonLoading.testSms" size="large">
+                  <el-button type="info" @click="testSmsConfig" :loading="buttonLoading.testSms" size="large" data-cy="config-test-sms-btn">
                     <el-icon><ChatDotRound /></el-icon>
                     测试发送
                   </el-button>
@@ -245,9 +249,10 @@
                 :rules="storageRules"
                 label-width="140px"
                 class="config-form"
+                data-cy="config-storage-form"
               >
                 <el-form-item label="存储类型" prop="storageType">
-                  <el-select v-model="storageFormData.storageType" placeholder="请选择存储类型" style="width: 100%">
+                  <el-select v-model="storageFormData.storageType" placeholder="请选择存储类型" style="width: 100%" data-cy="config-storage-type-select">
                     <el-option label="本地存储" value="local">
                       <el-icon><Folder /></el-icon>
                       <span>本地存储</span>
@@ -263,21 +268,21 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="存储路径" prop="storagePath">
-                  <el-input v-model="storageFormData.storagePath" placeholder="请输入存储路径" clearable>
+                  <el-input v-model="storageFormData.storagePath" placeholder="请输入存储路径" clearable data-cy="config-storage-path-input">
                     <template #prefix>
                       <el-icon><FolderOpened /></el-icon>
                     </template>
                   </el-input>
                 </el-form-item>
                 <el-form-item v-if="storageFormData.storageType !== 'local'" label="Endpoint" prop="endpoint">
-                  <el-input v-model="storageFormData.endpoint" placeholder="请输入存储服务地址" clearable>
+                  <el-input v-model="storageFormData.endpoint" placeholder="请输入存储服务地址" clearable data-cy="config-storage-endpoint-input">
                     <template #prefix>
                       <el-icon><Connection /></el-icon>
                     </template>
                   </el-input>
                 </el-form-item>
                 <el-form-item v-if="storageFormData.storageType !== 'local'" label="Access Key" prop="accessKey">
-                  <el-input v-model="storageFormData.accessKey" placeholder="请输入Access Key" clearable>
+                  <el-input v-model="storageFormData.accessKey" placeholder="请输入Access Key" clearable data-cy="config-storage-access-key-input">
                     <template #prefix>
                       <el-icon><Key /></el-icon>
                     </template>
@@ -289,6 +294,7 @@
                     type="password"
                     placeholder="请输入Secret Key"
                     show-password
+                    data-cy="config-storage-secret-key-input"
                   >
                     <template #prefix>
                       <el-icon><Lock /></el-icon>
@@ -296,7 +302,7 @@
                   </el-input>
                 </el-form-item>
                 <el-form-item v-if="storageFormData.storageType !== 'local'" label="Bucket名称" prop="bucketName">
-                  <el-input v-model="storageFormData.bucketName" placeholder="请输入Bucket名称" clearable>
+                  <el-input v-model="storageFormData.bucketName" placeholder="请输入Bucket名称" clearable data-cy="config-storage-bucket-name-input">
                     <template #prefix>
                       <el-icon><Document /></el-icon>
                     </template>
@@ -308,11 +314,12 @@
                     @click="saveStorageConfig"
                     :loading="buttonLoading.saveStorage"
                     size="large"
+                    data-cy="config-save-storage-btn"
                   >
                     <el-icon><Check /></el-icon>
                     保存配置
                   </el-button>
-                  <el-button @click="resetStorageForm" :loading="buttonLoading.resetStorage" size="large">
+                  <el-button @click="resetStorageForm" :loading="buttonLoading.resetStorage" size="large" data-cy="config-reset-storage-btn">
                     <el-icon><RefreshLeft /></el-icon>
                     重置
                   </el-button>
@@ -335,12 +342,14 @@
                 :rules="securityRules"
                 label-width="160px"
                 class="config-form"
+                data-cy="config-security-form"
               >
                 <el-form-item label="密码复杂度" prop="passwordComplexity">
                   <el-select
                     v-model="securityFormData.passwordComplexity"
                     placeholder="请选择密码复杂度"
                     style="width: 100%"
+                    data-cy="config-password-complexity-select"
                   >
                     <el-option label="简单" value="simple">
                       <el-icon><Star /></el-icon>
@@ -357,19 +366,19 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="密码有效期(天)" prop="passwordExpiry">
-                  <el-input-number v-model="securityFormData.passwordExpiry" :min="7" :max="365" :step="1" />
+                  <el-input-number v-model="securityFormData.passwordExpiry" :min="7" :max="365" :step="1" data-cy="config-password-expiry-input" />
                 </el-form-item>
                 <el-form-item label="登录失败次数限制" prop="loginFailLimit">
-                  <el-input-number v-model="securityFormData.loginFailLimit" :min="3" :max="20" :step="1" />
+                  <el-input-number v-model="securityFormData.loginFailLimit" :min="3" :max="20" :step="1" data-cy="config-login-fail-limit-input" />
                 </el-form-item>
                 <el-form-item label="验证码有效期(分钟)" prop="captchaExpiry">
-                  <el-input-number v-model="securityFormData.captchaExpiry" :min="1" :max="30" :step="1" />
+                  <el-input-number v-model="securityFormData.captchaExpiry" :min="1" :max="30" :step="1" data-cy="config-captcha-expiry-input" />
                 </el-form-item>
                 <el-form-item label="会话超时时间(分钟)" prop="sessionTimeout">
-                  <el-input-number v-model="securityFormData.sessionTimeout" :min="5" :max="120" :step="1" />
+                  <el-input-number v-model="securityFormData.sessionTimeout" :min="5" :max="120" :step="1" data-cy="config-session-timeout-input" />
                 </el-form-item>
                 <el-form-item label="启用IP白名单" prop="enableIpWhitelist">
-                  <el-switch v-model="securityFormData.enableIpWhitelist" active-text="启用" inactive-text="禁用" />
+                  <el-switch v-model="securityFormData.enableIpWhitelist" active-text="启用" inactive-text="禁用" data-cy="config-enable-ip-whitelist-switch" />
                 </el-form-item>
                 <el-form-item v-if="securityFormData.enableIpWhitelist" label="IP白名单">
                   <el-input
@@ -377,6 +386,7 @@
                     type="textarea"
                     :rows="4"
                     placeholder="请输入IP白名单，多个IP用换行分隔"
+                    data-cy="config-ip-whitelist-input"
                   />
                 </el-form-item>
                 <el-form-item>
@@ -385,11 +395,12 @@
                     @click="saveSecurityConfig"
                     :loading="buttonLoading.saveSecurity"
                     size="large"
+                    data-cy="config-save-security-btn"
                   >
                     <el-icon><Check /></el-icon>
                     保存配置
                   </el-button>
-                  <el-button @click="resetSecurityForm" :loading="buttonLoading.resetSecurity" size="large">
+                  <el-button @click="resetSecurityForm" :loading="buttonLoading.resetSecurity" size="large" data-cy="config-reset-security-btn">
                     <el-icon><RefreshLeft /></el-icon>
                     重置
                   </el-button>

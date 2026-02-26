@@ -12,11 +12,28 @@ import { createLogger } from './logger';
 
 const logger = createLogger('Storage');
 
-// 加密密钥（实际项目中应从环境变量或安全存储获取）
-const ENCRYPTION_KEY = import.meta.env.VITE_STORAGE_KEY || 'warehouse-management-secure-key-2026';
+// 加密密钥（必须从环境变量获取，生产环境必须配置）
+const ENCRYPTION_KEY = import.meta.env.VITE_STORAGE_KEY;
+
+// 如果没有配置密钥，发出警告并使用不安全的降级方案
+if (!ENCRYPTION_KEY || ENCRYPTION_KEY === 'your-secure-storage-key-change-in-production') {
+  console.warn(
+    '[Security Warning] VITE_STORAGE_KEY is not configured or using default value. ' +
+      'Local storage encryption is disabled. ' +
+      'Please set a secure key in your .env file: VITE_STORAGE_KEY=your-secure-key'
+  );
+}
 
 // 存储前缀，用于区分应用数据
 const STORAGE_PREFIX = 'wms_';
+
+/**
+ * 检查是否可以使用加密
+ * @returns {boolean}
+ */
+function isEncryptionAvailable() {
+  return ENCRYPTION_KEY && ENCRYPTION_KEY !== 'your-secure-storage-key-change-in-production';
+}
 
 /**
  * 加密数据
@@ -24,6 +41,10 @@ const STORAGE_PREFIX = 'wms_';
  * @returns {string} 加密后的数据
  */
 function encrypt(data) {
+  if (!isEncryptionAvailable()) {
+    // 没有配置密钥，返回原始数据（添加标记）
+    return `__UNENCRYPTED__${data}`;
+  }
   try {
     return CryptoJS.AES.encrypt(data, ENCRYPTION_KEY).toString();
   } catch (error) {
@@ -38,6 +59,13 @@ function encrypt(data) {
  * @returns {string} 解密后的数据
  */
 function decrypt(encryptedData) {
+  if (!isEncryptionAvailable()) {
+    // 没有配置密钥，检查是否是未加密数据
+    if (encryptedData.startsWith('__UNENCRYPTED__')) {
+      return encryptedData.substring('__UNENCRYPTED__'.length);
+    }
+    return null;
+  }
   try {
     const bytes = CryptoJS.AES.decrypt(encryptedData, ENCRYPTION_KEY);
     return bytes.toString(CryptoJS.enc.Utf8);
@@ -126,10 +154,15 @@ export function removeSecureItem(key) {
  */
 export function clearSecureStorage() {
   try {
-    Object.keys(localStorage).forEach((key) => {
-      if (key.startsWith(STORAGE_PREFIX)) {
-        localStorage.removeItem(key);
+    const keysToRemove = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(STORAGE_PREFIX)) {
+        keysToRemove.push(key);
       }
+    }
+    keysToRemove.forEach((key) => {
+      localStorage.removeItem(key);
     });
   } catch (error) {
     logger.error('清空失败', error);
@@ -251,18 +284,44 @@ export function getCache(cacheKey) {
  * 清除过期缓存
  */
 export function clearExpiredCache() {
-  Object.keys(localStorage).forEach((key) => {
-    if (key.startsWith(`${STORAGE_PREFIX}cache_`)) {
-      try {
-        const cached = getSecureItem(key.replace(STORAGE_PREFIX, ''));
-        if (cached && Date.now() > cached.expiresAt) {
-          localStorage.removeItem(key);
+  try {
+    const keysToRemove = [];
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(`${STORAGE_PREFIX}cache_`)) {
+        try {
+          const storedData = localStorage.getItem(key);
+          if (!storedData) {
+            continue;
+          }
+
+          const parsed = JSON.parse(storedData);
+          const cached = parsed.value;
+
+          if (cached && cached.expiresAt && Date.now() > cached.expiresAt) {
+            keysToRemove.push(key);
+          }
+        } catch (_error) {
+          keysToRemove.push(key);
         }
-      } catch (error) {
-        logger.error('清理缓存失败', error);
       }
     }
-  });
+
+    keysToRemove.forEach((key) => {
+      try {
+        localStorage.removeItem(key);
+      } catch (e) {
+        logger.error('移除过期缓存失败', e);
+      }
+    });
+
+    if (keysToRemove.length > 0) {
+      logger.info(`已清理 ${keysToRemove.length} 个过期缓存`);
+    }
+  } catch (error) {
+    logger.error('清理缓存失败', error);
+  }
 }
 
 /**
@@ -270,22 +329,44 @@ export function clearExpiredCache() {
  * @returns {Object} 存储统计
  */
 export function getStorageStats() {
-  let totalSize = 0;
-  let itemCount = 0;
-
-  Object.keys(localStorage).forEach((key) => {
-    if (key.startsWith(STORAGE_PREFIX)) {
-      const value = localStorage.getItem(key);
-      totalSize += key.length + (value?.length || 0);
-      itemCount++;
+  try {
+    if (!localStorage || typeof localStorage !== 'object') {
+      return {
+        itemCount: 0,
+        totalSize: '0 KB',
+        totalBytes: 0,
+      };
     }
-  });
 
-  return {
-    itemCount,
-    totalSize: `${(totalSize / 1024).toFixed(2)} KB`,
-    totalBytes: totalSize,
-  };
+    let totalSize = 0;
+    let itemCount = 0;
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(STORAGE_PREFIX)) {
+        try {
+          const value = localStorage.getItem(key);
+          totalSize += key.length + (value?.length || 0);
+          itemCount++;
+        } catch (_e) {
+          // 忽略单个key的错误
+        }
+      }
+    }
+
+    return {
+      itemCount,
+      totalSize: `${(totalSize / 1024).toFixed(2)} KB`,
+      totalBytes: totalSize,
+    };
+  } catch (error) {
+    logger.error('获取存储统计失败', error);
+    return {
+      itemCount: 0,
+      totalSize: '0 KB',
+      totalBytes: 0,
+    };
+  }
 }
 
 // 定期清理过期缓存

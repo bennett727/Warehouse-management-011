@@ -108,7 +108,7 @@
           </el-input>
         </div>
       </template>
-      <el-table :data="filteredTableData" stripe border v-loading="tableLoading">
+      <el-table :data="filteredTableData" stripe border v-loading="tableLoading" data-cy="data-analysis-table">
         <el-table-column prop="date" label="日期" width="120" sortable />
         <el-table-column prop="category" label="类别" width="120" />
         <el-table-column prop="inbound" label="入库数量" width="100" sortable />
@@ -135,6 +135,7 @@
           layout="total, sizes, prev, pager, next, jumper"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
+          data-cy="data-analysis-pagination"
         />
       </div>
     </el-card>

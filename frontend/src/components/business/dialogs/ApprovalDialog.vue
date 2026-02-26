@@ -13,19 +13,20 @@
     :close-on-click-modal="false"
     destroy-on-close
     class="approval-dialog"
+    data-cy="approval-dialog"
   >
     <div class="approval-content">
-      <div class="business-info" v-if="business">
-        <el-descriptions :column="2" border size="small">
-          <el-descriptions-item label="业务编号">{{ business.businessNo }}</el-descriptions-item>
-          <el-descriptions-item label="业务类型">
+      <div class="business-info" v-if="business" data-cy="approval-business-info">
+        <el-descriptions :column="2" border size="small" data-cy="approval-business-descriptions">
+          <el-descriptions-item label="业务编号" data-cy="approval-business-no">{{ business.businessNo }}</el-descriptions-item>
+          <el-descriptions-item label="业务类型" data-cy="approval-business-type">
             <el-tag :type="getBusinessTypeTag(business.businessType)" size="small">
               {{ getBusinessTypeText(business.businessType) }}
             </el-tag>
           </el-descriptions-item>
-          <el-descriptions-item label="申请人">{{ business.applicant }}</el-descriptions-item>
-          <el-descriptions-item label="申请时间">{{ business.applyTime }}</el-descriptions-item>
-          <el-descriptions-item label="当前状态" :span="2">
+          <el-descriptions-item label="申请人" data-cy="approval-applicant">{{ business.applicant }}</el-descriptions-item>
+          <el-descriptions-item label="申请时间" data-cy="approval-apply-time">{{ business.applyTime }}</el-descriptions-item>
+          <el-descriptions-item label="当前状态" :span="2" data-cy="approval-status">
             <el-tag :type="getStatusTagType(business.status)" size="small">
               {{ getStatusText(business.status) }}
             </el-tag>
@@ -35,21 +36,21 @@
 
       <el-divider />
 
-      <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px">
-        <el-form-item label="审批结果" prop="result">
-          <el-radio-group v-model="formData.result">
-            <el-radio value="approve">
+      <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px" data-cy="approval-form">
+        <el-form-item label="审批结果" prop="result" data-cy="approval-result-form-item">
+          <el-radio-group v-model="formData.result" data-cy="approval-result-radio-group">
+            <el-radio value="approve" data-cy="approval-approve-radio">
               <el-icon style="color: #67c23a"><CircleCheck /></el-icon>
               通过
             </el-radio>
-            <el-radio value="reject">
+            <el-radio value="reject" data-cy="approval-reject-radio">
               <el-icon style="color: #f56c6c"><CircleClose /></el-icon>
               驳回
             </el-radio>
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="审批意见" prop="comment">
+        <el-form-item label="审批意见" prop="comment" data-cy="approval-comment-form-item">
           <el-input
             v-model="formData.comment"
             type="textarea"
@@ -57,18 +58,20 @@
             :placeholder="formData.result === 'reject' ? '请填写驳回原因（必填）' : '审批意见（选填）'"
             :maxlength="500"
             show-word-limit
+            data-cy="approval-comment-input"
           />
         </el-form-item>
       </el-form>
     </div>
 
     <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="handleCancel">取消</el-button>
+      <div class="dialog-footer" data-cy="approval-dialog-footer">
+        <el-button data-cy="approval-cancel-button" @click="handleCancel">取消</el-button>
         <el-button
           :type="formData.result === 'approve' ? 'success' : 'danger'"
           :loading="loading"
           @click="handleConfirm"
+          :data-cy="formData.result === 'approve' ? 'approval-approve-button' : 'approval-reject-button'"
         >
           {{ formData.result === 'approve' ? '确认通过' : '确认驳回' }}
         </el-button>

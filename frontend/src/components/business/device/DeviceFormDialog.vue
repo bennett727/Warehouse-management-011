@@ -14,11 +14,11 @@
     data-cy="device-form-dialog"
     @close="handleClose"
   >
-    <el-form ref="formRef" :model="formData" :rules="formRules" label-width="120px" class="device-form">
+    <el-form ref="formRef" :model="formData" :rules="formRules" label-width="120px" class="device-form" data-cy="device-form">
       <!-- 第一行：设备编号 + 设备名称 -->
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="FIELD_LABELS.deviceCode" prop="deviceCode">
+          <el-form-item :label="FIELD_LABELS.deviceCode" prop="deviceCode" data-cy="device-code-form-item">
             <el-input
               v-model="formData.deviceCode"
               :placeholder="FIELD_PLACEHOLDERS.deviceCode"
@@ -30,7 +30,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="FIELD_LABELS.deviceName" prop="deviceName">
+          <el-form-item :label="FIELD_LABELS.deviceName" prop="deviceName" data-cy="device-name-form-item">
             <el-input
               v-model="formData.deviceName"
               :placeholder="FIELD_PLACEHOLDERS.deviceName"
@@ -45,7 +45,7 @@
       <!-- 第二行：设备类型 + 规格型号 -->
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="FIELD_LABELS.deviceTypeId" prop="deviceTypeId">
+          <el-form-item :label="FIELD_LABELS.deviceTypeId" prop="deviceTypeId" data-cy="device-type-form-item">
             <el-select
               v-model="formData.deviceTypeId"
               :placeholder="FIELD_PLACEHOLDERS.deviceTypeId"
@@ -62,7 +62,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="FIELD_LABELS.deviceModel" prop="deviceModel">
+          <el-form-item :label="FIELD_LABELS.deviceModel" prop="deviceModel" data-cy="device-model-form-item">
             <el-input
               v-model="formData.deviceModel"
               :placeholder="FIELD_PLACEHOLDERS.deviceModel"
@@ -77,7 +77,7 @@
       <!-- 第三行：设备序列号 + 制造商 -->
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="FIELD_LABELS.serialNumber" prop="serialNumber">
+          <el-form-item :label="FIELD_LABELS.serialNumber" prop="serialNumber" data-cy="device-serial-form-item">
             <el-input
               v-model="formData.serialNumber"
               :placeholder="FIELD_PLACEHOLDERS.serialNumber"
@@ -92,7 +92,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="FIELD_LABELS.manufacturer" prop="manufacturer">
+          <el-form-item :label="FIELD_LABELS.manufacturer" prop="manufacturer" data-cy="device-manufacturer-form-item">
             <el-input
               v-model="formData.manufacturer"
               :placeholder="FIELD_PLACEHOLDERS.manufacturer"
@@ -107,7 +107,7 @@
       <!-- 第四行：供应商 + 负责人 -->
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="FIELD_LABELS.supplier" prop="supplier">
+          <el-form-item :label="FIELD_LABELS.supplier" prop="supplier" data-cy="device-supplier-form-item">
             <el-input
               v-model="formData.supplier"
               :placeholder="FIELD_PLACEHOLDERS.supplier"
@@ -118,7 +118,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="FIELD_LABELS.principal" prop="principal">
+          <el-form-item :label="FIELD_LABELS.principal" prop="principal" data-cy="device-principal-form-item">
             <el-input
               v-model="formData.principal"
               :placeholder="FIELD_PLACEHOLDERS.principal"
@@ -133,7 +133,7 @@
       <!-- 第五行：设备状态 + 存放位置 -->
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="FIELD_LABELS.status" prop="status">
+          <el-form-item :label="FIELD_LABELS.status" prop="status" data-cy="device-status-form-item">
             <el-select
               v-model="formData.status"
               :placeholder="FIELD_PLACEHOLDERS.status"
@@ -151,7 +151,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="FIELD_LABELS.location" prop="location">
+          <el-form-item :label="FIELD_LABELS.location" prop="location" data-cy="device-location-form-item">
             <el-input
               v-model="formData.location"
               :placeholder="FIELD_PLACEHOLDERS.location"
@@ -166,7 +166,7 @@
       <!-- 第六行：采购日期 + 保修期至 -->
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="FIELD_LABELS.purchaseDate" prop="purchaseDate">
+          <el-form-item :label="FIELD_LABELS.purchaseDate" prop="purchaseDate" data-cy="device-purchase-date-form-item">
             <el-date-picker
               v-model="formData.purchaseDate"
               type="date"
@@ -178,7 +178,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="FIELD_LABELS.warrantyDate" prop="warrantyDate">
+          <el-form-item :label="FIELD_LABELS.warrantyDate" prop="warrantyDate" data-cy="device-warranty-date-form-item">
             <el-date-picker
               v-model="formData.warrantyDate"
               type="date"
@@ -194,7 +194,7 @@
       <!-- 第七行：采购价格 + 保修期限 -->
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="FIELD_LABELS.purchasePrice" prop="purchasePrice">
+          <el-form-item :label="FIELD_LABELS.purchasePrice" prop="purchasePrice" data-cy="device-purchase-price-form-item">
             <el-input-number
               v-model="formData.purchasePrice"
               :min="0"
@@ -206,7 +206,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="FIELD_LABELS.warrantyPeriod" prop="warrantyPeriod">
+          <el-form-item :label="FIELD_LABELS.warrantyPeriod" prop="warrantyPeriod" data-cy="device-warranty-period-form-item">
             <el-input-number
               v-model="formData.warrantyPeriod"
               :min="0"
@@ -222,7 +222,7 @@
       </el-row>
 
       <!-- 设备描述 -->
-      <el-form-item :label="FIELD_LABELS.description" prop="description">
+      <el-form-item :label="FIELD_LABELS.description" prop="description" data-cy="device-description-form-item">
         <el-input
           v-model="formData.description"
           type="textarea"
@@ -235,7 +235,7 @@
       </el-form-item>
 
       <!-- 备注 -->
-      <el-form-item :label="FIELD_LABELS.remark" prop="remark">
+      <el-form-item :label="FIELD_LABELS.remark" prop="remark" data-cy="device-remark-form-item">
         <el-input
           v-model="formData.remark"
           type="textarea"

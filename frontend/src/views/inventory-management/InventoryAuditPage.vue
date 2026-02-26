@@ -7,10 +7,10 @@
       2026-02-08: 标注为预留功能组件，在InventoryManagementPage中作为标签页使用
 -->
 <template>
-  <PageLayout title="库存盘点管理" description="管理库存盘点流程及记录" data-cy="inventoryauditpage-page">
+  <PageLayout title="库存盘点管理" description="管理库存盘点流程及记录" data-cy="inventory-audit-page">
     <template #headerActions>
-      <el-button data-cy="btn-0" type="primary" :icon="Plus" @click="handleCreateAudit">创建盘点单</el-button>
-      <el-button data-cy="btn-1" type="info" :icon="Refresh" @click="handleRefresh">刷新</el-button>
+      <el-button data-cy="inventory-audit-create-btn" type="primary" :icon="Plus" @click="handleCreateAudit">创建盘点单</el-button>
+      <el-button data-cy="inventory-audit-refresh-btn" type="info" :icon="Refresh" @click="handleRefresh">刷新</el-button>
     </template>
 
     <UnifiedFilterBar
@@ -24,34 +24,34 @@
       @reset="handleReset"
     />
 
-    <el-card class="table-card" shadow="never" data-cy="card-0">
+    <el-card class="table-card" shadow="never" data-cy="inventory-audit-table-card">
       <div class="audit-list-section">
-        <el-table data-cy="table-0" :data="auditList" v-loading="loading" stripe border>
-          <el-table-column data-cy="table-1" prop="auditNumber" label="盘点单号" width="180" />
-          <el-table-column data-cy="table-2" prop="auditType" label="盘点类型" width="120">
+        <el-table data-cy="inventory-audit-list-table" :data="auditList" v-loading="loading" stripe border>
+          <el-table-column prop="auditNumber" label="盘点单号" width="180" data-cy="audit-number-column" />
+          <el-table-column prop="auditType" label="盘点类型" width="120" data-cy="audit-type-column">
             <template #default="{ row }">
-              <el-tag data-cy="tag-0" :type="getAuditTypeTagType(row.auditType)">
+              <el-tag :type="getAuditTypeTagType(row.auditType)" :data-cy="`audit-type-tag-${row.id}`">
                 {{ getAuditTypeText(row.auditType) }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column data-cy="table-3" prop="auditDate" label="盘点日期" width="120" />
-          <el-table-column data-cy="table-4" prop="auditStatus" label="盘点状态" width="120">
+          <el-table-column prop="auditDate" label="盘点日期" width="120" data-cy="audit-date-column" />
+          <el-table-column prop="auditStatus" label="盘点状态" width="120" data-cy="audit-status-column">
             <template #default="{ row }">
-              <el-tag data-cy="tag-1" :type="getAuditStatusTagType(row.auditStatus)">
+              <el-tag :type="getAuditStatusTagType(row.auditStatus)" :data-cy="`audit-status-tag-${row.id}`">
                 {{ getAuditStatusText(row.auditStatus) }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column data-cy="table-5" prop="totalDevices" label="设备总数" width="100" />
-          <el-table-column data-cy="table-6" prop="matchedDevices" label="匹配数" width="100" />
-          <el-table-column data-cy="table-7" prop="mismatchedDevices" label="差异数" width="100" />
-          <el-table-column data-cy="table-8" prop="createdBy" label="创建人" width="120" />
-          <el-table-column data-cy="table-9" prop="createdAt" label="创建时间" width="180" />
-          <el-table-column data-cy="table-10" label="操作" width="300" fixed="right">
+          <el-table-column prop="totalDevices" label="设备总数" width="100" data-cy="total-devices-column" />
+          <el-table-column prop="matchedDevices" label="匹配数" width="100" data-cy="matched-devices-column" />
+          <el-table-column prop="mismatchedDevices" label="差异数" width="100" data-cy="mismatched-devices-column" />
+          <el-table-column prop="createdBy" label="创建人" width="120" data-cy="created-by-column" />
+          <el-table-column prop="createdAt" label="创建时间" width="180" data-cy="created-at-column" />
+          <el-table-column label="操作" width="300" fixed="right" data-cy="audit-actions-column">
             <template #default="{ row }">
               <el-button
-                data-cy="btn-2"
+                data-cy="inventory-audit-start-btn"
                 v-if="row.auditStatus === 'PENDING'"
                 type="primary"
                 size="small"
@@ -60,7 +60,7 @@
                 开始盘点
               </el-button>
               <el-button
-                data-cy="btn-3"
+                data-cy="inventory-audit-detail-btn"
                 v-if="row.auditStatus === 'IN_PROGRESS'"
                 type="success"
                 size="small"
@@ -69,7 +69,7 @@
                 盘点明细
               </el-button>
               <el-button
-                data-cy="btn-4"
+                data-cy="inventory-audit-diff-btn"
                 v-if="row.auditStatus === 'COMPLETED'"
                 type="warning"
                 size="small"
@@ -78,7 +78,7 @@
                 查看差异
               </el-button>
               <el-button
-                data-cy="btn-5"
+                data-cy="inventory-audit-cancel-btn"
                 v-if="row.auditStatus === 'PENDING'"
                 type="danger"
                 size="small"
@@ -92,18 +92,18 @@
       </div>
     </el-card>
 
-    <el-dialog data-cy="dialog-0" v-model="createDialogVisible" title="创建盘点单" width="600px">
-      <el-form data-cy="form-0" :model="createForm" :rules="createRules" ref="createFormRef" label-width="120px">
-        <el-form-item data-cy="form-1" label="盘点类型" prop="auditType">
-          <el-select data-cy="select-0" v-model="createForm.auditType" placeholder="请选择盘点类型">
+    <el-dialog data-cy="inventory-audit-create-dialog" v-model="createDialogVisible" title="创建盘点单" width="600px">
+      <el-form data-cy="inventory-audit-create-form" :model="createForm" :rules="createRules" ref="createFormRef" label-width="120px">
+        <el-form-item label="盘点类型" prop="auditType">
+          <el-select data-cy="inventory-audit-type-select" v-model="createForm.auditType" placeholder="请选择盘点类型">
             <el-option label="全盘" :value="0" />
             <el-option label="抽盘" :value="1" />
             <el-option label="循环盘点" :value="2" />
           </el-select>
         </el-form-item>
-        <el-form-item data-cy="form-2" label="盘点日期" prop="auditDate">
+        <el-form-item label="盘点日期" prop="auditDate">
           <el-date-picker
-            data-cy="date-picker-0"
+            data-cy="inventory-audit-date-picker"
             v-model="createForm.auditDate"
             type="date"
             placeholder="选择盘点日期"
@@ -113,12 +113,12 @@
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button data-cy="btn-6" @click="createDialogVisible = false">取消</el-button>
-        <el-button data-cy="btn-7" type="primary" @click="handleCreateSubmit" :loading="submitLoading">确定</el-button>
+        <el-button data-cy="inventory-audit-create-cancel-btn" @click="createDialogVisible = false">取消</el-button>
+        <el-button data-cy="inventory-audit-create-confirm-btn" type="primary" @click="handleCreateSubmit" :loading="submitLoading">确定</el-button>
       </template>
     </el-dialog>
 
-    <el-dialog data-cy="dialog-1" v-model="itemsDialogVisible" title="盘点明细" width="1200px">
+    <el-dialog data-cy="inventory-audit-items-dialog" v-model="itemsDialogVisible" title="盘点明细" width="1200px">
       <div class="audit-items-header">
         <div class="audit-info">
           <span>盘点单号: {{ currentAudit?.auditNumber }}</span>
@@ -128,14 +128,14 @@
           <span>待盘点 {{ pendingCount }}</span>
         </div>
       </div>
-      <el-table data-cy="table-11" :data="auditItems" v-loading="itemsLoading" stripe border max-height="500">
-        <el-table-column data-cy="table-12" prop="device.deviceCode" label="设备编号" width="150" />
-        <el-table-column data-cy="table-13" prop="device.deviceName" label="设备名称" width="150" />
-        <el-table-column data-cy="table-14" prop="systemQuantity" label="系统数量" width="100" />
-        <el-table-column data-cy="table-15" label="实际数量" width="150">
+      <el-table data-cy="inventory-audit-items-table" :data="auditItems" v-loading="itemsLoading" stripe border max-height="500">
+        <el-table-column prop="device.deviceCode" label="设备编号" width="150" data-cy="items-device-code-column" />
+        <el-table-column prop="device.deviceName" label="设备名称" width="150" data-cy="items-device-name-column" />
+        <el-table-column prop="systemQuantity" label="系统数量" width="100" data-cy="items-system-qty-column" />
+        <el-table-column label="实际数量" width="150" data-cy="items-actual-qty-column">
           <template #default="{ row }">
             <el-input-number
-              data-cy="input-0"
+              data-cy="inventory-audit-actual-qty-input"
               v-model="row.actualQuantity"
               :min="0"
               :max="999"
@@ -144,24 +144,24 @@
             />
           </template>
         </el-table-column>
-        <el-table-column data-cy="table-16" label="差异" width="100">
+        <el-table-column label="差异" width="100" data-cy="items-difference-column">
           <template #default="{ row }">
             <span :class="{ 'difference-text': row.difference !== 0 }">
               {{ row.difference !== null ? row.difference : '-' }}
             </span>
           </template>
         </el-table-column>
-        <el-table-column data-cy="table-17" prop="itemStatus" label="状态" width="100">
+        <el-table-column prop="itemStatus" label="状态" width="100" data-cy="items-status-column">
           <template #default="{ row }">
-            <el-tag data-cy="tag-2" :type="getItemStatusTagType(row.itemStatus)">
+            <el-tag :type="getItemStatusTagType(row.itemStatus)" :data-cy="`items-status-tag-${row.id}`">
               {{ getItemStatusText(row.itemStatus) }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column data-cy="table-18" label="备注" width="200">
+        <el-table-column label="备注" width="200" data-cy="items-notes-column">
           <template #default="{ row }">
             <el-input
-              data-cy="input-1"
+              data-cy="inventory-audit-notes-input"
               v-model="row.notes"
               :disabled="row.itemStatus !== 'PENDING'"
               placeholder="请输入备注"
@@ -169,10 +169,10 @@
             />
           </template>
         </el-table-column>
-        <el-table-column data-cy="table-19" label="操作" width="150">
+        <el-table-column label="操作" width="150" data-cy="items-actions-column">
           <template #default="{ row }">
             <el-button
-              data-cy="btn-8"
+              data-cy="inventory-audit-record-btn"
               v-if="row.itemStatus === 'PENDING'"
               type="primary"
               size="small"
@@ -181,7 +181,7 @@
               记录
             </el-button>
             <el-button
-              data-cy="btn-9"
+              data-cy="inventory-audit-adjust-btn"
               v-if="row.itemStatus === 'MISMATCHED'"
               type="warning"
               size="small"
@@ -193,32 +193,32 @@
         </el-table-column>
       </el-table>
       <template #footer>
-        <el-button data-cy="btn-10" @click="itemsDialogVisible = false">关闭</el-button>
-        <el-button data-cy="btn-11" type="primary" @click="handleCompleteAudit" :disabled="pendingCount > 0">
+        <el-button data-cy="inventory-audit-items-close-btn" @click="itemsDialogVisible = false">关闭</el-button>
+        <el-button data-cy="inventory-audit-complete-btn" type="primary" @click="handleCompleteAudit" :disabled="pendingCount > 0">
           完成盘点
         </el-button>
       </template>
     </el-dialog>
 
-    <el-dialog data-cy="dialog-2" v-model="differencesDialogVisible" title="盘点差异" width="1000px">
-      <el-table data-cy="table-20" :data="differences" v-loading="differencesLoading" stripe border>
-        <el-table-column data-cy="table-21" prop="device.deviceCode" label="设备编号" width="150" />
-        <el-table-column data-cy="table-22" prop="device.deviceName" label="设备名称" width="150" />
-        <el-table-column data-cy="table-23" prop="systemQuantity" label="系统数量" width="100" />
-        <el-table-column data-cy="table-24" prop="actualQuantity" label="实际数量" width="100" />
-        <el-table-column data-cy="table-25" prop="difference" label="差异" width="100">
+    <el-dialog data-cy="inventory-audit-diff-dialog" v-model="differencesDialogVisible" title="盘点差异" width="1000px">
+      <el-table data-cy="inventory-audit-diff-table" :data="differences" v-loading="differencesLoading" stripe border>
+        <el-table-column prop="device.deviceCode" label="设备编号" width="150" data-cy="diff-device-code-column" />
+        <el-table-column prop="device.deviceName" label="设备名称" width="150" data-cy="diff-device-name-column" />
+        <el-table-column prop="systemQuantity" label="系统数量" width="100" data-cy="diff-system-qty-column" />
+        <el-table-column prop="actualQuantity" label="实际数量" width="100" data-cy="diff-actual-qty-column" />
+        <el-table-column prop="difference" label="差异" width="100" data-cy="diff-difference-column">
           <template #default="{ row }">
             <span :class="{ 'difference-text': row.difference !== 0 }">
               {{ row.difference }}
             </span>
           </template>
         </el-table-column>
-        <el-table-column data-cy="table-26" prop="notes" label="备注" width="200" />
-        <el-table-column data-cy="table-27" prop="auditedBy" label="盘点人" width="120" />
-        <el-table-column data-cy="table-28" prop="auditedAt" label="盘点时间" width="180" />
+        <el-table-column prop="notes" label="备注" width="200" data-cy="diff-notes-column" />
+        <el-table-column prop="auditedBy" label="盘点人" width="120" data-cy="diff-audited-by-column" />
+        <el-table-column prop="auditedAt" label="盘点时间" width="180" data-cy="diff-audited-at-column" />
       </el-table>
       <template #footer>
-        <el-button data-cy="btn-12" @click="differencesDialogVisible = false">关闭</el-button>
+        <el-button data-cy="inventory-audit-diff-close-btn" @click="differencesDialogVisible = false">关闭</el-button>
       </template>
     </el-dialog>
   </PageLayout>

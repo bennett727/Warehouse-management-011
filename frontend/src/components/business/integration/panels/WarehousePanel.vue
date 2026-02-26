@@ -13,7 +13,7 @@
         <span>仓库列表</span>
       </div>
       <div class="header-actions">
-        <el-button type="primary" size="small" :icon="Plus" @click="handleAdd">添加仓库</el-button>
+        <el-button type="primary" size="small" :icon="Plus" @click="handleAdd" data-cy="warehouse-panel-add-btn">添加仓库</el-button>
       </div>
     </div>
 
@@ -71,6 +71,7 @@
         layout="total, prev, pager, next"
         small
         background
+        data-cy="warehouse-panel-pagination"
       />
     </div>
   </div>

@@ -53,10 +53,10 @@ public class Area extends BaseEntity {
     @JsonIgnore
     private AdministrativeDivision district;
 
-    @Column(name = "code", unique = true, length = 50)
+    @Column(name = "area_code", unique = true, length = 50)
     private String code;
 
-    @Column(name = "name", nullable = false, length = 100)
+    @Column(name = "area_name", nullable = false, length = 100)
     private String name;
 
     @Column(name = "location", length = 255)

@@ -9,9 +9,9 @@
   <div class="inventory-list-container">
     <!-- 搜索区域 -->
     <div v-if="showSearch" class="search-section">
-      <el-form :model="localSearchForm" :inline="true" class="search-form">
+      <el-form :model="localSearchForm" :inline="true" class="search-form" data-cy="inventory-list-search-form">
         <template v-for="field in searchFields" :key="field.prop">
-          <el-form-item :label="field.label" class="search-form-item">
+          <el-form-item :label="field.label" class="search-form-item" :data-cy="`inventory-list-form-item-${field.prop}`">
             <el-input
               v-if="field.type === 'input'"
               v-model="localSearchForm[field.prop]"
@@ -19,6 +19,7 @@
               :clearable="field.clearable !== false"
               class="search-input"
               @keyup.enter="handleSearch"
+              :data-cy="`inventory-list-input-${field.prop}`"
             >
               <template v-if="field.prefix" #prefix>
                 <el-icon><component :is="field.prefix" /></el-icon>
@@ -32,6 +33,7 @@
               :clearable="field.clearable !== false"
               :filterable="field.filterable"
               class="search-select"
+              :data-cy="`inventory-list-select-${field.prop}`"
             >
               <el-option
                 v-for="option in field.options"
@@ -65,11 +67,11 @@
         </template>
 
         <el-form-item class="search-actions">
-          <el-button type="primary" @click="handleSearch" :loading="loading" class="btn-search">
+          <el-button type="primary" @click="handleSearch" :loading="loading" class="btn-search" data-cy="inventory-search-btn">
             <el-icon><Search /></el-icon>
             搜索
           </el-button>
-          <el-button @click="handleReset" class="btn-reset">
+          <el-button @click="handleReset" class="btn-reset" data-cy="inventory-reset-btn">
             <el-icon><RefreshLeft /></el-icon>
             重置
           </el-button>
@@ -81,7 +83,7 @@
     <div v-if="showToolbar" class="toolbar-section">
       <div class="toolbar-left">
         <slot name="toolbar-left">
-          <el-button v-if="showAdd" type="primary" @click="handleAdd" :disabled="loading" class="btn-add">
+          <el-button v-if="showAdd" type="primary" @click="handleAdd" :disabled="loading" class="btn-add" data-cy="inventory-add-btn">
             <el-icon><Plus /></el-icon>
             {{ addButtonText }}
           </el-button>
@@ -91,6 +93,7 @@
             @click="handleBatchDelete"
             :disabled="!hasSelection || loading"
             class="btn-batch-delete"
+            data-cy="inventory-batch-delete-btn"
           >
             <el-icon><Delete /></el-icon>
             批量删除
@@ -101,6 +104,7 @@
             @click="handleBatchExport"
             :disabled="loading"
             class="btn-export"
+            data-cy="inventory-batch-export-btn"
           >
             <el-icon><Download /></el-icon>
             批量导出
@@ -116,6 +120,7 @@
             :loading="loading"
             circle
             class="btn-refresh"
+            data-cy="inventory-refresh-btn"
           />
         </slot>
       </div>
@@ -145,6 +150,7 @@
         @row-click="handleRowClick"
         @row-dblclick="handleRowDblclick"
         class="inventory-table"
+        data-cy="inventory-list-table"
       >
         <el-table-column
           v-if="showSelection"
@@ -153,9 +159,10 @@
           :selectable="selectable"
           fixed="left"
           align="center"
+          data-cy="inventory-selection-column"
         />
 
-        <el-table-column v-if="showIndex" type="index" label="序号" width="60" align="center" fixed="left">
+        <el-table-column v-if="showIndex" type="index" label="序号" width="60" align="center" fixed="left" data-cy="inventory-index-column">
           <template #default="scope">
             <span class="index-cell">{{ (localCurrentPage - 1) * localPageSize + scope.$index + 1 }}</span>
           </template>
@@ -270,6 +277,7 @@
           :fixed="actionFixed"
           align="center"
           class-name="action-column"
+          data-cy="inventory-actions-column"
         >
           <template #default="scope">
             <slot name="action" :row="scope?.row" :index="scope?.$index">
@@ -281,6 +289,7 @@
                   @click="handleView(scope?.row)"
                   link
                   class="action-btn action-btn--view"
+                  data-cy="inventory-view-btn"
                 >
                   <el-icon><View /></el-icon>
                   查看
@@ -292,6 +301,7 @@
                   @click="handleEdit(scope?.row)"
                   link
                   class="action-btn action-btn--edit"
+                  data-cy="inventory-edit-btn"
                 >
                   <el-icon><Edit /></el-icon>
                   编辑
@@ -303,6 +313,7 @@
                   @click="handleDelete(scope?.row)"
                   link
                   class="action-btn action-btn--delete"
+                  data-cy="inventory-delete-btn"
                 >
                   <el-icon><Delete /></el-icon>
                   删除
@@ -331,6 +342,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         class="inventory-pagination"
+        data-cy="inventory-list-pagination"
       />
     </div>
   </div>

@@ -245,13 +245,13 @@ export const userRules = {
 
 export const deviceRules = {
   deviceCode: [
-    createRequiredRule('设备编号不能为空'),
+    createRequiredRule('请输入设备编号'),
     {
       validator: (rule, value, callback) => {
         if (!value) {
           callback();
         } else if (!isDeviceCode(value)) {
-          callback(new Error('设备编号格式不正确，应为DEV-XXX-XXXX格式'));
+          callback(new Error('设备编号格式错误，正确格式：DEV-XXX-XXXX（如：DEV-ABC-1234）'));
         } else {
           callback();
         }

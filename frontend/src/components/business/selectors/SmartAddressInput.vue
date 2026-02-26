@@ -12,6 +12,7 @@
       @input="handleInput"
       @blur="handleBlur"
       @focus="handleFocus"
+      data-cy="smart-address-input"
     >
       <template #prefix>
         <el-icon><Location /></el-icon>
@@ -38,7 +39,7 @@
       <div class="address-suggestions">
         <div class="suggestions-header">
           <span>地址建议</span>
-          <el-button link size="small" @click="suggestionsVisible = false"> 关闭 </el-button>
+          <el-button link size="small" @click="suggestionsVisible = false" data-cy="smart-address-close-btn"> 关闭 </el-button>
         </div>
 
         <!-- 基于行政区划的建议 -->

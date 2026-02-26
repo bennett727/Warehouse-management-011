@@ -137,21 +137,35 @@ function analyzeFile(filePath) {
     missingElements: []
   };
 
-  // 检查是否有data-cy属性
-  const dataCyRegex = /data-cy=["']([^"']+)["']/g;
+  // 检查是否有data-cy属性（包括静态和动态绑定）
+  const dataCyStaticRegex = /data-cy=["']([^"']+)["']/g;
+  const dataCyDynamicRegex = /:data-cy=["']([^"']+)["']/g;
+  const dataCyVBindRegex = /v-bind:data-cy=["']([^"']+)["']/g;
+
   let match;
-  while ((match = dataCyRegex.exec(content)) !== null) {
+  while ((match = dataCyStaticRegex.exec(content)) !== null) {
     result.hasDataCy = true;
     result.coveredElements.push(match[1]);
   }
 
-  // 检查可测试元素
+  while ((match = dataCyDynamicRegex.exec(content)) !== null) {
+    result.hasDataCy = true;
+    result.coveredElements.push(match[1]);
+  }
+
+  while ((match = dataCyVBindRegex.exec(content)) !== null) {
+    result.hasDataCy = true;
+    result.coveredElements.push(match[1]);
+  }
+
+  // 检查可测试元素（支持多行标签和带引号的属性值）
   for (const element of TESTABLE_ELEMENTS) {
-    const tagRegex = new RegExp(`<${element.tag}[^>]*>`, 'g');
+    // 使用更复杂的正则表达式匹配标签，处理带引号的属性值
+    const tagRegex = new RegExp(`<${element.tag}(?:\\s+(?:[^>"']|"[^"]*"|'[^']*')*)?>`, 'g');
     let tagMatch;
     while ((tagMatch = tagRegex.exec(content)) !== null) {
       const tagContent = tagMatch[0];
-      const hasDataCy = tagContent.includes('data-cy=');
+      const hasDataCy = /data-cy=/.test(tagContent);
 
       result.elements.push({
         tag: element.tag,
@@ -163,7 +177,8 @@ function analyzeFile(filePath) {
         result.missingElements.push({
           tag: element.tag,
           name: element.name,
-          context: tagContent.substring(0, 50) + '...'
+          context: tagContent.substring(0, 50) + (tagContent.length > 50 ? '...' : ''),
+          fullContext: tagContent
         });
       }
     }
@@ -225,6 +240,9 @@ function generateReport(results) {
     log(`\n⚠️  需要添加data-cy的文件 (${filesWithMissing.length}个):`, 'yellow');
     for (const result of filesWithMissing.slice(0, 10)) {
       log(`  - ${result.file} (${result.missingElements.length}个元素)`, 'blue');
+      for (const missing of result.missingElements.slice(0, 3)) {
+        log(`    ❌ <${missing.tag}> ${missing.context}`, 'red');
+      }
     }
     if (filesWithMissing.length > 10) {
       log(`  ... 还有 ${filesWithMissing.length - 10} 个文件`, 'blue');

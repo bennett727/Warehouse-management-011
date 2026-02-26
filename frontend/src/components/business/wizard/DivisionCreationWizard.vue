@@ -6,6 +6,7 @@
     :close-on-click-modal="false"
     destroy-on-close
     class="division-creation-wizard"
+    data-cy="division-creation-wizard-dialog"
   >
     <!-- 模式切换和步骤条 -->
     <div class="wizard-header">
@@ -21,6 +22,7 @@
         inactive-text="向导模式"
         @change="handleModeChange"
         class="mode-switch"
+        data-cy="division-mode-switch"
       />
     </div>
 
@@ -98,7 +100,7 @@
         </el-alert>
       </div>
 
-      <el-form label-width="100px">
+      <el-form label-width="100px" data-cy="division-parent-form">
         <!-- 选择上级 - 省份 -->
         <el-form-item label="所属省份" required>
           <el-select
@@ -108,6 +110,7 @@
             clearable
             style="width: 100%"
             @change="handleParentProvinceChange"
+            data-cy="division-province-select"
           >
             <el-option
               v-for="province in provinceOptions"
@@ -127,6 +130,7 @@
             clearable
             style="width: 100%"
             :disabled="!parentSelection.provinceId || parentCityOptions.length === 0"
+            data-cy="division-city-select"
           >
             <el-option v-for="city in parentCityOptions" :key="city.id" :label="city.name" :value="city.id" />
           </el-select>
@@ -155,15 +159,15 @@
         </el-alert>
       </div>
 
-      <el-form ref="formRef" :model="form" :rules="rules" label-width="100px">
+      <el-form ref="formRef" :model="form" :rules="rules" label-width="100px" data-cy="division-detail-form">
         <el-form-item label="区划名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入区划名称" clearable @blur="handleNameBlur" />
+          <el-input v-model="form.name" placeholder="请输入区划名称" clearable @blur="handleNameBlur" data-cy="division-name-input" />
         </el-form-item>
 
         <el-form-item label="区划编码" prop="code">
-          <el-input v-model="form.code" placeholder="请输入区划编码" clearable>
+          <el-input v-model="form.code" placeholder="请输入区划编码" clearable data-cy="division-code-input">
             <template #append>
-              <el-button @click="generateCode" :disabled="!form.name">
+              <el-button @click="generateCode" :disabled="!form.name" data-cy="division-gen-code-btn">
                 <el-icon><MagicStick /></el-icon>自动生成
               </el-button>
             </template>
@@ -182,18 +186,18 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="邮政编码" prop="zipCode">
-              <el-input v-model="form.zipCode" placeholder="选填" clearable maxlength="6" />
+              <el-input v-model="form.zipCode" placeholder="选填" clearable maxlength="6" data-cy="division-zipcode-input" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="电话区号" prop="areaCode">
-              <el-input v-model="form.areaCode" placeholder="选填" clearable />
+              <el-input v-model="form.areaCode" placeholder="选填" clearable data-cy="division-areacode-input" />
             </el-form-item>
           </el-col>
         </el-row>
 
         <el-form-item label="排序号" prop="sort">
-          <el-input-number v-model="form.sort" :min="0" :max="999" style="width: 100%" />
+          <el-input-number v-model="form.sort" :min="0" :max="999" style="width: 100%" data-cy="division-sort-input" />
         </el-form-item>
 
         <el-form-item label="备注" prop="remark">
@@ -204,6 +208,7 @@
             placeholder="请输入备注信息（选填）"
             maxlength="200"
             show-word-limit
+            data-cy="division-remark-input"
           />
         </el-form-item>
       </el-form>
@@ -251,23 +256,23 @@
       <div class="dialog-footer">
         <!-- 向导模式按钮 -->
         <template v-if="!isQuickMode">
-          <el-button v-if="currentStep > 0" @click="prevStep">
+          <el-button v-if="currentStep > 0" @click="prevStep" data-cy="division-prev-step-btn">
             <el-icon><ArrowLeft /></el-icon>上一步
           </el-button>
-          <el-button v-if="currentStep < 3" type="primary" @click="nextStep">
+          <el-button v-if="currentStep < 3" type="primary" @click="nextStep" data-cy="division-next-step-btn">
             下一步<el-icon><ArrowRight /></el-icon>
           </el-button>
-          <el-button v-if="currentStep === 3" type="primary" :loading="submitLoading" @click="handleSubmit">
+          <el-button v-if="currentStep === 3" type="primary" :loading="submitLoading" @click="handleSubmit" data-cy="division-confirm-btn">
             <el-icon><Check /></el-icon>确认创建
           </el-button>
         </template>
         <!-- 快速模式按钮 -->
         <template v-else>
-          <el-button type="primary" :loading="submitLoading" @click="handleQuickSubmit">
+          <el-button type="primary" :loading="submitLoading" @click="handleQuickSubmit" data-cy="division-quick-submit-btn">
             <el-icon><Check /></el-icon>立即创建
           </el-button>
         </template>
-        <el-button @click="visible = false">取消</el-button>
+        <el-button @click="visible = false" data-cy="division-cancel-btn">取消</el-button>
       </div>
     </template>
   </el-dialog>

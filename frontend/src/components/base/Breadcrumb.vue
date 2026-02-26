@@ -1,11 +1,16 @@
 <template>
-  <div class="breadcrumb-container" v-if="breadcrumbs.length > 0">
+  <div class="breadcrumb-container" v-if="breadcrumbs.length > 0" data-cy="breadcrumb-nav">
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item v-for="(item, index) in breadcrumbs" :key="index" :to="item.path">
+      <el-breadcrumb-item
+        v-for="(item, index) in breadcrumbs"
+        :key="index"
+        :to="item.path"
+        :data-cy="index === 0 ? 'breadcrumb-home' : `breadcrumb-item-${index}`"
+      >
         <span v-if="item.icon" class="breadcrumb-icon">
           <el-icon><component :is="item.icon" /></el-icon>
         </span>
-        {{ item.title }}
+        <span :data-cy="index === breadcrumbs.length - 1 ? 'breadcrumb-current' : null">{{ item.title }}</span>
       </el-breadcrumb-item>
     </el-breadcrumb>
   </div>

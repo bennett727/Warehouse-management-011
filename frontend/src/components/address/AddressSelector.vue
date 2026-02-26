@@ -6,7 +6,7 @@
   @version: 1.0
 -->
 <template>
-  <div class="address-selector">
+  <div class="address-selector" :data-cy="`address-selector-${uuid}`">
     <el-row :gutter="10">
       <el-col :span="8">
         <el-select
@@ -17,6 +17,7 @@
           :disabled="disabled"
           @change="handleProvinceChange"
           style="width: 100%"
+          :data-cy="`address-province-select-${uuid}`"
         >
           <el-option v-for="province in provinceList" :key="province.id" :label="province.name" :value="province.id" />
         </el-select>
@@ -30,6 +31,7 @@
           :disabled="disabled || !selectedProvince"
           @change="handleCityChange"
           style="width: 100%"
+          :data-cy="`address-city-select-${uuid}`"
         >
           <el-option v-for="city in cityList" :key="city.id" :label="city.name" :value="city.id" />
         </el-select>
@@ -43,6 +45,7 @@
           :disabled="disabled || !selectedCity"
           @change="handleDistrictChange"
           style="width: 100%"
+          :data-cy="`address-district-select-${uuid}`"
         >
           <el-option v-for="district in districtList" :key="district.id" :label="district.name" :value="district.id" />
         </el-select>
@@ -57,6 +60,7 @@
           maxlength="200"
           show-word-limit
           @input="handleDetailChange"
+          :data-cy="`address-detail-input-${uuid}`"
         />
       </el-col>
     </el-row>
@@ -71,9 +75,10 @@
 <script setup>
 import { Location } from '@element-plus/icons-vue';
 import { ref, computed, watch, onMounted } from 'vue';
-
 import { getProvinces, getCities, getDistricts } from '@/api/administrativeDivision';
 import { createLogger } from '@/utils/logger';
+
+const uuid = Math.random().toString(36).substring(2, 9);
 
 const logger = createLogger('AddressSelector');
 

@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="formRef" :model="modelValue" :rules="formRules" label-width="120px" class="detail-form">
+  <el-form ref="formRef" :model="modelValue" :rules="formRules" label-width="120px" class="detail-form" data-cy="transfer-inbound-detail-form">
     <div class="form-section">
       <div class="section-title">
         <el-icon><Sort /></el-icon>
@@ -7,8 +7,8 @@
       </div>
       <el-row :gutter="24">
         <el-col :span="12">
-          <el-form-item label="原调拨单号" prop="originalTransferNo">
-            <el-input v-model="modelValue.originalTransferNo" placeholder="请输入原调拨单号">
+          <el-form-item label="原调拨单号" prop="originalTransferNo" data-cy="transfer-inbound-original-no-form-item">
+            <el-input v-model="modelValue.originalTransferNo" placeholder="请输入原调拨单号" data-cy="transfer-inbound-original-no-input">
               <template #prefix>
                 <el-icon><Tickets /></el-icon>
               </template>
@@ -31,7 +31,7 @@
       <el-row :gutter="24">
         <el-col :span="12">
           <el-form-item label="调拨类型" prop="transferType">
-            <el-select v-model="modelValue.transferType" placeholder="请选择调拨类型" style="width: 100%">
+            <el-select v-model="modelValue.transferType" placeholder="请选择调拨类型" style="width: 100%" data-cy="transfer-inbound-model-value.transfer-type-select">
               <el-option label="正常调拨" value="normal" />
               <el-option label="紧急调拨" value="emergency" />
               <el-option label="借调归还" value="borrow_return" />
@@ -41,7 +41,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="调拨优先级" prop="priority">
-            <el-select v-model="modelValue.priority" placeholder="请选择优先级" style="width: 100%">
+            <el-select v-model="modelValue.priority" placeholder="请选择优先级" style="width: 100%" data-cy="transfer-inbound-model-value.priority-select">
               <el-option label="高" value="high">
                 <el-tag type="danger" size="small">高</el-tag>
               </el-option>
@@ -71,14 +71,14 @@
               style="width: 100%"
               filterable
               disabled
-            >
+             data-cy="transfer-inbound-model-value.source-warehouse-id-select">
               <el-option v-for="wh in warehouseList" :key="wh.id" :label="wh.name" :value="wh.id" />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="源仓库地址" prop="sourceWarehouseAddress">
-            <el-input v-model="modelValue.sourceWarehouseAddress" placeholder="源仓库地址" disabled />
+            <el-input v-model="modelValue.sourceWarehouseAddress" placeholder="源仓库地址" disabled data-cy="transfer-inbound-source-addr-input" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -86,12 +86,12 @@
       <el-row :gutter="24">
         <el-col :span="12">
           <el-form-item label="发货人" prop="senderName">
-            <el-input v-model="modelValue.senderName" placeholder="请输入发货人姓名" />
+            <el-input v-model="modelValue.senderName" placeholder="请输入发货人姓名" data-cy="transfer-inbound-sender-name-input" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="发货人电话" prop="senderPhone">
-            <el-input v-model="modelValue.senderPhone" placeholder="请输入发货人电话">
+            <el-input v-model="modelValue.senderPhone" placeholder="请输入发货人电话" data-cy="transfer-inbound-sender-phone-input">
               <template #prefix>
                 <el-icon><Phone /></el-icon>
               </template>
@@ -106,7 +106,7 @@
         <el-icon><Location /></el-icon>
         <span>调拨原因</span>
       </div>
-      <el-form-item label="调拨原因" prop="transferReason">
+      <el-form-item label="调拨原因" prop="transferReason" data-cy="transfer-inbound-reason-form-item">
         <el-input
           v-model="modelValue.transferReason"
           type="textarea"
@@ -114,13 +114,14 @@
           placeholder="请详细描述调拨原因"
           maxlength="1000"
           show-word-limit
+          data-cy="transfer-inbound-reason-input"
         />
       </el-form-item>
 
       <el-row :gutter="24">
         <el-col :span="12">
           <el-form-item label="设备状态" prop="deviceStatus">
-            <el-select v-model="modelValue.deviceStatus" placeholder="请选择设备状态" style="width: 100%">
+            <el-select v-model="modelValue.deviceStatus" placeholder="请选择设备状态" style="width: 100%" data-cy="transfer-inbound-model-value.device-status-select">
               <el-option label="完好无损" value="good" />
               <el-option label="轻微损坏" value="minor_damage" />
               <el-option label="需要检测" value="needs_inspection" />
@@ -146,7 +147,7 @@
       <el-row :gutter="24">
         <el-col :span="12">
           <el-form-item label="运输方式" prop="transportMethod">
-            <el-select v-model="modelValue.transportMethod" placeholder="请选择运输方式" style="width: 100%">
+            <el-select v-model="modelValue.transportMethod" placeholder="请选择运输方式" style="width: 100%" data-cy="transfer-inbound-model-value.transport-method-select">
               <el-option label="自提" value="self_pickup" />
               <el-option label="快递" value="express" />
               <el-option label="物流" value="logistics" />
@@ -155,8 +156,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="物流单号" prop="trackingNo">
-            <el-input v-model="modelValue.trackingNo" placeholder="请输入物流单号" />
+          <el-form-item label="物流单号" prop="trackingNo" data-cy="transfer-inbound-tracking-no-form-item">
+            <el-input v-model="modelValue.trackingNo" placeholder="请输入物流单号" data-cy="transfer-inbound-tracking-no-input" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -176,7 +177,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="费用承担方" prop="costBearer">
-            <el-select v-model="modelValue.costBearer" placeholder="请选择费用承担方" style="width: 100%">
+            <el-select v-model="modelValue.costBearer" placeholder="请选择费用承担方" style="width: 100%" data-cy="transfer-inbound-model-value.cost-bearer-select">
               <el-option label="源仓库承担" value="source" />
               <el-option label="目标仓库承担" value="target" />
               <el-option label="公司统一承担" value="company" />
@@ -191,7 +192,7 @@
         <el-icon><Edit /></el-icon>
         <span>其他信息</span>
       </div>
-      <el-form-item label="备注" prop="remark">
+      <el-form-item label="备注" prop="remark" data-cy="transfer-inbound-remark-form-item">
         <el-input
           v-model="modelValue.remark"
           type="textarea"
@@ -199,6 +200,7 @@
           placeholder="请输入备注信息（选填）"
           maxlength="500"
           show-word-limit
+          data-cy="transfer-inbound-remark-input"
         />
       </el-form-item>
     </div>

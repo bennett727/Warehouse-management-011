@@ -13,9 +13,10 @@
     :close-on-click-modal="false"
     destroy-on-close
     class="business-detail-dialog"
+    data-cy="business-detail-dialog"
   >
     <div class="detail-content" v-if="business">
-      <el-tabs v-model="activeTab">
+      <el-tabs v-model="activeTab" data-cy="business-detail-tabs">
         <el-tab-pane label="基本信息" name="basic">
           <el-descriptions :column="2" border>
             <el-descriptions-item label="业务编号">
@@ -43,19 +44,19 @@
         </el-tab-pane>
 
         <el-tab-pane label="设备清单" name="devices">
-          <el-table :data="business.devices || []" border stripe max-height="400">
-            <el-table-column type="index" label="序号" width="60" align="center" />
-            <el-table-column prop="deviceCode" label="设备编号" width="140" />
-            <el-table-column prop="deviceName" label="设备名称" min-width="150" />
-            <el-table-column prop="deviceType" label="设备类型" width="100">
+          <el-table :data="business.devices || []" border stripe max-height="400" data-cy="business-detail-device-table">
+            <el-table-column type="index" label="序号" width="60" align="center" data-cy="business-detail-device-table-index-column" />
+            <el-table-column prop="deviceCode" label="设备编号" width="140" data-cy="business-detail-device-table-code-column" />
+            <el-table-column prop="deviceName" label="设备名称" min-width="150" data-cy="business-detail-device-table-name-column" />
+            <el-table-column prop="deviceType" label="设备类型" width="100" data-cy="business-detail-device-table-type-column">
               <template #default="{ row }">
                 <el-tag size="small">{{ row.deviceType }}</el-tag>
               </template>
             </el-table-column>
-            <el-table-column prop="quantity" label="数量" width="80" align="center" />
-            <el-table-column prop="warehouseName" label="仓库" width="120" />
+            <el-table-column prop="quantity" label="数量" width="80" align="center" data-cy="business-detail-device-table-quantity-column" />
+            <el-table-column prop="warehouseName" label="仓库" width="120" data-cy="business-detail-device-table-warehouse-column" />
           </el-table>
-          <el-empty v-if="!business.devices?.length" description="暂无设备数据" />
+          <el-empty v-if="!business.devices?.length" description="暂无设备数据" data-cy="business-detail-empty-devices" />
         </el-tab-pane>
 
         <el-tab-pane label="审批记录" name="approval">
@@ -87,9 +88,9 @@
     </div>
 
     <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="visible = false">关闭</el-button>
-        <el-button v-if="business?.status === 'pending'" type="success" @click="$emit('approve', business)">
+      <div class="dialog-footer" data-cy="business-detail-footer">
+        <el-button @click="visible = false" data-cy="business-detail-close-btn">关闭</el-button>
+        <el-button v-if="business?.status === 'pending'" type="success" @click="$emit('approve', business)" data-cy="business-detail-approve-btn">
           去审批
         </el-button>
       </div>

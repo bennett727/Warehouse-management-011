@@ -13,6 +13,7 @@
     label-width="120px"
     label-position="right"
     class="detail-form"
+    data-cy="other-detail-form"
   >
     <el-divider content-position="left">
       <el-icon><MoreFilled /></el-icon> 出库信息
@@ -20,18 +21,18 @@
 
     <el-row :gutter="24">
       <el-col :span="12">
-        <el-form-item label="出库用途" prop="usage">
-          <el-select v-model="formData.usage" placeholder="请选择出库用途" style="width: 100%">
-            <el-option label="借用" value="borrow" />
-            <el-option label="试用" value="trial" />
-            <el-option label="展示" value="display" />
-            <el-option label="测试" value="test" />
-            <el-option label="其他" value="other" />
+        <el-form-item label="出库用途" prop="usage" data-cy="other-usage">
+          <el-select v-model="formData.usage" placeholder="请选择出库用途" style="width: 100%" data-cy="other-usage-select">
+            <el-option label="借用" value="borrow" data-cy="other-usage-borrow" />
+            <el-option label="试用" value="trial" data-cy="other-usage-trial" />
+            <el-option label="展示" value="display" data-cy="other-usage-display" />
+            <el-option label="测试" value="test" data-cy="other-usage-test" />
+            <el-option label="其他" value="other" data-cy="other-usage-other" />
           </el-select>
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item label="预计归还" prop="expectedReturnDate">
+        <el-form-item label="预计归还" prop="expectedReturnDate" data-cy="other-return-date">
           <el-date-picker
             v-model="formData.expectedReturnDate"
             type="date"
@@ -39,12 +40,13 @@
             style="width: 100%"
             :disabled-date="disabledDate"
             value-format="YYYY-MM-DD"
+            data-cy="other-return-date-picker"
           />
         </el-form-item>
       </el-col>
     </el-row>
 
-    <el-form-item label="详细说明" prop="description">
+    <el-form-item label="详细说明" prop="description" data-cy="other-description">
       <el-input
         v-model="formData.description"
         type="textarea"
@@ -52,6 +54,7 @@
         placeholder="请详细说明出库原因和用途"
         maxlength="1000"
         show-word-limit
+        data-cy="other-description-input"
       />
     </el-form-item>
 
@@ -61,13 +64,13 @@
 
     <el-row :gutter="24">
       <el-col :span="12">
-        <el-form-item label="经办人" prop="handler">
-          <el-input v-model="formData.handler" placeholder="请输入经办人姓名" />
+        <el-form-item label="经办人" prop="handler" data-cy="other-handler">
+          <el-input v-model="formData.handler" placeholder="请输入经办人姓名" data-cy="other-handler-input" />
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item label="联系电话" prop="handlerPhone">
-          <el-input v-model="formData.handlerPhone" placeholder="请输入联系电话">
+        <el-form-item label="联系电话" prop="handlerPhone" data-cy="other-handler-phone">
+          <el-input v-model="formData.handlerPhone" placeholder="请输入联系电话" data-cy="other-handler-phone-input">
             <template #prefix>
               <el-icon><Phone /></el-icon>
             </template>
@@ -76,8 +79,8 @@
       </el-col>
     </el-row>
 
-    <el-form-item label="收货地址" prop="deliveryAddress">
-      <el-input v-model="formData.deliveryAddress" placeholder="请输入收货地址（选填）">
+    <el-form-item label="收货地址" prop="deliveryAddress" data-cy="other-delivery-address">
+      <el-input v-model="formData.deliveryAddress" placeholder="请输入收货地址（选填）" data-cy="other-delivery-address-input">
         <template #prefix>
           <el-icon><Location /></el-icon>
         </template>
@@ -90,12 +93,12 @@
 
     <el-row :gutter="24">
       <el-col :span="12">
-        <el-form-item label="配送方式" prop="shippingMethod">
-          <el-select v-model="formData.shippingMethod" placeholder="请选择配送方式" style="width: 100%">
-            <el-option label="自提" value="self_pickup" />
-            <el-option label="快递配送" value="express" />
-            <el-option label="专车配送" value="dedicated" />
-            <el-option label="物流运输" value="logistics" />
+        <el-form-item label="配送方式" prop="shippingMethod" data-cy="other-shipping-method">
+          <el-select v-model="formData.shippingMethod" placeholder="请选择配送方式" style="width: 100%" data-cy="other-shipping-method-select">
+            <el-option label="自提" value="self_pickup" data-cy="other-shipping-self" />
+            <el-option label="快递配送" value="express" data-cy="other-shipping-express" />
+            <el-option label="专车配送" value="dedicated" data-cy="other-shipping-dedicated" />
+            <el-option label="物流运输" value="logistics" data-cy="other-shipping-logistics" />
           </el-select>
         </el-form-item>
       </el-col>
@@ -121,6 +124,7 @@
         placeholder="请输入备注信息（选填）"
         maxlength="300"
         show-word-limit
+        data-cy="other-remark-input"
       />
     </el-form-item>
 

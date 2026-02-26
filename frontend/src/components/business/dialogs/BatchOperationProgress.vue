@@ -13,6 +13,7 @@
     :close-on-click-modal="false"
     :close-on-press-escape="false"
     :show-close="!isProcessing"
+    data-cy="batch-operation-progress-dialog"
   >
     <div class="batch-progress-content">
       <!-- 进度条 -->
@@ -69,7 +70,7 @@
     </div>
 
     <template #footer>
-      <el-button v-if="!isProcessing" @click="handleClose">关闭</el-button>
+      <el-button v-if="!isProcessing" @click="handleClose" data-cy="batch-progress-close-btn">关闭</el-button>
     </template>
   </el-dialog>
 </template>

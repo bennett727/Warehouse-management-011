@@ -6,11 +6,17 @@
   @version: 1.0
 -->
 <template>
-  <el-tag :type="tagType" :size="size" :effect="effect" :class="['base-status-tag', `status-${normalizedStatus}`]">
+  <el-tag
+    :type="tagType"
+    :size="size"
+    :effect="effect"
+    :class="['base-status-tag', `status-${normalizedStatus}`]"
+    :data-cy="`status-tag-${normalizedStatus}`"
+  >
     <el-icon v-if="showIcon" class="tag-icon">
       <component :is="statusIcon" />
     </el-icon>
-    <span>{{ displayText }}</span>
+    <span data-cy="status-tag-text">{{ displayText }}</span>
   </el-tag>
 </template>
 

@@ -8,7 +8,7 @@
 <template>
   <PageLayout title="库存记录查询" description="查看所有库存操作记录">
     <template #headerActions>
-      <el-button type="success" :icon="Download" @click="handleExport" :loading="exportLoading">导出数据</el-button>
+      <el-button type="success" :icon="Download" @click="handleExport" :loading="exportLoading" data-cy="inventory-records-export-btn">导出数据</el-button>
     </template>
 
     <!-- 功能说明 -->
@@ -80,24 +80,25 @@
       :current-page="pagination.current"
       :page-size="pagination.pageSize"
       height="500px"
+      data-cy="inventory-records-table"
       @page-change="handlePageChange"
     >
-      <el-table-column type="index" label="序号" width="60" />
-      <el-table-column prop="recordNo" label="记录编号" width="150" />
-      <el-table-column prop="deviceCode" label="设备编号" width="150" />
-      <el-table-column prop="deviceName" label="设备名称" min-width="180" />
-      <el-table-column prop="operation" label="操作类型" min-width="100">
+      <el-table-column type="index" label="序号" width="60" data-cy="records-index-column" />
+      <el-table-column prop="recordNo" label="记录编号" width="150" data-cy="records-no-column" />
+      <el-table-column prop="deviceCode" label="设备编号" width="150" data-cy="records-device-code-column" />
+      <el-table-column prop="deviceName" label="设备名称" min-width="180" data-cy="records-device-name-column" />
+      <el-table-column prop="operation" label="操作类型" min-width="100" data-cy="records-operation-column">
         <template #default="{ row }">
-          <el-tag :type="getOperationType(row.operation)">{{ row.operationText }}</el-tag>
+          <el-tag :type="getOperationType(row.operation)" :data-cy="`records-operation-tag-${row.recordNo}`">{{ row.operationText }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="quantity" label="数量" width="100" align="center" />
-      <el-table-column prop="warehouseName" label="仓库" min-width="120" />
-      <el-table-column prop="operator" label="操作人" width="120" />
-      <el-table-column prop="createTime" label="操作时间" min-width="180" />
-      <el-table-column label="操作" width="120" fixed="right">
+      <el-table-column prop="quantity" label="数量" width="100" align="center" data-cy="records-quantity-column" />
+      <el-table-column prop="warehouseName" label="仓库" min-width="120" data-cy="records-warehouse-column" />
+      <el-table-column prop="operator" label="操作人" width="120" data-cy="records-operator-column" />
+      <el-table-column prop="createTime" label="操作时间" min-width="180" data-cy="records-time-column" />
+      <el-table-column label="操作" width="120" fixed="right" data-cy="records-action-column">
         <template #default="{ row }">
-          <el-button type="primary" link @click="handleView(row)">查看</el-button>
+          <el-button type="primary" link @click="handleView(row)" :data-cy="`records-view-btn-${row.recordNo}`">查看</el-button>
         </template>
       </el-table-column>
     </DataTable>

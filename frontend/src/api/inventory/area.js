@@ -1,4 +1,4 @@
-import { SYSTEM_API } from '@/constants/apiConstants';
+import { AREA_API } from '@/constants/apiConstants';
 import request from '@/utils/request';
 
 /**
@@ -8,7 +8,7 @@ import request from '@/utils/request';
  */
 export const getAreaList = (params = {}) => {
   return request({
-    url: SYSTEM_API.INVENTORY_AREA_LIST || '/inventory/areas',
+    url: AREA_API.LIST,
     method: 'get',
     params,
   });
@@ -21,7 +21,7 @@ export const getAreaList = (params = {}) => {
  */
 export const getAreaDetail = (id) => {
   return request({
-    url: SYSTEM_API.INVENTORY_AREA_DETAIL?.(id) || `/inventory/areas/${id}`,
+    url: AREA_API.DETAIL(id),
     method: 'get',
   });
 };
@@ -33,7 +33,7 @@ export const getAreaDetail = (id) => {
  */
 export const addArea = (data) => {
   return request({
-    url: SYSTEM_API.INVENTORY_AREA_ADD || '/inventory/areas',
+    url: AREA_API.CREATE,
     method: 'post',
     data,
   });
@@ -47,7 +47,7 @@ export const addArea = (data) => {
  */
 export const updateArea = (id, data) => {
   return request({
-    url: SYSTEM_API.INVENTORY_AREA_UPDATE?.(id) || `/inventory/areas/${id}`,
+    url: AREA_API.UPDATE(id),
     method: 'put',
     data,
   });
@@ -60,7 +60,7 @@ export const updateArea = (id, data) => {
  */
 export const deleteArea = (id) => {
   return request({
-    url: SYSTEM_API.INVENTORY_AREA_DELETE?.(id) || `/inventory/areas/${id}`,
+    url: AREA_API.DELETE(id),
     method: 'delete',
   });
 };

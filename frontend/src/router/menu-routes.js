@@ -234,6 +234,20 @@ export const menuRoutes = [
         },
       },
       {
+        path: 'warehouse/zone',
+        name: 'WarehouseZone',
+        component: () => import('@/views/warehouse/zone/index.vue'),
+        meta: {
+          title: '功能区管理',
+          description: '管理仓库功能区的划分和配置',
+          requiresAuth: true,
+          roles: ['ADMIN', 'OPERATOR'],
+          icon: 'Grid',
+          group: '库存基础数据',
+          keepAlive: true,
+        },
+      },
+      {
         path: 'warehouse/map',
         name: 'WarehouseMap',
         component: () => import('@/views/warehouse/map/index.vue'),

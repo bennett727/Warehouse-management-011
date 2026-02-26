@@ -48,7 +48,6 @@ export function extractListData(response, options = {}) {
 
   // 确保list始终是数组
   if (!Array.isArray(list)) {
-    console.warn('[extractListData] 提取的list不是数组，将返回空数组:', list);
     list = [];
   }
 

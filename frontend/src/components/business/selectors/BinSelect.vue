@@ -44,6 +44,7 @@
       style="width: 100%"
       @change="handleChange"
       @clear="handleClear"
+      data-cy="bin-select"
     >
       <template #prefix>
         <el-icon><Box /></el-icon>

@@ -296,9 +296,9 @@
           </div>
         </div>
         <div class="guide-actions">
-          <el-button v-if="currentStep > 0" @click="currentStep--">上一步</el-button>
-          <el-button v-if="currentStep < 3" type="primary" @click="currentStep++">下一步</el-button>
-          <el-button v-else type="primary" @click="handleGuideFinish">完成</el-button>
+          <el-button v-if="currentStep > 0" @click="currentStep--" data-cy="operation-logs-guide-prev-btn">上一步</el-button>
+          <el-button v-if="currentStep < 3" type="primary" @click="currentStep++" data-cy="operation-logs-guide-next-btn">下一步</el-button>
+          <el-button v-else type="primary" @click="handleGuideFinish" data-cy="operation-logs-guide-finish-btn">完成</el-button>
         </div>
       </div>
     </el-dialog>
