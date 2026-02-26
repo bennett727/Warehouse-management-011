@@ -1,0 +1,5 @@
+chore: 清理前端根目录下未使用的配置文件
+
+- 删除frontend/config/vite.performance.config.js（未被引用）
+- 删除frontend/public/monitoring-viewer.html（临时监控页面，未被引用）
+- 优化项目结构，移除冗余文件
