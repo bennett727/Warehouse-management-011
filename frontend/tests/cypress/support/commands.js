@@ -1,37 +1,18 @@
-// 优化后的登录命令 - 支持session缓存和快速验证
+// 优化后的登录命令 - 禁用session缓存以避免问题
 Cypress.Commands.add('login', (username, password) => {
   const user = username || 'admin'
   const pass = password || '123456'
-  const sessionKey = `session_${user}`
   
-  // 检查是否启用session缓存
-  const cacheEnabled = Cypress.env('SESSION_CACHE_ENABLED') !== false
-  
-  if (cacheEnabled) {
-    cy.session(sessionKey, () => {
-      performLogin(user, pass)
-    }, {
-      validate: () => {
-        // 快速验证session有效性 - 检查localStorage中的access_token
-        cy.window().then((win) => {
-          const token = win.localStorage.getItem('access_token')
-          expect(token).to.exist
-          expect(token).to.not.be.empty
-        })
-      },
-      cacheAcrossSpecs: true
-    })
-  } else {
-    performLogin(user, pass)
-  }
+  // 直接执行登录，不使用session缓存
+  performLogin(user, pass)
 })
 
 // 提取登录逻辑为独立函数
 function performLogin(username, password) {
   cy.visit('/login')
-  cy.get('[data-cy="login-username-input"]').should('be.visible')
-  cy.get('[data-cy="login-username-input"]').clear().type(username)
-  cy.get('[data-cy="login-password-input"]').clear().type(password)
+  cy.get('[data-cy="login-username-input"]', { timeout: 10000 }).should('be.visible')
+  cy.get('[data-cy="login-username-input"]').clear().type(username, { delay: 50 })
+  cy.get('[data-cy="login-password-input"]').clear().type(password, { delay: 50 })
   cy.get('[data-cy="login-submit-button"]').click()
   
   // 等待登录成功 - 使用更精确的条件
